@@ -17,27 +17,32 @@
   <title>Dennis Loevlie, Ph.D. Student</title>
   <link rel="shortcut icon" type="image/png" href="{% static 'Portfolio/img/favicon.png' %}">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="/static/Portfolio/css/style.css" />
+    <link rel="stylesheet" href="/static/Portfolio/css/style.css" />
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous" type="text/css">
   <!-- remember, jQuery is completely optional -->
   <!-- <script type='text/javascript' src='js/jquery-1.11.1.min.js'></script> -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
   <script type="text/javascript" src="/static/Portfolio/js/jquery.particleground.js"></script>
   <script type="text/javascript" src="/static/Portfolio/js/demo.js"></script>
 
   <style>
-* { color:#fff; text-decoration: none;}
+* { color:#36454F; text-decoration: none;}
 body {overflow-y:auto !important;}
   </style>
 
 </head>
 
 <body>
+<div class="container-fluid" style="height: 100%;">
+<!--<div class="row">-->
+<div class="row" style="height: 100%;">
+<div id="particles" class="col-xl-9">
 
-<div id="particles" style="position: relative;">
   <div id="intro">
     <div class="typewriter">
-      <h2>Hi, I'm Dennis Loevlie</h2>
-      <h2 style="color: white;">
+      <h2 style="color: #36454F;">Hi, I'm Dennis Loevlie</h2>
+      <h2 style="color: #36454F;">
         <a href="" class="typewrite" data-period="2000" data-type='["Passionate about Deep Learning.","Dedicated to research." ,"Love to Develop."]'>
           <span class="wrap"></span>
         </a>
@@ -46,20 +51,32 @@ body {overflow-y:auto !important;}
 
         <hr style="width: 50%; background-color: #E83951; border-color: #E83951;">
 
-        <a href="{% static 'Portfolio/PDF/Academic_CV_Aug_2022.pdf' %}" style="color: white;"><i class="fa fa-file" aria-hidden="true" style="font-size: 2em;"></i></a>
+        <a href="{% static 'Portfolio/PDF/Academic_CV_Nov_12.pdf' %}" style="color: 000000;"><img src="static/Portfolio/img/cv_icon.png" width="50" height="60"/></a>
         &nbsp
-        <a href="https://www.linkedin.com/in/dennisloevlie/" style="color: white;"><i class="fab fa-linkedin" style="font-size: 2em;"></i></a>
+        <a href="https://www.linkedin.com/in/dennisloevlie/" style="color: 000000;"><i class="fab fa-linkedin" style="font-size: 2em;"></i></a>
     &nbsp
-    <a href="https://www.facebook.com/denny.loevlie/" style="color: white;"><i class="fab fa-facebook" style="font-size: 2em;"></i></a>
+    <a href="https://www.facebook.com/denny.loevlie/" style="color: 000000;"><i class="fab fa-facebook" style="font-size: 2em;"></i></a>
     &nbsp
-    <a href="https://github.com/loevlie/" style="color: white;"><i class="fab fa-github" style="font-size: 2em;"></i></a>
+    <a href="https://github.com/loevlie/" style="color: 000000;"><i class="fab fa-github" style="font-size: 2em;"></i></a>
     &nbsp
-    <a href="https://medium.com/@dennyloevlie" style="color: white;"><i class="fab fa-medium" style="font-size: 2em;"></i></a>
+    <a href="https://medium.com/@dennyloevlie" style="color: 000000;"><i class="fab fa-medium" style="font-size: 2em;"></i></a>
+
+
   </div>
   </div>
+
+
+
+</div>
+ <div class='col-xl-3 tweet'>
+    <div class="twitter">
+            <a class="twitter-timeline" data-width="100%" data-height="800px" data-dnt="true" data-link-color="#008AFF" href="https://twitter.com/DennisLoevlie">Tweets by Dennis Loevlie</a>
+    </div>
 </div>
 
-
+<!--</div>-->
+</div>
+</div>
 </body>
 </html>
 
@@ -120,7 +137,7 @@ body {overflow-y:auto !important;}
         // INJECT CSS
         var css = document.createElement("style");
         css.type = "text/css";
-        css.innerHTML = ".typewrite > .wrap { border-right: 0.08em solid #FFFFFF}";
+        css.innerHTML = ".typewrite > .wrap { border-right: 0.08em solid #36454F}";
         document.body.appendChild(css);
     };
 </script>

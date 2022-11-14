@@ -7,6 +7,11 @@
     vertical-align: baseline;
   }
 
+@media only screen and (max-width: 768px) {
+  div.twitter {
+    display: none;
+  }
+
   article, aside, details, figcaption, figure,
   footer, header, hgroup, menu, nav, section {
     display: block;
@@ -46,7 +51,7 @@
   body {
     background: #000010;
     font-family: 'Montserrat', sans-serif;
-    color: #fff;
+    color: #36454F;
     line-height: 1.3;
     -webkit-font-smoothing: antialiased;
   }
@@ -69,14 +74,14 @@
     text-transform: uppercase;
     font-size: 50px;
     font-weight: 120;
-    color: #ffffff;
+    color: #36454F;
     letter-spacing: 0.05em;
   }
   h1::after {
     content: '';
     width: 80px;
     display: block;
-    background: #fff;
+    background: #36454F;
     height: 10px;
     margin: 30px auto;
     line-height: 1.1;
@@ -91,7 +96,14 @@
     h1 {
       font-size: 15px;
     }
+    /*.tweet {display: none;}*/
   }
+
+  @media (max-width: 600px) {
+      .tweet {display: none;}
+  }
+
+
 
   @media only screen and (max-width: 100px) {
     h1 {
@@ -139,4 +151,9 @@ and (max-width : 380px) {
   width: 100%;
   text-align: center;
 }
+}
+
+@media (min-width: 992px) {
+    .col-xl-3 {display: none;}
+
 }

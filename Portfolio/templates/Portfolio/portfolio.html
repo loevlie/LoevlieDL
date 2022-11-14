@@ -46,12 +46,12 @@
   <section class="py-5 text-center container">
     <div class="row py-lg-5">
       <div class="col-lg-6 col-md-8 mx-auto">
-        <h1 class="fw-light">Portfolio Projects</h1>
-        <p class="lead text-muted">I am a engineer with a passion for Deep learning.  I have worked hard to gain experience in several different areas of machine learning and software development.  Some of the my projects where I applied the skills I learned are shown below. </p>
+        <h1 class="fw-light">Machine Learning and Software Development Projects</h1>
+        <p class="lead text-muted">I'm a engineer with a passion for Deep learning.  Some of the my non-research projects I've worked on are shown below.</p>
         <p>
-          <a href="https://github.com/loevlie" class="btn btn-primary my-2">Check out my GitHub</a>
-          <a href="https://medium.com/@dennyloevlie" class="btn btn-secondary my-2">Check out my blog</a>
-          <a href="https://www.aithelite.com" class="btn btn-dark my-2">Check out the startup I helped build AIthElite</a>
+          <a href="https://github.com/loevlie" class="btn btn-primary my-2">GitHub</a>
+          <a href="https://medium.com/@dennyloevlie" class="btn btn-secondary my-2">Blog</a>
+          <a href="https://www.aithelite.com" class="btn btn-dark my-2">Startup: AIthElite</a>
         </p>
       </div>
     </div>
@@ -61,6 +61,56 @@
     <div class="container">
 
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+
+        <div class="col">
+          <div class="card shadow-sm">
+            <img src="{% static 'Portfolio/img/logo.png' %}" class="rounded img-thumbnail">
+
+            <div class="card-body">
+              <p class="card-text">Less than 24 hour hackathon for tech in healthcare.  SkinsAI stands for Skin Key Imaging Nursing System, and it's a free-access diagnosis tool for classifying moles as benign or malignant. SkinsAI's binary classification model uses a small <strong>convolutional neural network</strong>. The purpose is to provide a free, easy-to-use, anonymous and fast tool to give patients a first diagnosis, as well as a website where useful and up-to-date information can be gathered.  We were awarded <strong>2nd place overall</strong> out of 29 teams ($2,000 cash prize).</p>
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                  <a href="https://pittchallenge.com"><button type="button" class="btn btn-sm btn-outline-secondary">Competition</button></a>
+                  <a href="https://skinsai.herokuapp.com/"><button type="button" class="btn btn-sm btn-outline-secondary">Website</button></a>
+
+
+                </div>
+
+
+              </div>
+              <div class="d-flex justify-content-between align-items-center">
+              <div class="btn-group">
+                  <a href="https://devpost.com/software/skinsai"><button type="button" class="btn btn-sm btn-outline-secondary">Devpost</button></a>
+              </div>
+              <small class="text-muted">Pitt Challenge Hackathon</small>
+              </div>
+              <span style="font-size:.75rem;" class="badge bg-primary text-light">PyTorch</span>
+              <span style="font-size:.75rem;" class="badge bg-primary text-light">Django</span>
+              <span style="font-size:.75rem;" class="badge bg-primary text-light">Computer Vision</span>
+
+            </div>
+          </div>
+        </div>
+
+        <div class="col">
+          <div class="card shadow-sm">
+            <img src="{% static 'Portfolio/img/DALLE_Aqueous_solubility_digital_art.png' %}" class="rounded img-thumbnail">
+
+            <div class="card-body">
+              <p class="card-text">Competition for predicting the aqueous solubility class (high, medium, low) of small molecules.  I am applying a <strong>graph neural network</strong> to solve the problem.  The competition ends in December and I will make my code public at that point.</p>
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                  <a href="https://www.kaggle.com/competitions/euos-slas/overview"><button type="button" class="btn btn-sm btn-outline-secondary">Competition</button></a>
+
+                </div>
+                <small class="text-muted">Kaggle</small>
+              </div>
+              <span style="font-size:.75rem;" class="badge bg-primary text-light">PyTorch</span>
+            </div>
+          </div>
+        </div>
+
+
         <div class="col">
           <div class="card shadow-sm">
             <img src="{% static 'Portfolio/img/asl.png' %}" class="rounded img-thumbnail">
@@ -76,6 +126,7 @@
               </div>
               <span style="font-size:.75rem;" class="badge bg-primary text-light">Tensorflow</span>
               <span style="font-size:.75rem;" class="badge bg-primary text-light">tkinter</span>
+              <span style="font-size:.75rem;" class="badge bg-primary text-light">Computer Vision</span>
             </div>
           </div>
         </div>
@@ -94,6 +145,7 @@
                 <small class="text-muted">Course</small>
               </div>
               <span style="font-size:.75rem;" class="badge bg-primary text-light">Pytorch</span>
+              <span style="font-size:.75rem;" class="badge bg-primary text-light">Computer Vision</span>
             </div>
           </div>
         </div>
@@ -130,6 +182,7 @@
                 <small class="text-muted">Course</small>
               </div>
               <span style="font-size:.75rem;" class="badge bg-primary text-light">Pytorch</span>
+              <span style="font-size:.75rem;" class="badge bg-primary text-light">Computer Vision</span>
             </div>
           </div>
         </div>
@@ -235,7 +288,7 @@
                   <a href="https://github.com/loevlie/nb_search"><button type="button" class="btn btn-sm btn-outline-secondary">Source Code</button></a>
                   <a href="https://pypi.org/project/nb-search/"><button type="button" class="btn btn-sm btn-outline-secondary">PyPi</button></a>
                 </div>
-                <small class="text-muted">Research</small>
+                <small class="text-muted">Python Package</small>
               </div>
               <span style="font-size:.75rem;" class="badge bg-primary text-light">Jupyter Notebook</span>
             </div>
