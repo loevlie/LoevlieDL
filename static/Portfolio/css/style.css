@@ -7,11 +7,6 @@
     vertical-align: baseline;
   }
 
-@media only screen and (max-width: 768px) {
-  div.twitter {
-    display: none;
-  }
-
   article, aside, details, figcaption, figure,
   footer, header, hgroup, menu, nav, section {
     display: block;
@@ -96,7 +91,6 @@
     h1 {
       font-size: 15px;
     }
-    /*.tweet {display: none;}*/
   }
 
   @media (max-width: 600px) {
@@ -151,9 +145,4 @@ and (max-width : 380px) {
   width: 100%;
   text-align: center;
 }
-}
-
-@media (min-width: 992px) {
-    .col-xl-3 {display: none;}
-
 }

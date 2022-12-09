@@ -36,10 +36,10 @@ body {overflow-y:auto !important;}
 <body>
 <div class="container-fluid" style="height: 100%;">
 <!--<div class="row">-->
-<div class="row" style="height: 100%;">
+<div class="row" style="height: 100%; display: flex;">
 <div id="particles" class="col-xl-9">
 
-  <div id="intro">
+  <div id="intro" style="position: absolute; left: 0; top: 50%; padding: 0 10px; width: 100%; text-align: center;">
     <div class="typewriter">
       <h2 style="color: #36454F;">Hi, I'm Dennis Loevlie</h2>
       <h2 style="color: #36454F;">
@@ -51,12 +51,12 @@ body {overflow-y:auto !important;}
 
         <hr style="width: 50%; background-color: #E83951; border-color: #E83951;">
 
-        <a href="{% static 'Portfolio/PDF/Academic_CV_Nov_12.pdf' %}" style="color: 000000;"><img src="static/Portfolio/img/cv_icon.png" width="50" height="60"/></a>
+        <a href="{% static 'Portfolio/PDF/Dennis_Loevlie_CV.pdf' %}" style="color: 000000;"><img src="static/Portfolio/img/cv_icon.png" width="50" height="60"/></a>
         &nbsp
         <a href="https://www.linkedin.com/in/dennisloevlie/" style="color: 000000;"><i class="fab fa-linkedin" style="font-size: 2em;"></i></a>
     &nbsp
-    <a href="https://www.facebook.com/denny.loevlie/" style="color: 000000;"><i class="fab fa-facebook" style="font-size: 2em;"></i></a>
-    &nbsp
+    <!--<a href="https://www.facebook.com/denny.loevlie/" style="color: 000000;"><i class="fab fa-facebook" style="font-size: 2em;"></i></a>-->
+    <!--&nbsp-->
     <a href="https://github.com/loevlie/" style="color: 000000;"><i class="fab fa-github" style="font-size: 2em;"></i></a>
     &nbsp
     <a href="https://medium.com/@dennyloevlie" style="color: 000000;"><i class="fab fa-medium" style="font-size: 2em;"></i></a>
