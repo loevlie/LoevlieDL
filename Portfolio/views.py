@@ -68,7 +68,9 @@ def timeline(request):
 
 def portfolio(request):
     return render(request, 'Portfolio/portfolio.html')
-
+    
+def publications(request):
+    return render(request, 'Portfolio/publications.html')
 
 # class UpdatePostView(generic.UpdateView):
 #     model = Post

@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include, re_path
-from django.conf.urls import url
+# from django.conf.urls import url
 from Portfolio import views
 from django.conf.urls.static import static
 from django.conf import settings
@@ -31,6 +31,7 @@ urlpatterns = [
     re_path(r'^about_me/$',views.about_me,name='about_me'),
     re_path(r'^contact/$',views.contact,name='contact'),
     re_path(r'^portfolio/$',views.portfolio,name='portfolio'),
+    re_path(r'^publications/$',views.publications,name='publications'),
     #re_path(r'^Blog/$',views.blog,name='Blog'),
     re_path(r'^Blog/$', views.blog.as_view(), name='Blog'),
     path('add_post/',views.AddPostView,name='add_post'),

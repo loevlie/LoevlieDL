@@ -26,6 +26,9 @@
               <a class="nav-link" target="_self" href="{% url 'index' %}">Home</a>
             </li>
             <li class="nav-item">
+              <a class="nav-link" target="_self" href="{% url 'publications' %}">Publications</a>
+            </li>
+            <li class="nav-item">
               <a class="nav-link" target="_self" href="{% url 'portfolio' %}">Projects</a>
             </li>
             <li class="nav-item">
@@ -34,9 +37,9 @@
             <li class="nav-item">
               <a class="nav-link" target="_self" href="https://medium.com/@dennyloevlie">Blog</a>
             </li>
-            <li class="nav-item">
+            {% comment %} <li class="nav-item">
               <a class="nav-link" target="_self" href="{% url 'about_me' %}">About me</a>
-            </li>
+            </li> {% endcomment %}
             <li class="nav-item">
               <a class="nav-link" target="_self" href="{% url 'contact' %}">Contact Me</a>
             </li>
