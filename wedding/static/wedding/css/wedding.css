@@ -250,12 +250,14 @@
   flex-direction: column;
   gap: 1.5rem;
   margin-top: 2rem;
+  align-items: center;
 }
 
 .quick-info-item {
   display: flex;
   align-items: flex-start;
   gap: 1rem;
+  justify-content: center;
 }
 
 .quick-info-item i {

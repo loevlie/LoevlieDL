@@ -106,9 +106,13 @@ def upload_directory(local_dir, cloudinary_folder):
                 if was_compressed:
                     compressed_count += 1
 
+                # Use original filename without extension as public_id
+                base_name = os.path.splitext(filename)[0]
+
                 result = cloudinary.uploader.upload(
                     upload_path,
                     folder=cloudinary_folder,
+                    public_id=base_name,  # Preserve original filename
                     resource_type="image",
                     overwrite=True,
                     transformation=[
