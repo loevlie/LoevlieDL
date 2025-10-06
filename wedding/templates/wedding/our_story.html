@@ -1,0 +1,218 @@
+{% extends 'wedding/base.html' %}
+
+{% block title %}Our Story - Dennis & Cait{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div class="container">
+    <h1 class="display-4">Our Story</h1>
+    <p class="lead">From classmates to soulmates</p>
+  </div>
+</div>
+
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="story-content">
+        <div class="story-icon text-center mb-4">
+          <i class="fas fa-book-heart fa-4x text-primary"></i>
+        </div>
+
+        <div class="story-text">
+          <p class="lead">{{ story_text }}</p>
+        </div>
+
+        <div class="timeline-highlights mt-5">
+          <h3 class="text-center mb-4">Our Timeline</h3>
+          <div class="timeline-item">
+            <div class="timeline-marker">📚</div>
+            <div class="timeline-content">
+              <h5>We Met</h5>
+              <p>Classmates in the same major at West Virginia University</p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-marker">💕</div>
+            <div class="timeline-content">
+              <h5>Started Dating</h5>
+              <p>Senior year - from friends to something more</p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-marker">🏙️</div>
+            <div class="timeline-content">
+              <h5>Moved to Pittsburgh</h5>
+              <p>Built a life together exploring the city we love</p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-marker">💍</div>
+            <div class="timeline-content">
+              <h5>Getting Married!</h5>
+              <p>September 5th, 2026 at The Aviary</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Journey Map Section -->
+<div class="bg-light py-5">
+  <div class="container">
+    <h2 class="text-center mb-4">Our Journey on the Map</h2>
+    <p class="text-center lead mb-4">Click the penguin pins to explore the places that shaped our story</p>
+  </div>
+  <div class="container-fluid px-0">
+    <div id="journey-map"></div>
+  </div>
+</div>
+
+<!-- Location Detail Modal -->
+<div class="modal fade" id="locationModal" tabindex="-1" role="dialog" aria-labelledby="locationModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="locationModalLabel"></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div id="locationPhoto" class="mb-3"></div>
+        <div id="locationDetails"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container my-5">
+  <div class="text-center">
+    <a href="{% url 'wedding:rsvp' %}" class="btn btn-primary wedding-btn-primary btn-lg">
+      <i class="fas fa-envelope"></i> RSVP Now
+    </a>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  // Initialize the map
+  const map = L.map('journey-map').setView([40.4406, -79.9959], 4); // Centered on Pittsburgh
+
+  // Add tile layer
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    maxZoom: 19
+  }).addTo(map);
+
+  // Custom penguin icon for markers
+  const penguinIcon = L.divIcon({
+    html: '<div class="penguin-marker">🐧</div>',
+    className: 'custom-div-icon',
+    iconSize: [30, 30],
+    iconAnchor: [15, 15]
+  });
+
+  // Fetch and display locations
+  fetch('{% url "wedding:locations_api" %}')
+    .then(response => response.json())
+    .then(data => {
+      const locations = data.locations;
+
+      // Add markers for each location
+      locations.forEach(location => {
+        const marker = L.marker([location.latitude, location.longitude], {
+          icon: penguinIcon
+        }).addTo(map);
+
+        // Create popup content
+        const popupContent = `
+          <div class="location-popup">
+            <h6>${location.location_name}</h6>
+            <p class="small mb-0">${location.city}, ${location.state_country}</p>
+          </div>
+        `;
+
+        marker.bindPopup(popupContent);
+
+        // Click handler to show modal with full details
+        marker.on('click', function() {
+          showLocationDetails(location);
+        });
+      });
+
+      // Optional: Draw lines connecting locations in order
+      if (locations.length > 1) {
+        const sortedLocations = locations.sort((a, b) => a.order - b.order);
+        const polylinePoints = sortedLocations.map(loc => [loc.latitude, loc.longitude]);
+
+        L.polyline(polylinePoints, {
+          color: '#e75480',
+          weight: 2,
+          opacity: 0.6,
+          dashArray: '5, 10'
+        }).addTo(map);
+      }
+    })
+    .catch(error => {
+      console.error('Error loading locations:', error);
+    });
+
+  // Function to show location details in modal
+  function showLocationDetails(location) {
+    document.getElementById('locationModalLabel').textContent = location.location_name;
+
+    // Handle multiple photos with carousel
+    let photoHTML = '';
+    if (location.photos && location.photos.length > 0) {
+      if (location.photos.length === 1) {
+        // Single photo - just show it
+        photoHTML = `<img src="${location.photos[0]}" class="img-fluid rounded" alt="${location.location_name}">`;
+      } else {
+        // Multiple photos - create carousel
+        photoHTML = `
+          <div id="locationPhotoCarousel" class="carousel slide" data-ride="carousel">
+            <ol class="carousel-indicators">
+              ${location.photos.map((photo, index) => `
+                <li data-target="#locationPhotoCarousel" data-slide-to="${index}" ${index === 0 ? 'class="active"' : ''}></li>
+              `).join('')}
+            </ol>
+            <div class="carousel-inner">
+              ${location.photos.map((photo, index) => `
+                <div class="carousel-item ${index === 0 ? 'active' : ''}">
+                  <img src="${photo}" class="d-block w-100 rounded" alt="${location.location_name}">
+                </div>
+              `).join('')}
+            </div>
+            <a class="carousel-control-prev" href="#locationPhotoCarousel" role="button" data-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#locationPhotoCarousel" role="button" data-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="sr-only">Next</span>
+            </a>
+          </div>
+        `;
+      }
+    }
+    document.getElementById('locationPhoto').innerHTML = photoHTML;
+
+    const detailsHTML = `
+      <p><strong>${location.city}, ${location.state_country}</strong></p>
+      ${location.date_visited ? `<p class="text-muted"><i class="far fa-calendar"></i> ${location.date_visited}</p>` : ''}
+      <p><strong>Our Story:</strong><br>${location.description}</p>
+      <p><strong>Why It's Special:</strong><br>${location.significance}</p>
+    `;
+    document.getElementById('locationDetails').innerHTML = detailsHTML;
+
+    $('#locationModal').modal('show');
+  }
+</script>
+{% endblock %}

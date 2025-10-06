@@ -36,6 +36,7 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 INSTALLED_APPS = [
     'Portfolio',
+    'wedding',  # Wedding website app
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -168,3 +169,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR,'images')
 STATICFILES_DIRS = [STATIC_DIR,]
 
 LOGIN_URL = '/Portfolio/user_login'
+
+# Import local settings if they exist (for local development)
+try:
+    from .local_settings import *
+except ImportError:
+    pass

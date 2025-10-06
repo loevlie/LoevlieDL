@@ -1,0 +1,113 @@
+{% extends 'wedding/base.html' %}
+
+{% block title %}Event Details - Dennis & Cait{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div class="container">
+    <h1 class="display-4">Event Details</h1>
+    <p class="lead">Everything you need to know about our special day</p>
+  </div>
+</div>
+
+<div class="container my-5">
+  <div class="row">
+    <div class="col-md-6 mb-4">
+      <div class="detail-card">
+        <div class="detail-icon">
+          <i class="fas fa-calendar-day fa-3x text-primary"></i>
+        </div>
+        <h3>When</h3>
+        <p class="lead">{{ date }}</p>
+        <p>Ceremony Time: {{ ceremony_time }}</p>
+        <p>Reception Time: {{ reception_time }}</p>
+      </div>
+    </div>
+
+    <div class="col-md-6 mb-4">
+      <div class="detail-card">
+        <div class="detail-icon">
+          <i class="fas fa-map-marker-alt fa-3x text-primary"></i>
+        </div>
+        <h3>Where</h3>
+        <p class="lead">{{ venue_name }}</p>
+        <p>{{ venue_address }}</p>
+        <a href="https://www.google.com/maps/search/?api=1&query=The+Aviary+Pittsburgh+PA" target="_blank" class="btn btn-outline-primary btn-sm mt-2">
+          <i class="fas fa-directions"></i> Get Directions
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mt-4">
+    <div class="col-md-6 mb-4">
+      <div class="detail-card">
+        <div class="detail-icon">
+          <i class="fas fa-hotel fa-3x text-primary"></i>
+        </div>
+        <h3>Accommodations</h3>
+        <p>Information about nearby hotels will be posted soon.</p>
+      </div>
+    </div>
+
+    <div class="col-md-6 mb-4">
+      <div class="detail-card">
+        <div class="detail-icon">
+          <i class="fas fa-plane fa-3x text-primary"></i>
+        </div>
+        <h3>Travel</h3>
+        <p><strong>Pittsburgh International Airport (PIT)</strong></p>
+        <p>Approximately 30 minutes from downtown Pittsburgh</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mt-4">
+    <div class="col-md-12">
+      <div class="detail-card">
+        <div class="detail-icon">
+          <i class="fas fa-tshirt fa-3x text-primary"></i>
+        </div>
+        <h3>Dress Code</h3>
+        <p class="lead">Semi-Formal / Cocktail Attire</p>
+        <p>We want you to feel comfortable and look great! Think cocktail dresses, suits, or dressy separates.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mt-5">
+    <div class="col-12 text-center">
+      <h3 class="mb-4">Schedule of Events</h3>
+      <div class="timeline-schedule">
+        <div class="schedule-item">
+          <div class="schedule-time">TBD</div>
+          <div class="schedule-event">
+            <h5>Ceremony</h5>
+            <p>Join us as we say "I do"</p>
+          </div>
+        </div>
+        <div class="schedule-item">
+          <div class="schedule-time">TBD</div>
+          <div class="schedule-event">
+            <h5>Cocktail Hour</h5>
+            <p>Drinks and hors d'oeuvres</p>
+          </div>
+        </div>
+        <div class="schedule-item">
+          <div class="schedule-time">TBD</div>
+          <div class="schedule-event">
+            <h5>Reception</h5>
+            <p>Dinner, dancing, and celebration!</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="text-center mt-5">
+    <a href="{% url 'wedding:rsvp' %}" class="btn btn-primary wedding-btn-primary btn-lg">
+      <i class="fas fa-envelope"></i> RSVP Now
+    </a>
+  </div>
+</div>
+{% endblock %}

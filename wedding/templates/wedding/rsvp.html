@@ -1,0 +1,76 @@
+{% extends 'wedding/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}RSVP - Dennis & Cait{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div class="container">
+    <h1 class="display-4">RSVP</h1>
+    <p class="lead">We can't wait to celebrate with you!</p>
+  </div>
+</div>
+
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="rsvp-form-container">
+        <div class="text-center mb-4">
+          <div class="penguin-pair-rsvp">
+            <span>🐧💕🐧</span>
+          </div>
+          <p class="mt-3">Please RSVP by <strong>July 1st, 2026</strong></p>
+        </div>
+
+        <form method="post" class="rsvp-form">
+          {% csrf_token %}
+
+          <div class="form-section">
+            <h5 class="mb-3">Your Information</h5>
+            <div class="row">
+              <div class="col-md-6">
+                {{ form.first_name|as_crispy_field }}
+              </div>
+              <div class="col-md-6">
+                {{ form.last_name|as_crispy_field }}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                {{ form.email|as_crispy_field }}
+              </div>
+              <div class="col-md-6">
+                {{ form.phone|as_crispy_field }}
+              </div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h5 class="mb-3">Attendance</h5>
+            {{ form.attendance|as_crispy_field }}
+          </div>
+
+          <div class="form-section">
+            <h5 class="mb-3">Guest Details</h5>
+            {{ form.number_of_guests|as_crispy_field }}
+            {{ form.guest_names|as_crispy_field }}
+            {{ form.dietary_restrictions|as_crispy_field }}
+          </div>
+
+          <div class="form-section">
+            <h5 class="mb-3">Special Requests</h5>
+            {{ form.song_request|as_crispy_field }}
+            {{ form.message|as_crispy_field }}
+          </div>
+
+          <div class="text-center mt-4">
+            <button type="submit" class="btn btn-primary wedding-btn-primary btn-lg">
+              <i class="fas fa-paper-plane"></i> Submit RSVP
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

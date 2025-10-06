@@ -1,0 +1,225 @@
+{% extends 'wedding/base.html' %}
+{% load static %}
+
+{% block title %}Wedding Party - Dennis & Cait{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div class="container">
+    <h1 class="display-4">Our Wedding Party</h1>
+    <p class="lead mb-4">The special people celebrating with us</p>
+
+    <!-- Name Carousel in Header -->
+    <div class="name-carousel-container mt-4">
+      <div id="nameCarousel" class="carousel slide" data-ride="carousel" data-interval="2500">
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <div class="name-carousel-item">
+              <h3 class="party-name-display">Denny</h3>
+            </div>
+          </div>
+          <div class="carousel-item">
+            <div class="name-carousel-item">
+              <h3 class="party-name-display">Caitlin</h3>
+            </div>
+          </div>
+          <div class="carousel-item">
+            <div class="name-carousel-item">
+              <h3 class="party-name-display">Nick</h3>
+            </div>
+          </div>
+          <div class="carousel-item">
+            <div class="name-carousel-item">
+              <h3 class="party-name-display">Brock</h3>
+            </div>
+          </div>
+          <div class="carousel-item">
+            <div class="name-carousel-item">
+              <h3 class="party-name-display">Sungil</h3>
+            </div>
+          </div>
+          <div class="carousel-item">
+            <div class="name-carousel-item">
+              <h3 class="party-name-display">Emery</h3>
+            </div>
+          </div>
+          <div class="carousel-item">
+            <div class="name-carousel-item">
+              <h3 class="party-name-display">Brandon</h3>
+            </div>
+          </div>
+          <div class="carousel-item">
+            <div class="name-carousel-item">
+              <h3 class="party-name-display">Noah</h3>
+            </div>
+          </div>
+          <div class="carousel-item">
+            <div class="name-carousel-item">
+              <h3 class="party-name-display">Anthony</h3>
+            </div>
+          </div>
+          <div class="carousel-item">
+            <div class="name-carousel-item">
+              <h3 class="party-name-display">Michael</h3>
+            </div>
+          </div>
+          <div class="carousel-item">
+            <div class="name-carousel-item">
+              <h3 class="party-name-display">Zane</h3>
+            </div>
+          </div>
+          <div class="carousel-item">
+            <div class="name-carousel-item">
+              <h3 class="party-name-display">Rich</h3>
+            </div>
+          </div>
+          <div class="carousel-item">
+            <div class="name-carousel-item">
+              <h3 class="party-name-display">Kristen</h3>
+            </div>
+          </div>
+          <div class="carousel-item">
+            <div class="name-carousel-item">
+              <h3 class="party-name-display">Jaycie</h3>
+            </div>
+          </div>
+          <div class="carousel-item">
+            <div class="name-carousel-item">
+              <h3 class="party-name-display">Tori</h3>
+            </div>
+          </div>
+          <div class="carousel-item">
+            <div class="name-carousel-item">
+              <h3 class="party-name-display">Brenna</h3>
+            </div>
+          </div>
+          <div class="carousel-item">
+            <div class="name-carousel-item">
+              <h3 class="party-name-display">Abby</h3>
+            </div>
+          </div>
+          <div class="carousel-item">
+            <div class="name-carousel-item">
+              <h3 class="party-name-display">Hana</h3>
+            </div>
+          </div>
+          <div class="carousel-item">
+            <div class="name-carousel-item">
+              <h3 class="party-name-display">Jasmine</h3>
+            </div>
+          </div>
+          <div class="carousel-item">
+            <div class="name-carousel-item">
+              <h3 class="party-name-display">Sarah</h3>
+            </div>
+          </div>
+          <div class="carousel-item">
+            <div class="name-carousel-item">
+              <h3 class="party-name-display">Soobin</h3>
+            </div>
+          </div>
+          <div class="carousel-item">
+            <div class="name-carousel-item">
+              <h3 class="party-name-display">Michelle</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container my-5 text-center">
+  <p class="lead mb-4">Throwback photos with our amazing wedding party!</p>
+</div>
+
+<div class="container-fluid my-5">
+  <!-- Masonry Photo Collage -->
+  <div class="photo-collage-container">
+    <div class="photo-collage" id="partyCollage">
+      <!-- Photos will be loaded here by JavaScript -->
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  // Load all party photos and create masonry collage with thumbnails
+  document.addEventListener('DOMContentLoaded', function() {
+    const collage = document.getElementById('partyCollage');
+
+    // Fetch photo list from API
+    fetch('{% url "wedding:party_photos_api" %}')
+      .then(response => response.json())
+      .then(data => {
+        const photos = data.photos;
+
+        if (photos.length === 0) {
+          collage.innerHTML = '<p class="text-center text-muted">No photos uploaded yet. Sync photos from Google Drive!</p>';
+          return;
+        }
+
+        photos.forEach((photo, index) => {
+          const photoDiv = document.createElement('div');
+          photoDiv.className = 'collage-item';
+
+          // Vary heights for masonry effect
+          const heights = ['tall', 'medium', 'short'];
+          const randomHeight = heights[index % heights.length];
+          photoDiv.classList.add(randomHeight);
+
+          const img = document.createElement('img');
+          // Use thumbnail for display
+          img.src = `{% static "wedding/images/party/" %}${photo.thumb}`;
+          img.alt = 'Wedding Party';
+          img.loading = 'lazy';
+          img.style.cursor = 'pointer';
+          // Store full-res path in data attribute
+          img.dataset.fullRes = `{% static "wedding/images/party/" %}${photo.filename}`;
+
+          // Add click to view full resolution
+          img.addEventListener('click', function() {
+            // Create modal overlay with full resolution image
+            const modal = document.createElement('div');
+            modal.className = 'photo-modal';
+            modal.innerHTML = `
+              <div class="photo-modal-content">
+                <span class="photo-modal-close">&times;</span>
+                <img src="${this.dataset.fullRes}" alt="Wedding Party Full Size">
+              </div>
+            `;
+            document.body.appendChild(modal);
+            document.body.style.overflow = 'hidden';
+
+            // Close on click
+            modal.addEventListener('click', function(e) {
+              if (e.target === modal || e.target.classList.contains('photo-modal-close')) {
+                document.body.removeChild(modal);
+                document.body.style.overflow = 'auto';
+              }
+            });
+
+            // Close on ESC key
+            document.addEventListener('keydown', function escHandler(e) {
+              if (e.key === 'Escape') {
+                if (document.body.contains(modal)) {
+                  document.body.removeChild(modal);
+                  document.body.style.overflow = 'auto';
+                }
+                document.removeEventListener('keydown', escHandler);
+              }
+            });
+          });
+
+          photoDiv.appendChild(img);
+          collage.appendChild(photoDiv);
+        });
+      })
+      .catch(error => {
+        console.error('Error loading party photos:', error);
+        collage.innerHTML = '<p class="text-center text-muted">Error loading photos. Please try again later.</p>';
+      });
+  });
+</script>
+{% endblock %}

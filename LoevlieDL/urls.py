@@ -23,6 +23,7 @@ from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('wedding/', include('wedding.urls')),  # Wedding website URLs
     re_path(r'^user_login/$',views.user_login,name='user_login'),
     re_path(r'^logout/$',views.user_logout,name='logout'),
     re_path(r'^register/$',views.register,name='register'),

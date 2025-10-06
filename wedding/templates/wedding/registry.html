@@ -1,0 +1,49 @@
+{% extends 'wedding/base.html' %}
+
+{% block title %}Registry - Dennis & Cait{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div class="container">
+    <h1 class="display-4">Registry</h1>
+    <p class="lead">Your presence is the greatest gift!</p>
+  </div>
+</div>
+
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8 text-center">
+      <div class="registry-content">
+        <div class="mb-4">
+          <i class="fas fa-gift fa-4x text-primary"></i>
+        </div>
+
+        <p class="lead mb-4">
+          Your presence at our wedding is the greatest gift we could ask for.
+          However, if you wish to honor us with a gift, we've registered at the following stores:
+        </p>
+
+        {% if registry_links %}
+          <div class="registry-links">
+            {% for link in registry_links %}
+              <a href="{{ link.url }}" target="_blank" class="btn btn-outline-primary btn-lg mb-3 registry-btn">
+                <i class="fas fa-external-link-alt"></i> {{ link.name }}
+              </a>
+            {% endfor %}
+          </div>
+        {% else %}
+          <div class="alert alert-info">
+            <p class="mb-0">Registry information coming soon!</p>
+          </div>
+        {% endif %}
+
+        <div class="mt-5 pt-4 border-top">
+          <h4 class="mb-3">Prefer to give a monetary gift?</h4>
+          <p>If you would prefer to give a monetary gift, we'd be grateful for contributions toward our honeymoon fund or our future home together.</p>
+          <p class="small text-muted">Details will be available closer to the wedding date.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

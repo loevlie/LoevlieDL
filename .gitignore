@@ -3,3 +3,8 @@
 static/Portfolio/PDF
 static/Portfolio/img
 Portfolio/migrations/__pycache__
+venv/
+local_settings.py
+wedding/static/wedding/images/party/
+wedding/static/wedding/images/locations/
+db.sqlite3

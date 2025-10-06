@@ -1,0 +1,119 @@
+{% extends 'wedding/base.html' %}
+{% load static %}
+
+{% block title %}Dennis & Caitlin - September 5th, 2026{% endblock %}
+
+{% block content %}
+<div class="hero-section">
+  <div class="hero-content">
+    <div class="hero-text">
+      <h1 class="display-2 wedding-title mb-3">
+        {{ groom_name }}
+        <span class="ampersand">&</span>
+        {{ bride_name }}
+      </h1>
+      <div class="wedding-date-hero">
+        <p class="lead mb-2">{{ wedding_date }}</p>
+        <p class="wedding-venue">{{ wedding_location }}</p>
+      </div>
+      <div class="hero-penguin">
+        <div class="penguin-pair">
+          <span class="penguin-left">🐧</span>
+          <span class="heart-between">💕</span>
+          <span class="penguin-right">🐧</span>
+        </div>
+      </div>
+      <div class="mt-4">
+        <a href="{% url 'wedding:rsvp' %}" class="btn btn-primary btn-lg wedding-btn-primary mr-3">RSVP Now</a>
+        <a href="{% url 'wedding:our_story' %}" class="btn btn-outline-light btn-lg">Our Story</a>
+      </div>
+    </div>
+  </div>
+  <div class="hero-overlay"></div>
+</div>
+
+<!-- Photo Section with Overlapping Images -->
+<div class="photo-showcase py-5">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-6 mb-4 mb-lg-0">
+        <div class="couple-photos">
+          <img src="{% static 'wedding/images/Denny_and_Caitlin_1.jpeg' %}" alt="Dennis and Caitlin" class="couple-photo couple-photo-1">
+          <img src="{% static 'wedding/images/Denny_and_Caitlin_2.jpeg' %}" alt="Dennis and Caitlin" class="couple-photo couple-photo-2">
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="couple-intro">
+          <h2 class="mb-4">We're Getting Married!</h2>
+          <p class="lead mb-4">Join us as we celebrate our love and commitment on September 5th, 2026 at The Aviary in Pittsburgh, PA.</p>
+          <div class="quick-info">
+            <div class="quick-info-item">
+              <i class="fas fa-calendar-heart"></i>
+              <div>
+                <strong>When</strong>
+                <p>{{ wedding_date }}</p>
+              </div>
+            </div>
+            <div class="quick-info-item">
+              <i class="fas fa-map-marker-alt"></i>
+              <div>
+                <strong>Where</strong>
+                <p>The Aviary, Pittsburgh, PA</p>
+              </div>
+            </div>
+          </div>
+          <div class="mt-4">
+            <a href="{% url 'wedding:rsvp' %}" class="btn btn-primary wedding-btn-primary">RSVP Now</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container my-5">
+  <div class="row text-center">
+    <div class="col-md-4 mb-4">
+      <div class="info-card">
+        <i class="fas fa-calendar-heart fa-3x mb-3"></i>
+        <h3>Save the Date</h3>
+        <p>{{ wedding_date }}</p>
+        <a href="{% url 'wedding:event_details' %}" class="btn btn-outline-primary btn-sm">Event Details</a>
+      </div>
+    </div>
+    <div class="col-md-4 mb-4">
+      <div class="info-card">
+        <i class="fas fa-map-marker-alt fa-3x mb-3"></i>
+        <h3>The Venue</h3>
+        <p>The Aviary<br>Pittsburgh, PA</p>
+        <a href="{% url 'wedding:event_details' %}" class="btn btn-outline-primary btn-sm">Get Directions</a>
+      </div>
+    </div>
+    <div class="col-md-4 mb-4">
+      <div class="info-card">
+        <i class="fas fa-users fa-3x mb-3"></i>
+        <h3>Join Us</h3>
+        <p>We'd love to celebrate<br>with you!</p>
+        <a href="{% url 'wedding:rsvp' %}" class="btn btn-outline-primary btn-sm">RSVP</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section-preview bg-light py-5">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-md-6 order-md-2 mb-4 mb-md-0">
+        <div class="story-preview-image">
+          <img src="{% static 'wedding/images/Denny_and_Caitlin_3_horizontal.jpeg' %}" alt="Dennis and Caitlin" class="img-fluid rounded shadow-sm">
+        </div>
+      </div>
+      <div class="col-md-6 order-md-1">
+        <h2 class="section-title">Our Journey Together</h2>
+        <p class="lead">From West Virginia to Pittsburgh and beyond, follow the adventures that brought us here.</p>
+        <a href="{% url 'wedding:our_story' %}" class="btn btn-primary wedding-btn-primary">Read Our Story & Explore Our Map</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
