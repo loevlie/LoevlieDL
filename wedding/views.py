@@ -44,42 +44,50 @@ def wedding_party(request):
 
 
 def party_photos_api(request):
-    """API endpoint to list all photos in the party folder with thumbnails"""
-    import os
-    from django.conf import settings
-    from PIL import Image
+    """API endpoint to list all photos from Cloudinary"""
+    import cloudinary.api
 
-    photos = []
-    party_dir = os.path.join(settings.BASE_DIR, 'wedding', 'static', 'wedding', 'images', 'party')
-    thumbs_dir = os.path.join(party_dir, 'thumbs')
+    try:
+        # Get all images from Cloudinary wedding/party folder
+        result = cloudinary.api.resources(
+            type="upload",
+            prefix="wedding/party/",
+            max_results=500
+        )
 
-    # Create thumbs directory if it doesn't exist
-    if not os.path.exists(thumbs_dir):
-        os.makedirs(thumbs_dir)
+        photos = []
+        for resource in result.get('resources', []):
+            public_id = resource['public_id']
+            filename = public_id.split('/')[-1]
 
-    if os.path.exists(party_dir):
-        for filename in os.listdir(party_dir):
-            if filename.lower().endswith(('.png', '.jpg', '.jpeg', '.gif')):
-                # Generate thumbnail if it doesn't exist
-                thumb_filename = f"thumb_{filename}"
-                thumb_path = os.path.join(thumbs_dir, thumb_filename)
-                original_path = os.path.join(party_dir, filename)
+            # Generate thumbnail URL (600px max, optimized)
+            thumb_url = cloudinary.CloudinaryImage(public_id).build_url(
+                width=600,
+                height=600,
+                crop='limit',
+                quality='auto:good',
+                fetch_format='auto'
+            )
 
-                if not os.path.exists(thumb_path):
-                    try:
-                        # Create thumbnail (max 600px width)
-                        img = Image.open(original_path)
-                        img.thumbnail((600, 600), Image.Resampling.LANCZOS)
-                        img.save(thumb_path, optimize=True, quality=85)
-                    except Exception as e:
-                        print(f"Error creating thumbnail for {filename}: {e}")
+            # Generate full resolution URL (optimized)
+            full_url = cloudinary.CloudinaryImage(public_id).build_url(
+                quality='auto:best',
+                fetch_format='auto'
+            )
 
-                photos.append({
-                    'filename': filename,
-                    'thumb': f"thumbs/{thumb_filename}" if os.path.exists(thumb_path) else filename
-                })
+            photos.append({
+                'filename': filename,
+                'thumb': thumb_url,
+                'full': full_url
+            })
 
-    return JsonResponse({'photos': sorted(photos, key=lambda x: x['filename'])}, safe=False)
+        return JsonResponse({'photos': sorted(photos, key=lambda x: x['filename'])}, safe=False)
+
+    except Exception as e:
+        print(f"Error fetching from Cloudinary: {e}")
+        import traceback
+        traceback.print_exc()
+        return JsonResponse({'photos': []}, safe=False)
 
 
 def our_journey(request):
@@ -94,12 +102,32 @@ def our_journey(request):
 
 def locations_api(request):
     """API endpoint for location data (used by the interactive map)"""
+    import cloudinary.api
+
     locations = Location.objects.filter(is_active=True)
 
     locations_list = []
     for location in locations:
-        # Get all photos for this location
-        photo_urls = location.get_photo_urls()
+        # Get photos from Cloudinary for this location
+        photo_urls = []
+
+        if location.photo_base_name:
+            try:
+                # Search for photos matching this location's base name
+                result = cloudinary.api.resources(
+                    type="upload",
+                    prefix=f"wedding/locations/{location.photo_base_name}",
+                    max_results=10
+                )
+
+                for resource in result.get('resources', []):
+                    photo_url = cloudinary.CloudinaryImage(resource['public_id']).build_url(
+                        quality='auto:good',
+                        fetch_format='auto'
+                    )
+                    photo_urls.append(photo_url)
+            except Exception as e:
+                print(f"Error fetching Cloudinary photos for {location.location_name}: {e}")
 
         locations_list.append({
             'id': location.id,
@@ -112,7 +140,7 @@ def locations_api(request):
             'significance': location.significance,
             'date_visited': location.date_visited,
             'order': location.order,
-            'photos': photo_urls,  # Array of photo URLs
+            'photos': photo_urls,  # Array of Cloudinary photo URLs
         })
 
     return JsonResponse({'locations': locations_list}, safe=False)

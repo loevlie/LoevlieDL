@@ -170,13 +170,13 @@
           photoDiv.classList.add(randomHeight);
 
           const img = document.createElement('img');
-          // Use thumbnail for display
-          img.src = `{% static "wedding/images/party/" %}${photo.thumb}`;
+          // Use thumbnail URL from Cloudinary
+          img.src = photo.thumb;
           img.alt = 'Wedding Party';
           img.loading = 'lazy';
           img.style.cursor = 'pointer';
-          // Store full-res path in data attribute
-          img.dataset.fullRes = `{% static "wedding/images/party/" %}${photo.filename}`;
+          // Store full-res URL from Cloudinary
+          img.dataset.fullRes = photo.full;
 
           // Add click to view full resolution
           img.addEventListener('click', function() {

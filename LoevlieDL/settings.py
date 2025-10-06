@@ -170,6 +170,18 @@ STATICFILES_DIRS = [STATIC_DIR,]
 
 LOGIN_URL = '/Portfolio/user_login'
 
+# Cloudinary Configuration for Wedding Photos
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
+
+cloudinary.config(
+    cloud_name = "dbfcmocxi",
+    api_key = "551599118729589",
+    api_secret = "0qjREOdUh1bqt-jxBrWQ3_WecDY",
+    secure = True
+)
+
 # Import local settings if they exist (for local development)
 try:
     from .local_settings import *
