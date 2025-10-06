@@ -1,9 +1,8 @@
 from django import forms
 from .models import Comment, Post
 from django.contrib.auth.models import User
-from captcha.fields import ReCaptchaField
-from captcha.widgets import ReCaptchaV2Checkbox
-
+from django_recaptcha.fields import ReCaptchaField
+from django_recaptcha.widgets import ReCaptchaV2Checkbox
 
 class UserForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput())

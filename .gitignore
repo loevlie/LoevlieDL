@@ -1,2 +1,5 @@
-*.pyc
+**/*.pyc
 *.sqlite3
+static/Portfolio/PDF
+static/Portfolio/img
+Portfolio/migrations/__pycache__

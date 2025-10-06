@@ -1,374 +1,210 @@
 {% extends "Portfolio/layout.html" %}
-
 {% load static %}
-{% load crispy_forms_tags %}
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+  <meta name="generator" content="Hugo 0.83.1">
+  <title>Album example · Bootstrap v5.0</title>
+
+  <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/album/">
+
+
+
+  <!-- Bootstrap core CSS -->
+<link href="../assets/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    .bd-placeholder-img {
+      font-size: 1.125rem;
+      text-anchor: middle;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      user-select: none;
+    }
+
+    @media (min-width: 768px) {
+      .bd-placeholder-img-lg {
+        font-size: 3.5rem;
+      }
+    }
+  </style>
 
 {% block main %}
-
-    <style>
-      .bd-placeholder-img {
-        font-size: 1.125rem;
-        text-anchor: middle;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        user-select: none;
-      }
-
-      @media (min-width: 768px) {
-        .bd-placeholder-img-lg {
-          font-size: 3.5rem;
-        }
-      }
-      /* Demo Code: */
-        body {
-        font-family: 'Open Sans', arial, sans-serif;
-        color: #333;
-        font-size: 14px;
-        }
-        .projcard-container {
-        margin: 50px 0;
-        }
-
-        /* Actual Code: */
-        .projcard-container,
-        .projcard-container * {
-        box-sizing: border-box;
-        }
-        .projcard-container {
-        margin-left: auto;
-        margin-right: auto;
-        width: 1000px;
-        }
-        .projcard {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-        position: relative;
-        width: 100%;
-        height: 400px;
-        margin-bottom: 40px;
-        border-radius: 10px;
-        background-color: #fff;
-        border: 2px solid #ddd;
-        font-size: 18px;
-        overflow: hidden;
-        cursor: pointer;
-        box-shadow: 0 4px 21px -12px rgba(0, 0, 0, .66);
-        transition: box-shadow 0.2s ease, transform 0.2s ease;
-        }
-        .projcard:hover {
-        box-shadow: 0 34px 32px -33px rgba(0, 0, 0, .18);
-        transform: translate(0px, -3px);
-        }
-        .projcard::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
-        background-image: linear-gradient(-70deg, #424242, transparent 50%);
-        opacity: 0.07;
-        }
-        .projcard:nth-child(2n)::before {
-        background-image: linear-gradient(-250deg, #424242, transparent 50%);
-        }
-        .projcard-innerbox {
-        position: absolute;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
-        }
-        .projcard-img {
-        position: absolute;
-        height: 400px;
-        width: 400px;
-        top: 0;
-        left: 0;
-        transition: transform 0.2s ease;
-        }
-        .projcard:nth-child(2n) .projcard-img {
-        left: initial;
-        right: 0;
-        }
-        .projcard:hover .projcard-img {
-        transform: scale(1.05) rotate(1deg);
-        }
-        .projcard:hover .projcard-bar {
-        width: 70px;
-        }
-        .projcard-textbox {
-        position: absolute;
-        top: 7%;
-        bottom: 7%;
-        left: 430px;
-        width: calc(100% - 470px);
-        font-size: 17px;
-        }
-        .projcard:nth-child(2n) .projcard-textbox {
-        left: initial;
-        right: 430px;
-        }
-        .projcard-textbox::before,
-        .projcard-textbox::after {
-        content: "";
-        position: absolute;
-        display: block;
-        background: #ff0000bb;
-        background: #fff;
-        top: -20%;
-        left: -55px;
-        height: 140%;
-        width: 60px;
-        transform: rotate(8deg);
-        }
-        .projcard:nth-child(2n) .projcard-textbox::before {
-        display: none;
-        }
-        .projcard-textbox::after {
-        display: none;
-        left: initial;
-        right: -55px;
-        }
-        .projcard:nth-child(2n) .projcard-textbox::after {
-        display: block;
-        }
-        .projcard-textbox * {
-        position: relative;
-        }
-        .projcard-title {
-        font-family: 'Voces', 'Open Sans', arial, sans-serif;
-        font-size: 24px;
-        }
-        .projcard-subtitle {
-        font-family: 'Voces', 'Open Sans', arial, sans-serif;
-        color: #888;
-        }
-        .projcard-bar {
-        left: -2px;
-        width: 50px;
-        height: 5px;
-        margin: 10px 0;
-        border-radius: 5px;
-        background-color: #424242;
-        transition: width 0.2s ease;
-        }
-        .projcard-blue .projcard-bar { background-color: #0088FF; }
-        .projcard-blue::before { background-image: linear-gradient(-70deg, #0088FF, transparent 50%); }
-        .projcard-blue:nth-child(2n)::before { background-image: linear-gradient(-250deg, #0088FF, transparent 50%); }
-        .projcard-red .projcard-bar { background-color: #D62F1F; }
-        .projcard-red::before { background-image: linear-gradient(-70deg, #D62F1F, transparent 50%); }
-        .projcard-red:nth-child(2n)::before { background-image: linear-gradient(-250deg, #D62F1F, transparent 50%); }
-        .projcard-green .projcard-bar { background-color: #40BD00; }
-        .projcard-green::before { background-image: linear-gradient(-70deg, #40BD00, transparent 50%); }
-        .projcard-green:nth-child(2n)::before { background-image: linear-gradient(-250deg, #40BD00, transparent 50%); }
-        .projcard-yellow .projcard-bar { background-color: #F5AF41; }
-        .projcard-yellow::before { background-image: linear-gradient(-70deg, #F5AF41, transparent 50%); }
-        .projcard-yellow:nth-child(2n)::before { background-image: linear-gradient(-250deg, #F5AF41, transparent 50%); }
-        .projcard-orange .projcard-bar { background-color: #FF5722; }
-        .projcard-orange::before { background-image: linear-gradient(-70deg, #FF5722, transparent 50%); }
-        .projcard-orange:nth-child(2n)::before { background-image: linear-gradient(-250deg, #FF5722, transparent 50%); }
-        .projcard-brown .projcard-bar { background-color: #C49863; }
-        .projcard-brown::before { background-image: linear-gradient(-70deg, #C49863, transparent 50%); }
-        .projcard-brown:nth-child(2n)::before { background-image: linear-gradient(-250deg, #C49863, transparent 50%); }
-        .projcard-grey .projcard-bar { background-color: #424242; }
-        .projcard-grey::before { background-image: linear-gradient(-70deg, #424242, transparent 50%); }
-        .projcard-grey:nth-child(2n)::before { background-image: linear-gradient(-250deg, #424242, transparent 50%); }
-        .projcard-customcolor .projcard-bar { background-color: var(--projcard-color); }
-        .projcard-customcolor::before { background-image: linear-gradient(-70deg, var(--projcard-color), transparent 50%); }
-        .projcard-customcolor:nth-child(2n)::before { background-image: linear-gradient(-250deg, var(--projcard-color), transparent 50%); }
-        .projcard-description {
-        z-index: 10;
-        font-size: 15px;
-        color: #424242;
-        height: 135px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        }
-        .projcard-tagbox {
-        position: absolute;
-        bottom: 3%;
-        font-size: 14px;
-        cursor: default;
-        {% comment %} user-select: none;
-        pointer-events: none; {% endcomment %}
-        }
-        .projcard-tag {
-        display: inline-block;
-        background: #E0E0E0;
-        color: #777;
-        border-radius: 3px 0 0 3px;
-        line-height: 26px;
-        padding: 0 10px 0 23px;
-        position: relative;
-        margin-right: 20px;
-        cursor: default;
-        {% comment %} user-select: none; {% endcomment %}
-        transition: color 0.2s;
-        }
-        .projcard-tag::before {
-        content: '';
-        position: absolute;
-        background: #fff;
-        border-radius: 10px;
-        box-shadow: inset 0 1px rgba(0, 0, 0, 0.25);
-        height: 6px;
-        left: 10px;
-        width: 6px;
-        top: 10px;
-        }
-        .projcard-tag::after {
-        content: '';
-        position: absolute;
-        border-bottom: 13px solid transparent;
-        border-left: 10px solid #E0E0E0;
-        border-top: 13px solid transparent;
-        right: -10px;
-        top: 0;
-        }
-        a:link {
-            color: white;
-            background-color: transparent;
-            text-decoration: none;
-         }
-         a:visited {
-            color: white;
-            background-color: transparent;
-            text-decoration: none;
-         }
-         a:active {
-            color: white;
-            background-color: transparent;
-         }
-    </style>
+</head>
+<body>
 
 
-  </head>
-  <body>
 
 <main>
-  <div class="container py-4">
-    <header class="pb-3 mb-4 border-bottom">
-
-        <h3 style="text-align: center;">Publications</h3>
-
-    </header>
-
-    <div class="projcard-container">
-
-        <div class="projcard projcard-blue">
-            <div class="projcard-innerbox">
-                <img class="projcard-img" src="{% static 'Portfolio/img/timize-2.gif' %}" />
-                <div class="projcard-textbox">
-                    <div class="projcard-title">Demystifying the chemical ordering of multimetallic nanoparticles</div>
-                    <div class="projcard-subtitle"> <strong>Dennis Johan Loevlie</strong>, Brenno Ferreira, Giannis Mpourmpakis</div>
-                    <div class="projcard-bar"></div>
-                    <div class="projcard-description">A bond-centric model has been shown to capture metal nanoparticle energetics accurately but fails in certain bimetallic combinations, such as Pd and Au.  Here we propose an improvement to the bond-centric model that leads to a <strong>71% reduction in the RMSE</strong> in the dataset we investigated.  We then applied mixed-integer optimization to elucidate the most stable atomic orderings of various multi-metallic nanoparticles.  This article has recently been accepted!</strong></div>
-                    <div class="projcard-tagbox">
-                        <a href="https://pubs.acs.org/doi/10.1021/acs.accounts.2c00646"><button type="button" class="btn btn-sm btn-primary">Article</botton></a>
-                        {% comment %} Add a horizontal space between these two bottons {% endcomment %}
 
 
-                        <a href="https://github.com/mpourmpakis/CANELa_NP"><button type="button" style="color:black;" class="btn btn-sm btn-primary">GitHub</botton></a>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="projcard projcard-red">
-            <div class="projcard-innerbox">
-                <img class="projcard-img" src="{% static 'Portfolio/img/pub2.png' %}" />
-                <div class="projcard-textbox">
-                    <div class="projcard-title">Size-dependent shape distributions of platinum nanoparticles</div>
-                    <div class="projcard-subtitle">Ruikand Ding, Ingrid M. Padilla Espinosa, <strong>Dennis Loevlie</strong>, Soodabeh Azadehranjbar, Andrew J. Baker, Giannis Mpourmpakis, Ashlie Martini, and Tevis D. B. Jacobs</div>
-                    <div class="projcard-bar"></div>
-                    <div class="projcard-description">Experimentally a strong shape dependence was observed as a function of nanoparticle size. Using thermodynamics and Boltzmann statistics, we validate these size-dependent shape distributions, which provides an explanation for this phenomenon.</div>
-                    <div class="projcard-tagbox">
-                        <a href="https://pubs.rsc.org/en/content/articlelanding/2022/NA/D2NA00326K"><button type="button" style="color:black;" class="btn btn-sm btn-primary">Article</botton></a>
-                           {% comment %} Add a horizontal space between these two bottons {% endcomment %}
-
-                        <a href="https://www.rsc.org/journals-books-databases/about-journals/nanoscale-advances"><button type="button" class="btn btn-sm btn-primary">2022 Popular Advances Collection</botton></a>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="projcard projcard-green">
-            <div class="projcard-innerbox">
-                <img class="projcard-img" src="{% static 'Portfolio/img/ligand_NC.png' %}" />
-                <div class="projcard-textbox">
-                    <div class="projcard-title">Resolving electrocatalytic imprecision in atomically precise metal nanoclusters</div>
-                    <div class="projcard-subtitle">Anantha Venkataraman Nagarajan, <strong>Dennis Johan Loevlie</strong>, Michael J Cowan, Giannis Mpourmpakis</div>
-                    <div class="projcard-bar"></div>
-                    <div class="projcard-description">An overview of the most recent developments in electrocatalysis of ligand protected metal nanoclusters.  An outlook is provided describing the current and possible future applications of machine learning in the field.</div>
-                    <div class="projcard-tagbox">
-                        <a href="https://www.sciencedirect.com/science/article/abs/pii/S2211339821001167?dgcid=author#!"><button type="button" style="color:black;" class="btn btn-sm btn-primary">Article</botton></a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
+<section class="py-5 text-center container">
+  <div class="row py-lg-5">
+    <div class="col-lg-6 col-md-8 mx-auto">
+      <h1 class="fw-light">Publications</h1>
+       <p class="lead text-muted">I am currently researching in the Tufts Machine Learning Group and working on submitting a publication in the next few months.  This will involve our work on deep multiple instance learning problems with limited labeled data.</p>
+       <p class="lead text-muted">Previously, I have worked in computational chemistry, mathmatical modeling, and optimization research labs.  My four peer-reviewed publications and two conference posters are shown below.</p>
+      <p>
+        <a href="https://scholar.google.ca/citations?user=oGkEIYkAAAAJ&hl=fr" class="btn btn-primary my-2">Google Scholar</a>
+      </p>
     </div>
-    <header class="pb-3 mb-4 border-bottom">
-
-        <h3 style="text-align: center;">Posters</h3>
-
-    </header>
-    <div class="projcard-container">
-
-        <div class="projcard projcard-blue">
-            <div class="projcard-innerbox">
-                <img class="projcard-img" src="{% static 'Portfolio/img/cmu_img1.png' %}" />
-                <div class="projcard-textbox">
-                    <div class="projcard-title">Software Development for HER High-Throughput Experiments</div>
-                    <div class="projcard-subtitle"> <strong>Dennis Johan Loevlie</strong>, John Kitchin</div>
-                    <div class="projcard-bar"></div>
-                    <div class="projcard-description">An overview of software tools developed in Python to increase the efficiency and depth of experimental result analysis.  The code developed in Python involved image analysis, search tools, regression and classification, and interactive GUI's.  The poster was presented at the Carnegie Mellon University ChemE Masters Student Assosiation Research Forum and was awarded 3rd place.</div>
-                    <div class="projcard-tagbox">
-                        <a href="https://www.loevliedl.com/static/Portfolio/PDF/CMU_Research_Poster.pdf"><button type="button" style="color:black;" class="btn btn-sm btn-primary">Poster</botton></a>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="projcard projcard-red">
-            <div class="projcard-innerbox">
-                <img class="projcard-img" src="{% static 'Portfolio/img/ITM.png' %}" />
-                <div class="projcard-textbox">
-                    <div class="projcard-title">Mathematical Modeling and Optimization of an Ion Transport Membrane for Oxygen Separation from Air</div>
-                    <div class="projcard-subtitle"> <strong>Dennis Loevlie</strong>, Brent Bishop, and Fernando Lima</div>
-                    <div class="projcard-bar"></div>
-                    <div class="projcard-description">Cryogenic air seperation (CAS) is an extremely energy intensive process.  Through mathmatical modeling, economic evaluation, and non-linear, multivariable optimization of an ion transport membrane (ITM) air seperation unit we show that as ITM technology matures it may be a viable alternative to CAS.  This research was presented at the 2018 national AIChE conference and won 2nd place in the Computing and Process Control, poster competition.</div>
-                    <div class="projcard-tagbox">
-                        <a href="https://www.loevliedl.com/static/Portfolio/PDF/WVU_poster_Loevlie.pdf"><button type="button" style="color:black;" class="btn btn-sm btn-primary">Poster</botton></a>
-                           {% comment %} Add a horizontal space between these two bottons {% endcomment %}
-
-                        {% comment %} <a href="https://www.rsc.org/journals-books-databases/about-journals/nanoscale-advances"><button type="button" class="btn btn-sm btn-primary">2022 Popular Advances Collection</botton></a> {% endcomment %}
-
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-
-    </div>
-
-    <footer class="pt-3 mt-4 text-muted border-top">
-      &copy; 2022
-    </footer>
   </div>
+</section>
+
+<div class="album py-5 bg-light">
+  <div class="container">
+
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+
+      <div class="col">
+        <div class="card shadow-sm">
+          <img src="{% static 'Portfolio/img/timize-2.gif' %}" class="rounded img-thumbnail">
+
+          <div class="card-body">
+            <p class="card-text"><strong>Demystifying the chemical ordering of multimetallic nanoparticles</strong></br></br>
+
+                 <strong>Dennis Johan Loevlie</strong>, Brenno Ferreira, Giannis Mpourmpakis</br></br>
+
+                 A bond-centric model has been shown to capture metal nanoparticle energetics accurately but fails in certain bimetallic combinations, such as Pd and Au.  Here we propose an improvement to the bond-centric model that leads to a <strong>71% reduction in the RMSE</strong> in the dataset we investigated.  We then applied mixed-integer optimization to elucidate the most stable atomic orderings of various multi-metallic nanoparticles.</p>
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="btn-group">
+                <a href="https://pubs.acs.org/doi/10.1021/acs.accounts.2c00646"><button type="button" class="btn btn-sm btn-outline-secondary">Article</button></a>
+                <a href="https://github.com/mpourmpakis/CANELa_NP"><button type="button" class="btn btn-sm btn-outline-secondary">Code</button></a>
+
+
+              </div>
+
+
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+            <div class="btn-group">
+
+            </div>
+            <small class="text-muted">Publication</small>
+        </div>
+        <span style="font-size:.75rem;" class="badge bg-primary text-light">First-Author</span>
+
+          </div>
+        </div>
+        </div>
+
+
+        <div class="col">
+        <div class="card shadow-sm">
+          <img src="{% static 'Portfolio/img/SAA.png' %}" class="rounded img-thumbnail">
+
+          <div class="card-body">
+            <p class="card-text"><strong>Single Atom Alloys Segregation in the Presence of Ligands</strong></br></br>
+                Maya Salem, <strong>Dennis J. Loevlie</strong>, and Giannis Mpourmpakis</br></br>
+
+                The stability of single atom alloys (SAAs) and how it is affected by surface segregation in the presence of ligands is investigated. Using density functional theory (DFT) and machine learning, specifically a neural network model, the study reveals that ligands moderate the thermodynamics of segregation in SAAs. The machine learning model developed in the study accurately predicts the segregation energy (Eseg) in the presence of ligands, aiding in the rapid and efficient screening of SAAs. This research provides insights into the complex physics governing nanoscale interfaces, particularly how ligands influence the segregation behavior in SAAs.</p>
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="btn-group">
+                <a href="https://pubs.acs.org/doi/full/10.1021/acs.jpcc.3c05827"><button type="button" class="btn btn-sm btn-outline-secondary">Article</button></a>
+                <!--<a href="https://www.rsc.org/journals-books-databases/about-journals/nanoscale-advances"><button type="button" class="btn btn-sm btn-outline-secondary">2022 Popular Advances Collection</button></a>-->
+              </div>
+              <small class="text-muted">Publication</small>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="card shadow-sm">
+          <img src="{% static 'Portfolio/img/pub2.png' %}" class="rounded img-thumbnail">
+
+          <div class="card-body">
+            <p class="card-text"><strong>Size-dependent shape distributions of platinum nanoparticles</strong></br></br>
+                Ruikand Ding, Ingrid M. Padilla Espinosa, <strong>Dennis Loevlie</strong>, Soodabeh Azadehranjbar, Andrew J. Baker, Giannis Mpourmpakis, Ashlie Martini, and Tevis D. B. Jacobs</br></br>
+
+                Experimentally a strong shape dependence was observed as a function of nanoparticle size. Using thermodynamics and Boltzmann statistics, we validate these size-dependent shape distributions, which provides an explanation for this phenomenon.</p>
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="btn-group">
+                <a href="https://pubs.rsc.org/en/content/articlelanding/2022/NA/D2NA00326K"><button type="button" class="btn btn-sm btn-outline-secondary">Article</button></a>
+                <!--<a href="https://www.rsc.org/journals-books-databases/about-journals/nanoscale-advances"><button type="button" class="btn btn-sm btn-outline-secondary">2022 Popular Advances Collection</button></a>-->
+              </div>
+              <small class="text-muted">Publication</small>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="col">
+        <div class="card shadow-sm">
+          <img src="{% static 'Portfolio/img/ligand_NC.png' %}" class="rounded img-thumbnail">
+
+          <div class="card-body">
+            <p class="card-text">
+                <strong>Resolving electrocatalytic imprecision in atomically precise metal nanoclusters</strong></br></br>
+                Anantha Venkataraman Nagarajan, <strong>Dennis Johan Loevlie</strong>, Michael J Cowan, Giannis Mpourmpakis</br></br>
+                An overview of the most recent developments in electrocatalysis of ligand protected metal nanoclusters.  An outlook is provided describing the current and possible future applications of machine learning in the field.
+                </p>
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="btn-group">
+                <a href="https://www.sciencedirect.com/science/article/abs/pii/S2211339821001167?dgcid=author#!"><button type="button" class="btn btn-sm btn-outline-secondary">Article</button></a>
+
+              </div>
+              <small class="text-muted">Publication</small>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="card shadow-sm">
+          <img src="{% static 'Portfolio/img/cmu_img1.png' %}" class="rounded img-thumbnail">
+
+          <div class="card-body">
+            <p class="card-text"><strong>Software Development for HER High-Throughput Experiments</strong></br></br>
+            Advised by Dr. John Kitchin </br></br>
+
+            An overview of software tools developed in Python to increase the efficiency and depth of experimental result analysis.  The code developed in Python involved image analysis, search tools, regression and classification, and interactive GUI's.  The poster was presented at the Carnegie Mellon University ChemE Masters Student Assosiation Research Forum and was awarded <strong>3rd place</strong>.
+
+
+            </p>
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="btn-group">
+                <a href="https://www.loevliedl.com/static/Portfolio/PDF/CMU_Research_Poster.pdf"><button type="button" class="btn btn-sm btn-outline-secondary">Poster</button></a>
+              </div>
+              <small class="text-muted">Poster</small>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="card shadow-sm">
+          <img src="{% static 'Portfolio/img/ITM.png' %}" class="rounded img-thumbnail">
+
+          <div class="card-body">
+            <p class="card-text"> <strong>Mathematical Modeling and Optimization of an Ion Transport Membrane for Oxygen Separation from Air</strong></br></br>
+
+            Advised by Dr. Fernando Lima</br></br>
+
+            Cryogenic air seperation (CAS) is an extremely energy intensive process.  Through mathmatical modeling, economic evaluation, and non-linear, multivariable optimization of an ion transport membrane (ITM) air seperation unit we show that as ITM technology matures it may be a viable alternative to CAS.  This research was presented at the 2018 national AIChE conference and won <strong>2nd place</strong> in the Computing and Process Control, poster competition.
+</p>
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="btn-group">
+                <a href="https://www.loevliedl.com/static/Portfolio/PDF/WVU_poster_Loevlie.pdf"><button type="button" class="btn btn-sm btn-outline-secondary">Poster</button></a>
+              </div>
+              <small class="text-muted">Poster</small>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+</div>
+
 </main>
 
 
-
-  </body>
-
-
-
-  {%endblock%}
+{% endblock %}

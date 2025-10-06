@@ -52,11 +52,11 @@ SITE_ID = 1
 #EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 # ADDING Email for password reset functionality
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = "smtp.gmail.com"
+EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'loevliedenny@gmail.com'
-EMAIL_HOST_PASSWORD = 'zzuglbxtxvdyqrwi'
+EMAIL_HOST_USER = 'loevliedenny@gmail.com'  # Use your Gmail address
+EMAIL_HOST_PASSWORD = 'emam ofux wshg mgqe'
 DEFAULT_FROM_EMAIL = 'loevliedenny@gmail.com'
 #ACCOUNT_EMAIL_VERIFICATION = 'none'
 
