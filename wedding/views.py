@@ -56,9 +56,21 @@ def party_photos_api(request):
         )
 
         photos = []
+        seen_hashes = {}  # Track by etag/hash to find true duplicates
+
         for resource in result.get('resources', []):
             public_id = resource['public_id']
             filename = public_id.split('/')[-1]
+
+            # Use etag (file hash) or bytes to identify duplicates
+            # Etag is a hash of the actual file content
+            file_hash = resource.get('etag') or resource.get('bytes')
+
+            # Skip if we've already seen this exact image content
+            if file_hash and file_hash in seen_hashes:
+                continue
+            if file_hash:
+                seen_hashes[file_hash] = filename
 
             # Generate thumbnail URL (600px max, optimized)
             thumb_url = cloudinary.CloudinaryImage(public_id).build_url(
