@@ -72,29 +72,27 @@
         // Create masonry grid
         let gridHTML = '<div class="row">';
         photos.forEach((photo, index) => {
-          // Add new photos
-          if (photo.id > lastPhotoId) {
-            const colSize = index % 3 === 0 ? 'col-md-12' : 'col-md-6';
-            gridHTML += `
-              <div class="col-sm-6 ${colSize} mb-4 photo-item" data-photo-id="${photo.id}">
-                <div class="card shadow-sm h-100">
-                  <img src="${photo.photo_url}" class="card-img-top" alt="Guest photo" style="cursor: pointer;" onclick="showPhoto('${photo.photo_url}', '${photo.uploaded_by}', '${photo.caption}', '${photo.uploaded_at}')">
-                  <div class="card-body">
-                    <p class="card-text mb-1"><strong>${photo.uploaded_by}</strong></p>
-                    ${photo.caption ? `<p class="card-text text-muted small">${photo.caption}</p>` : ''}
-                    <p class="card-text text-muted small">${photo.uploaded_at}</p>
-                  </div>
+          const colSize = index % 3 === 0 ? 'col-md-12' : 'col-md-6';
+          gridHTML += `
+            <div class="col-sm-6 ${colSize} mb-4 photo-item" data-photo-id="${photo.id}">
+              <div class="card shadow-sm h-100">
+                <img src="${photo.photo_url}" class="card-img-top" alt="Guest photo" style="cursor: pointer;" onclick="showPhoto('${photo.photo_url}', '${photo.uploaded_by}', '${photo.caption}', '${photo.uploaded_at}')">
+                <div class="card-body">
+                  <p class="card-text mb-1"><strong>${photo.uploaded_by}</strong></p>
+                  ${photo.caption ? `<p class="card-text text-muted small">${photo.caption}</p>` : ''}
+                  <p class="card-text text-muted small">${photo.uploaded_at}</p>
                 </div>
               </div>
-            `;
+            </div>
+          `;
+          // Track the highest photo ID
+          if (photo.id > lastPhotoId) {
             lastPhotoId = photo.id;
           }
         });
         gridHTML += '</div>';
 
-        if (lastPhotoId > 0) {
-          gallery.innerHTML = gridHTML;
-        }
+        gallery.innerHTML = gridHTML;
       })
       .catch(error => {
         console.error('Error loading photos:', error);
