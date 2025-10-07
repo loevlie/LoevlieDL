@@ -154,8 +154,9 @@
     return array;
   }
 
-  // Shuffle the name carousel on page load
+  // Combined DOMContentLoaded event
   document.addEventListener('DOMContentLoaded', function() {
+    // Shuffle the name carousel
     const carouselInner = document.querySelector('#nameCarousel .carousel-inner');
     const items = Array.from(carouselInner.querySelectorAll('.carousel-item'));
 
@@ -173,10 +174,8 @@
       }
       carouselInner.appendChild(item);
     });
-  });
 
-  // Load all party photos and create masonry collage with thumbnails
-  document.addEventListener('DOMContentLoaded', function() {
+    // Load all party photos and create masonry collage with thumbnails
     const collage = document.getElementById('partyCollage');
 
     // Fetch photo list from API
