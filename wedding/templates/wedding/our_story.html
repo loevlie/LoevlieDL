@@ -172,11 +172,10 @@
     let photoHTML = '';
     if (location.photos && location.photos.length > 0) {
       if (location.photos.length === 1) {
-        // Single photo - show thumbnail initially, load full on click
-        const photo = location.photos[0];
-        photoHTML = `<img src="${photo.thumb}" data-full="${photo.full}" class="img-fluid rounded location-thumb" alt="${location.location_name}" style="cursor: pointer;">`;
+        // Single photo - progressive JPEG
+        photoHTML = `<img src="${location.photos[0]}" class="img-fluid rounded" alt="${location.location_name}">`;
       } else {
-        // Multiple photos - create carousel with thumbnails
+        // Multiple photos - create carousel with progressive JPEGs
         photoHTML = `
           <div id="locationPhotoCarousel" class="carousel slide" data-ride="carousel">
             <ol class="carousel-indicators">
@@ -187,7 +186,7 @@
             <div class="carousel-inner">
               ${location.photos.map((photo, index) => `
                 <div class="carousel-item ${index === 0 ? 'active' : ''}">
-                  <img src="${photo.thumb}" data-full="${photo.full}" class="d-block w-100 rounded location-thumb" alt="${location.location_name}" loading="lazy">
+                  <img src="${photo}" class="d-block w-100 rounded" alt="${location.location_name}" loading="lazy">
                 </div>
               `).join('')}
             </div>
@@ -202,18 +201,6 @@
           </div>
         `;
       }
-
-      // Load full resolution and replace thumbnails as soon as they're ready
-      const thumbnailImages = document.querySelectorAll('.location-thumb');
-      thumbnailImages.forEach((thumbImg, index) => {
-        if (location.photos[index]) {
-          const fullImg = new Image();
-          fullImg.src = location.photos[index].full;
-          fullImg.onload = function() {
-            thumbImg.src = location.photos[index].full;
-          };
-        }
-      });
     }
     document.getElementById('locationPhoto').innerHTML = photoHTML;
 
