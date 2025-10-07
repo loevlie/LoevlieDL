@@ -178,6 +178,12 @@
           // Store full-res URL from Cloudinary
           img.dataset.fullRes = photo.full;
 
+          // Handle images that fail to load - gracefully hide them
+          img.addEventListener('error', function() {
+            console.log(`Failed to load photo: ${photo.filename}`);
+            photoDiv.style.display = 'none';
+          });
+
           // Add click to view full resolution
           img.addEventListener('click', function() {
             // Create modal overlay with full resolution image

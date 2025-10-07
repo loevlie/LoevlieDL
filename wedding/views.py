@@ -121,11 +121,27 @@ def locations_api(request):
                 )
 
                 for resource in result.get('resources', []):
-                    photo_url = cloudinary.CloudinaryImage(resource['public_id']).build_url(
+                    public_id = resource['public_id']
+
+                    # Create thumbnail URL (faster loading, 400px)
+                    thumb_url = cloudinary.CloudinaryImage(public_id).build_url(
+                        width=400,
+                        height=400,
+                        crop='limit',
                         quality='auto:good',
                         fetch_format='auto'
                     )
-                    photo_urls.append(photo_url)
+
+                    # Full resolution URL
+                    full_url = cloudinary.CloudinaryImage(public_id).build_url(
+                        quality='auto:good',
+                        fetch_format='auto'
+                    )
+
+                    photo_urls.append({
+                        'thumb': thumb_url,
+                        'full': full_url
+                    })
             except Exception as e:
                 print(f"Error fetching Cloudinary photos for {location.location_name}: {e}")
 
