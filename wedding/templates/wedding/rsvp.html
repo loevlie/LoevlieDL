@@ -53,7 +53,10 @@
           <div class="form-section">
             <h5 class="mb-3">Guest Details</h5>
             {{ form.number_of_guests|as_crispy_field }}
-            {{ form.guest_names|as_crispy_field }}
+
+            <!-- Dynamic guest fields container -->
+            <div id="guestFieldsContainer"></div>
+
             {{ form.dietary_restrictions|as_crispy_field }}
           </div>
 
@@ -73,4 +76,86 @@
     </div>
   </div>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  // Dynamically add guest name fields based on number of guests
+  document.addEventListener('DOMContentLoaded', function() {
+    const numberOfGuestsInput = document.getElementById('id_number_of_guests');
+    const guestFieldsContainer = document.getElementById('guestFieldsContainer');
+
+    function updateGuestFields() {
+      const numberOfGuests = parseInt(numberOfGuestsInput.value) || 1;
+      const additionalGuests = Math.max(0, numberOfGuests - 1); // -1 because primary is the submitter
+
+      // Clear existing fields
+      guestFieldsContainer.innerHTML = '';
+
+      if (additionalGuests === 0) {
+        return;
+      }
+
+      // Add header
+      const header = document.createElement('div');
+      header.className = 'mt-3 mb-2';
+      header.innerHTML = '<p class="text-muted"><small>Please provide names for your additional guests:</small></p>';
+      guestFieldsContainer.appendChild(header);
+
+      // Create fields for each additional guest
+      for (let i = 0; i < additionalGuests; i++) {
+        const guestDiv = document.createElement('div');
+        guestDiv.className = 'guest-fields-group p-3 mb-3 border rounded';
+        guestDiv.innerHTML = `
+          <h6 class="mb-3">Guest ${i + 1}</h6>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="guest_${i}_first_name">First Name</label>
+                <input type="text" class="form-control" id="guest_${i}_first_name" name="guest_${i}_first_name" required>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="guest_${i}_last_name">Last Name</label>
+                <input type="text" class="form-control" id="guest_${i}_last_name" name="guest_${i}_last_name" required>
+              </div>
+            </div>
+          </div>
+          <div class="form-check mb-2">
+            <input type="checkbox" class="form-check-input" id="guest_${i}_use_primary_phone" name="guest_${i}_use_primary_phone" checked onchange="toggleGuestPhone(${i})">
+            <label class="form-check-label" for="guest_${i}_use_primary_phone">
+              Same number ok to reach them with information day of (like seats)?
+            </label>
+          </div>
+          <div class="form-group" id="guest_${i}_phone_group" style="display: none;">
+            <label for="guest_${i}_phone">Their Phone Number</label>
+            <input type="text" class="form-control" id="guest_${i}_phone" name="guest_${i}_phone" placeholder="(123) 456-7890">
+          </div>
+        `;
+        guestFieldsContainer.appendChild(guestDiv);
+      }
+    }
+
+    // Toggle guest phone field visibility
+    window.toggleGuestPhone = function(guestIndex) {
+      const checkbox = document.getElementById(`guest_${guestIndex}_use_primary_phone`);
+      const phoneGroup = document.getElementById(`guest_${guestIndex}_phone_group`);
+      const phoneInput = document.getElementById(`guest_${guestIndex}_phone`);
+
+      if (checkbox.checked) {
+        phoneGroup.style.display = 'none';
+        phoneInput.removeAttribute('required');
+      } else {
+        phoneGroup.style.display = 'block';
+        phoneInput.setAttribute('required', 'required');
+      }
+    };
+
+    // Update fields on page load and when number changes
+    updateGuestFields();
+    numberOfGuestsInput.addEventListener('change', updateGuestFields);
+    numberOfGuestsInput.addEventListener('input', updateGuestFields);
+  });
+</script>
 {% endblock %}

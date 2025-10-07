@@ -1,0 +1,127 @@
+{% extends 'wedding/base.html' %}
+
+{% block title %}Photo Gallery - Dennis & Cait{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div class="container">
+    <h1 class="display-4">Wedding Photo Gallery</h1>
+    <p class="lead">Memories captured by our amazing guests</p>
+  </div>
+</div>
+
+<div class="container my-5">
+  <div class="text-center mb-4">
+    <a href="{% url 'wedding:photo_upload' %}" class="btn btn-primary wedding-btn-primary">
+      <i class="fas fa-upload"></i> Upload Your Photos
+    </a>
+  </div>
+
+  <div id="photoGallery" class="photo-gallery">
+    <div class="text-center">
+      <div class="spinner-border text-primary" role="status">
+        <span class="sr-only">Loading photos...</span>
+      </div>
+      <p class="mt-3 text-muted">Loading photos...</p>
+    </div>
+  </div>
+</div>
+
+<!-- Photo Modal -->
+<div class="modal fade" id="photoModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="photoModalLabel"></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body text-center">
+        <img id="modalPhoto" src="" class="img-fluid rounded" alt="">
+        <p id="modalCaption" class="mt-3 text-muted"></p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  // Load and display photos in real-time
+  let lastPhotoId = 0;
+  let autoRefreshInterval;
+
+  function loadPhotos() {
+    fetch('{% url "wedding:photos_api" %}')
+      .then(response => response.json())
+      .then(data => {
+        const gallery = document.getElementById('photoGallery');
+        const photos = data.photos;
+
+        if (photos.length === 0) {
+          gallery.innerHTML = '<div class="text-center text-muted"><p>No photos uploaded yet. Be the first to share a memory!</p></div>';
+          return;
+        }
+
+        // Clear loading message on first load
+        if (lastPhotoId === 0) {
+          gallery.innerHTML = '';
+        }
+
+        // Create masonry grid
+        let gridHTML = '<div class="row">';
+        photos.forEach((photo, index) => {
+          // Add new photos
+          if (photo.id > lastPhotoId) {
+            const colSize = index % 3 === 0 ? 'col-md-12' : 'col-md-6';
+            gridHTML += `
+              <div class="col-sm-6 ${colSize} mb-4 photo-item" data-photo-id="${photo.id}">
+                <div class="card shadow-sm h-100">
+                  <img src="${photo.photo_url}" class="card-img-top" alt="Guest photo" style="cursor: pointer;" onclick="showPhoto('${photo.photo_url}', '${photo.uploaded_by}', '${photo.caption}', '${photo.uploaded_at}')">
+                  <div class="card-body">
+                    <p class="card-text mb-1"><strong>${photo.uploaded_by}</strong></p>
+                    ${photo.caption ? `<p class="card-text text-muted small">${photo.caption}</p>` : ''}
+                    <p class="card-text text-muted small">${photo.uploaded_at}</p>
+                  </div>
+                </div>
+              </div>
+            `;
+            lastPhotoId = photo.id;
+          }
+        });
+        gridHTML += '</div>';
+
+        if (lastPhotoId > 0) {
+          gallery.innerHTML = gridHTML;
+        }
+      })
+      .catch(error => {
+        console.error('Error loading photos:', error);
+        document.getElementById('photoGallery').innerHTML = '<div class="text-center text-danger"><p>Error loading photos. Please refresh the page.</p></div>';
+      });
+  }
+
+  function showPhoto(photoUrl, uploadedBy, caption, uploadedAt) {
+    document.getElementById('photoModalLabel').textContent = `Photo by ${uploadedBy}`;
+    document.getElementById('modalPhoto').src = photoUrl;
+    document.getElementById('modalCaption').textContent = caption || '';
+    $('#photoModal').modal('show');
+  }
+
+  // Initial load
+  document.addEventListener('DOMContentLoaded', function() {
+    loadPhotos();
+
+    // Auto-refresh every 10 seconds to show new photos in real-time
+    autoRefreshInterval = setInterval(loadPhotos, 10000);
+  });
+
+  // Stop auto-refresh when user leaves the page
+  window.addEventListener('beforeunload', function() {
+    if (autoRefreshInterval) {
+      clearInterval(autoRefreshInterval);
+    }
+  });
+</script>
+{% endblock %}

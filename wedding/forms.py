@@ -1,5 +1,5 @@
 from django import forms
-from .models import RSVP
+from .models import RSVP, PhotoUpload
 
 
 class RSVPForm(forms.ModelForm):
@@ -59,11 +59,45 @@ class RSVPForm(forms.ModelForm):
             'first_name': 'First Name',
             'last_name': 'Last Name',
             'email': 'Email Address',
-            'phone': 'Phone Number (Optional)',
+            'phone': 'Phone Number',
             'attendance': 'Will you be attending?',
             'number_of_guests': 'Number of Guests',
             'guest_names': 'Guest Names',
             'dietary_restrictions': 'Dietary Restrictions',
             'song_request': 'Song Request',
             'message': 'Message to the Couple',
+        }
+
+
+class PhotoUploadForm(forms.ModelForm):
+    photo = forms.ImageField(
+        required=True,
+        widget=forms.FileInput(attrs={
+            'class': 'form-control',
+            'accept': 'image/*'
+        })
+    )
+
+    class Meta:
+        model = PhotoUpload
+        fields = ['uploaded_by_name', 'phone', 'caption']
+        widgets = {
+            'uploaded_by_name': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Your Name'
+            }),
+            'phone': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': '(123) 456-7890'
+            }),
+            'caption': forms.Textarea(attrs={
+                'class': 'form-control',
+                'rows': '3',
+                'placeholder': 'Add a caption to your photo (optional)'
+            }),
+        }
+        labels = {
+            'uploaded_by_name': 'Your Name',
+            'phone': 'Phone Number',
+            'caption': 'Caption (Optional)',
         }

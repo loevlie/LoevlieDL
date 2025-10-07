@@ -1,0 +1,59 @@
+{% extends 'wedding/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Upload Photos - Dennis & Cait{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div class="container">
+    <h1 class="display-4">Share Your Photos</h1>
+    <p class="lead">Help us capture the memories! Upload your favorite photos from our special day.</p>
+  </div>
+</div>
+
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="photo-upload-container">
+        <div class="text-center mb-4">
+          <div class="camera-icon">
+            <i class="fas fa-camera fa-4x text-primary mb-3"></i>
+          </div>
+          <p>We'd love to see the wedding through your eyes! Share your photos and they'll appear in our gallery.</p>
+        </div>
+
+        <form method="post" enctype="multipart/form-data" class="photo-upload-form">
+          {% csrf_token %}
+
+          <div class="form-section">
+            <h5 class="mb-3">Your Information</h5>
+            {{ form.uploaded_by_name|as_crispy_field }}
+            {{ form.phone|as_crispy_field }}
+            <p class="text-muted small">
+              <i class="fas fa-info-circle"></i> We'll use your phone number to match with your RSVP.
+            </p>
+          </div>
+
+          <div class="form-section">
+            <h5 class="mb-3">Upload Photo</h5>
+            {{ form.photo|as_crispy_field }}
+            {{ form.caption|as_crispy_field }}
+          </div>
+
+          <div class="text-center mt-4">
+            <button type="submit" class="btn btn-primary wedding-btn-primary btn-lg">
+              <i class="fas fa-upload"></i> Upload Photo
+            </button>
+          </div>
+        </form>
+
+        <div class="text-center mt-4">
+          <a href="{% url 'wedding:photo_gallery' %}" class="btn btn-outline-primary">
+            <i class="fas fa-images"></i> View Photo Gallery
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

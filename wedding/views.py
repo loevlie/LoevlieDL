@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from django.contrib import messages
-from .models import Location, WeddingPartyMember, RSVP
+from .models import Location, WeddingPartyMember, RSVP, Guest, PhotoUpload
 from .forms import RSVPForm
 
 
@@ -170,6 +170,23 @@ def rsvp(request):
         if form.is_valid():
             rsvp_obj = form.save()
 
+            # Process guest fields from dynamic form
+            number_of_guests = rsvp_obj.number_of_guests
+            for i in range(number_of_guests - 1):  # -1 because primary person is not a "guest"
+                first_name = request.POST.get(f'guest_{i}_first_name', '').strip()
+                last_name = request.POST.get(f'guest_{i}_last_name', '').strip()
+                use_primary_phone = request.POST.get(f'guest_{i}_use_primary_phone') == 'on'
+                guest_phone = request.POST.get(f'guest_{i}_phone', '').strip()
+
+                if first_name and last_name:
+                    Guest.objects.create(
+                        rsvp=rsvp_obj,
+                        first_name=first_name,
+                        last_name=last_name,
+                        use_primary_phone=use_primary_phone,
+                        phone=guest_phone if not use_primary_phone else ''
+                    )
+
             # Send email notification with Excel attachment
             try:
                 from django.core.mail import EmailMessage
@@ -184,12 +201,11 @@ def rsvp(request):
                 ws = wb.active
                 ws.title = "RSVPs"
 
-                # Add headers with styling
+                # Add headers with styling - now one row per person
                 headers = [
-                    'First Name', 'Last Name', 'Email', 'Phone',
-                    'Attending', 'Number of Guests', 'Guest Names',
-                    'Dietary Restrictions', 'Song Request', 'Message',
-                    'Submitted At'
+                    'First Name', 'Last Name', 'Contact Phone', 'Email', 'Is Primary Contact',
+                    'Attending', 'Dietary Restrictions', 'Song Request', 'Message',
+                    'Submitted At', 'Seat Number'
                 ]
 
                 header_fill = PatternFill(start_color="C99B8A", end_color="C99B8A", fill_type="solid")
@@ -200,20 +216,39 @@ def rsvp(request):
                     cell.fill = header_fill
                     cell.font = header_font
 
-                # Add all RSVP data
+                # Add all RSVP data - one row per person (primary + guests)
                 rsvps = RSVP.objects.all().order_by('-submitted_at')
-                for row_num, rsvp in enumerate(rsvps, 2):
-                    ws.cell(row=row_num, column=1, value=rsvp.first_name)
-                    ws.cell(row=row_num, column=2, value=rsvp.last_name)
-                    ws.cell(row=row_num, column=3, value=rsvp.email)
-                    ws.cell(row=row_num, column=4, value=rsvp.phone)
-                    ws.cell(row=row_num, column=5, value=rsvp.get_attendance_display())
-                    ws.cell(row=row_num, column=6, value=rsvp.number_of_guests)
-                    ws.cell(row=row_num, column=7, value=rsvp.guest_names)
-                    ws.cell(row=row_num, column=8, value=rsvp.dietary_restrictions)
-                    ws.cell(row=row_num, column=9, value=rsvp.song_request)
-                    ws.cell(row=row_num, column=10, value=rsvp.message)
-                    ws.cell(row=row_num, column=11, value=rsvp.submitted_at.strftime('%Y-%m-%d %H:%M:%S'))
+                current_row = 2
+
+                for rsvp in rsvps:
+                    # Add primary contact row
+                    ws.cell(row=current_row, column=1, value=rsvp.first_name)
+                    ws.cell(row=current_row, column=2, value=rsvp.last_name)
+                    ws.cell(row=current_row, column=3, value=rsvp.phone)
+                    ws.cell(row=current_row, column=4, value=rsvp.email)
+                    ws.cell(row=current_row, column=5, value='Yes')
+                    ws.cell(row=current_row, column=6, value=rsvp.get_attendance_display())
+                    ws.cell(row=current_row, column=7, value=rsvp.dietary_restrictions)
+                    ws.cell(row=current_row, column=8, value=rsvp.song_request)
+                    ws.cell(row=current_row, column=9, value=rsvp.message)
+                    ws.cell(row=current_row, column=10, value=rsvp.submitted_at.strftime('%Y-%m-%d %H:%M:%S'))
+                    ws.cell(row=current_row, column=11, value='')  # Seat number to be filled later
+                    current_row += 1
+
+                    # Add guest rows
+                    for guest in rsvp.guests.all():
+                        ws.cell(row=current_row, column=1, value=guest.first_name)
+                        ws.cell(row=current_row, column=2, value=guest.last_name)
+                        ws.cell(row=current_row, column=3, value=guest.get_contact_phone())
+                        ws.cell(row=current_row, column=4, value='')  # Guests don't have separate email
+                        ws.cell(row=current_row, column=5, value='No')
+                        ws.cell(row=current_row, column=6, value=rsvp.get_attendance_display())
+                        ws.cell(row=current_row, column=7, value='')  # Individual dietary restrictions not tracked
+                        ws.cell(row=current_row, column=8, value='')
+                        ws.cell(row=current_row, column=9, value='')
+                        ws.cell(row=current_row, column=10, value=rsvp.submitted_at.strftime('%Y-%m-%d %H:%M:%S'))
+                        ws.cell(row=current_row, column=11, value='')  # Seat number to be filled later
+                        current_row += 1
 
                 # Adjust column widths
                 for col in ws.columns:
@@ -235,23 +270,36 @@ def rsvp(request):
 
                 # Create email with attachment
                 subject = f'New Wedding RSVP: {rsvp_obj.first_name} {rsvp_obj.last_name}'
+
+                # Build guest list
+                guest_list = []
+                for guest in rsvp_obj.guests.all():
+                    guest_list.append(f"  - {guest.first_name} {guest.last_name} (Phone: {guest.get_contact_phone()})")
+                guests_text = '\n'.join(guest_list) if guest_list else 'None'
+
                 message = f"""
 New RSVP Received!
 
+Primary Contact:
 Name: {rsvp_obj.first_name} {rsvp_obj.last_name}
 Email: {rsvp_obj.email}
 Phone: {rsvp_obj.phone}
+
+RSVP Details:
 Attending: {rsvp_obj.get_attendance_display()}
 Number of Guests: {rsvp_obj.number_of_guests}
-Guest Names: {rsvp_obj.guest_names}
-Dietary Restrictions: {rsvp_obj.dietary_restrictions}
-Song Request: {rsvp_obj.song_request}
-Message: {rsvp_obj.message}
+
+Additional Guests:
+{guests_text}
+
+Dietary Restrictions: {rsvp_obj.dietary_restrictions or 'None'}
+Song Request: {rsvp_obj.song_request or 'None'}
+Message: {rsvp_obj.message or 'None'}
 
 Submitted: {rsvp_obj.submitted_at}
 
 ---
-See attached Excel file for all RSVPs.
+See attached Excel file for all RSVPs with complete guest details.
                 """
 
                 email = EmailMessage(
@@ -291,3 +339,69 @@ def registry(request):
         ]
     }
     return render(request, 'wedding/registry.html', context)
+
+
+def photo_upload(request):
+    """Photo upload page for guests"""
+    from .forms import PhotoUploadForm
+    import cloudinary.uploader
+
+    if request.method == 'POST':
+        form = PhotoUploadForm(request.POST, request.FILES)
+        if form.is_valid():
+            photo_file = request.FILES['photo']
+
+            try:
+                # Upload to Cloudinary
+                result = cloudinary.uploader.upload(
+                    photo_file,
+                    folder="wedding/guest_photos",
+                    resource_type="image",
+                    transformation=[
+                        {'quality': 'auto:good'},
+                        {'fetch_format': 'auto'}
+                    ]
+                )
+
+                # Create PhotoUpload object
+                photo_upload = form.save(commit=False)
+                photo_upload.photo_url = result['secure_url']
+                photo_upload.save()
+
+                messages.success(request, 'Thank you for sharing your photo! We can\'t wait to see all the memories.')
+                return redirect('wedding:photo_upload')
+
+            except Exception as e:
+                print(f"Error uploading photo: {e}")
+                import traceback
+                traceback.print_exc()
+                messages.error(request, 'There was an error uploading your photo. Please try again.')
+    else:
+        form = PhotoUploadForm()
+
+    context = {
+        'form': form,
+    }
+    return render(request, 'wedding/photo_upload.html', context)
+
+
+def photo_gallery(request):
+    """Photo gallery page displaying all guest uploads"""
+    return render(request, 'wedding/photo_gallery.html')
+
+
+def photos_api(request):
+    """API endpoint for photo gallery"""
+    photos = PhotoUpload.objects.filter(is_approved=True).order_by('-uploaded_at')
+
+    photos_list = []
+    for photo in photos:
+        photos_list.append({
+            'id': photo.id,
+            'uploaded_by': photo.uploaded_by_name,
+            'photo_url': photo.photo_url,
+            'caption': photo.caption,
+            'uploaded_at': photo.uploaded_at.strftime('%B %d, %Y at %I:%M %p'),
+        })
+
+    return JsonResponse({'photos': photos_list}, safe=False)

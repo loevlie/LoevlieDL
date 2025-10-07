@@ -11,6 +11,9 @@ urlpatterns = [
     path('details/', views.event_details, name='event_details'),
     path('rsvp/', views.rsvp, name='rsvp'),
     path('registry/', views.registry, name='registry'),
+    path('photos/upload/', views.photo_upload, name='photo_upload'),
+    path('photos/gallery/', views.photo_gallery, name='photo_gallery'),
     path('api/locations/', views.locations_api, name='locations_api'),
     path('api/party-photos/', views.party_photos_api, name='party_photos_api'),
+    path('api/photos/', views.photos_api, name='photos_api'),
 ]

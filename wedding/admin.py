@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Location, WeddingPartyMember, RSVP
+from .models import Location, WeddingPartyMember, RSVP, Guest, PhotoUpload
 
 
 @admin.register(Location)
@@ -81,3 +81,46 @@ class RSVPAdmin(admin.ModelAdmin):
         # Typically RSVPs should only be added through the form, not admin
         # But we'll allow it for flexibility
         return True
+
+
+class GuestInline(admin.TabularInline):
+    model = Guest
+    extra = 0
+    fields = ('first_name', 'last_name', 'use_primary_phone', 'phone')
+
+
+@admin.register(Guest)
+class GuestAdmin(admin.ModelAdmin):
+    list_display = ('full_name', 'rsvp', 'use_primary_phone', 'contact_phone')
+    list_filter = ('use_primary_phone',)
+    search_fields = ('first_name', 'last_name', 'rsvp__first_name', 'rsvp__last_name')
+
+    def full_name(self, obj):
+        return f"{obj.first_name} {obj.last_name}"
+    full_name.short_description = 'Guest Name'
+
+    def contact_phone(self, obj):
+        return obj.get_contact_phone()
+    contact_phone.short_description = 'Contact Phone'
+
+
+@admin.register(PhotoUpload)
+class PhotoUploadAdmin(admin.ModelAdmin):
+    list_display = ('uploaded_by_name', 'phone', 'uploaded_at', 'is_approved')
+    list_filter = ('is_approved', 'uploaded_at')
+    search_fields = ('uploaded_by_name', 'phone', 'caption')
+    readonly_fields = ('uploaded_at',)
+    list_editable = ('is_approved',)
+    date_hierarchy = 'uploaded_at'
+
+    fieldsets = (
+        ('Uploader Information', {
+            'fields': ('uploaded_by_name', 'phone')
+        }),
+        ('Photo Details', {
+            'fields': ('photo_url', 'caption')
+        }),
+        ('Moderation', {
+            'fields': ('is_approved', 'uploaded_at')
+        }),
+    )
