@@ -125,6 +125,16 @@
     .then(data => {
       const locations = data.locations;
 
+      // Preload all location photos in background
+      locations.forEach(location => {
+        if (location.photos && location.photos.length > 0) {
+          location.photos.forEach(photoUrl => {
+            const img = new Image();
+            img.src = photoUrl;
+          });
+        }
+      });
+
       // Add markers for each location
       locations.forEach(location => {
         const marker = L.marker([location.latitude, location.longitude], {
