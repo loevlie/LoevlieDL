@@ -106,16 +106,16 @@ class GuestAdmin(admin.ModelAdmin):
 
 @admin.register(PhotoUpload)
 class PhotoUploadAdmin(admin.ModelAdmin):
-    list_display = ('uploaded_by_name', 'phone', 'uploaded_at', 'is_approved')
+    list_display = ('uploaded_by_name', 'uploaded_at', 'is_approved')
     list_filter = ('is_approved', 'uploaded_at')
-    search_fields = ('uploaded_by_name', 'phone', 'caption')
+    search_fields = ('uploaded_by_name', 'caption')
     readonly_fields = ('uploaded_at',)
     list_editable = ('is_approved',)
     date_hierarchy = 'uploaded_at'
 
     fieldsets = (
         ('Uploader Information', {
-            'fields': ('uploaded_by_name', 'phone')
+            'fields': ('uploaded_by_name',)
         }),
         ('Photo Details', {
             'fields': ('photo_url', 'caption')
