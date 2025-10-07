@@ -203,13 +203,17 @@
         `;
       }
 
-      // Preload full resolution images in background after thumbnails load
-      setTimeout(() => {
-        location.photos.forEach(photo => {
-          const img = new Image();
-          img.src = photo.full;
-        });
-      }, 500);
+      // Load full resolution and replace thumbnails as soon as they're ready
+      const thumbnailImages = document.querySelectorAll('.location-thumb');
+      thumbnailImages.forEach((thumbImg, index) => {
+        if (location.photos[index]) {
+          const fullImg = new Image();
+          fullImg.src = location.photos[index].full;
+          fullImg.onload = function() {
+            thumbImg.src = location.photos[index].full;
+          };
+        }
+      });
     }
     document.getElementById('locationPhoto').innerHTML = photoHTML;
 
