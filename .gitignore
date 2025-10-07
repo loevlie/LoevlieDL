@@ -7,4 +7,6 @@ venv/
 local_settings.py
 wedding/static/wedding/images/party/
 wedding/static/wedding/images/locations/
+wedding/static/wedding/3d/
 db.sqlite3
+upload_3d_to_cloudinary.py
