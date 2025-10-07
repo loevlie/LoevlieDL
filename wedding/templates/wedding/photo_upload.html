@@ -1,5 +1,4 @@
 {% extends 'wedding/base.html' %}
-{% load crispy_forms_tags %}
 
 {% block title %}Upload Photos - Dennis & Cait{% endblock %}
 
@@ -7,45 +6,99 @@
 <div class="page-header">
   <div class="container">
     <h1 class="display-4">Share Your Photos</h1>
-    <p class="lead">Help us capture the memories! Upload your favorite photos from our special day.</p>
+    <p class="lead">Help us capture the memories! Take or upload photos from our special day.</p>
   </div>
 </div>
 
 <div class="container my-5">
   <div class="row justify-content-center">
-    <div class="col-lg-8">
+    <div class="col-lg-10">
       <div class="photo-upload-container">
         <div class="text-center mb-4">
           <div class="camera-icon">
             <i class="fas fa-camera fa-4x text-primary mb-3"></i>
           </div>
-          <p>We'd love to see the wedding through your eyes! Share your photos and they'll appear in our gallery.</p>
+          <p>We'd love to see the wedding through your eyes! Your photos will appear in our gallery.</p>
         </div>
 
-        <form method="post" enctype="multipart/form-data" class="photo-upload-form">
-          {% csrf_token %}
+        <!-- Your Information (shown first) -->
+        <div class="form-section mb-4">
+          <h5 class="mb-3">Your Information</h5>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="uploaderName">Your Name</label>
+                <input type="text" class="form-control" id="uploaderName" placeholder="Your Name" required>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="uploaderPhone">Phone Number</label>
+                <input type="tel" class="form-control" id="uploaderPhone" placeholder="(123) 456-7890" required>
+              </div>
+            </div>
+          </div>
+          <p class="text-muted small">
+            <i class="fas fa-info-circle"></i> We'll use your phone number to match with your RSVP.
+          </p>
+        </div>
 
-          <div class="form-section">
-            <h5 class="mb-3">Your Information</h5>
-            {{ form.uploaded_by_name|as_crispy_field }}
-            {{ form.phone|as_crispy_field }}
-            <p class="text-muted small">
-              <i class="fas fa-info-circle"></i> We'll use your phone number to match with your RSVP.
+        <!-- Modern Upload Area -->
+        <div class="form-section">
+          <h5 class="mb-3">Add Photos</h5>
+
+          <!-- Upload Buttons -->
+          <div class="upload-buttons mb-4">
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="cameraInput" class="upload-btn camera-btn">
+                  <i class="fas fa-camera fa-2x mb-2"></i>
+                  <div>Take Photo</div>
+                  <small class="text-muted">Use your camera</small>
+                </label>
+                <input type="file" id="cameraInput" accept="image/*" capture="environment" multiple hidden>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="fileInput" class="upload-btn gallery-btn">
+                  <i class="fas fa-images fa-2x mb-2"></i>
+                  <div>Choose Photos</div>
+                  <small class="text-muted">From your gallery</small>
+                </label>
+                <input type="file" id="fileInput" accept="image/*" multiple hidden>
+              </div>
+            </div>
+          </div>
+
+          <!-- Drag & Drop Area -->
+          <div id="dropZone" class="drop-zone">
+            <i class="fas fa-cloud-upload-alt fa-3x mb-3 text-muted"></i>
+            <p class="mb-0">Or drag and drop photos here</p>
+            <small class="text-muted">Photos will be automatically compressed</small>
+          </div>
+
+          <!-- Preview Area -->
+          <div id="previewArea" class="preview-area mt-4" style="display: none;">
+            <h6 class="mb-3">Photos to Upload (<span id="photoCount">0</span>)</h6>
+            <div id="previewGrid" class="preview-grid"></div>
+          </div>
+
+          <!-- Upload Progress -->
+          <div id="uploadProgress" class="mt-4" style="display: none;">
+            <div class="progress">
+              <div id="progressBar" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%"></div>
+            </div>
+            <p class="text-center mt-2 mb-0">
+              <span id="progressText">Uploading...</span>
             </p>
           </div>
 
-          <div class="form-section">
-            <h5 class="mb-3">Upload Photo</h5>
-            {{ form.photo|as_crispy_field }}
-            {{ form.caption|as_crispy_field }}
-          </div>
-
+          <!-- Upload Button -->
           <div class="text-center mt-4">
-            <button type="submit" class="btn btn-primary wedding-btn-primary btn-lg">
-              <i class="fas fa-upload"></i> Upload Photo
+            <button id="uploadBtn" class="btn btn-primary wedding-btn-primary btn-lg" disabled>
+              <i class="fas fa-upload"></i> Upload <span id="uploadCount">0</span> Photos
             </button>
           </div>
-        </form>
+        </div>
 
         <div class="text-center mt-4">
           <a href="{% url 'wedding:photo_gallery' %}" class="btn btn-outline-primary">
@@ -56,4 +109,347 @@
     </div>
   </div>
 </div>
+
+<style>
+.upload-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  border: 2px dashed #C99B8A;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: #fff;
+  height: 180px;
+}
+
+.upload-btn:hover {
+  border-color: #A67B6B;
+  background: #faf8f7;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.drop-zone {
+  border: 3px dashed #dee2e6;
+  border-radius: 10px;
+  padding: 3rem;
+  text-align: center;
+  transition: all 0.3s ease;
+  background: #f8f9fa;
+}
+
+.drop-zone.drag-over {
+  border-color: #C99B8A;
+  background: #faf8f7;
+}
+
+.preview-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 1rem;
+}
+
+.preview-item {
+  position: relative;
+  aspect-ratio: 1;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.preview-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.preview-item .remove-btn {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background: rgba(220, 53, 69, 0.9);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.preview-item .remove-btn:hover {
+  background: rgba(220, 53, 69, 1);
+  transform: scale(1.1);
+}
+
+.preview-item .caption-input {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0,0,0,0.7);
+  color: white;
+  border: none;
+  padding: 0.5rem;
+  font-size: 0.85rem;
+}
+
+.preview-item .caption-input::placeholder {
+  color: rgba(255,255,255,0.7);
+}
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  let selectedPhotos = [];
+
+  // Get CSRF token
+  function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+      const cookies = document.cookie.split(';');
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
+      }
+    }
+    return cookieValue;
+  }
+  const csrftoken = getCookie('csrftoken');
+
+  // Compress image using canvas
+  async function compressImage(file, maxSizeMB = 8) {
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          let width = img.width;
+          let height = img.height;
+
+          // Calculate max dimensions to stay under size limit
+          const maxDimension = 2048; // Max width or height
+          if (width > height && width > maxDimension) {
+            height = (height / width) * maxDimension;
+            width = maxDimension;
+          } else if (height > maxDimension) {
+            width = (width / height) * maxDimension;
+            height = maxDimension;
+          }
+
+          canvas.width = width;
+          canvas.height = height;
+
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, width, height);
+
+          // Start with high quality and reduce if needed
+          let quality = 0.9;
+          const tryCompress = () => {
+            canvas.toBlob(
+              (blob) => {
+                const sizeMB = blob.size / 1024 / 1024;
+                if (sizeMB > maxSizeMB && quality > 0.5) {
+                  quality -= 0.1;
+                  tryCompress();
+                } else {
+                  const compressedFile = new File([blob], file.name, {
+                    type: 'image/jpeg',
+                    lastModified: Date.now()
+                  });
+                  resolve(compressedFile);
+                }
+              },
+              'image/jpeg',
+              quality
+            );
+          };
+          tryCompress();
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  // Handle file selection (from camera or gallery)
+  async function handleFiles(files) {
+    for (let file of files) {
+      if (!file.type.startsWith('image/')) continue;
+
+      // Compress the image
+      const compressedFile = await compressImage(file);
+
+      // Create preview
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const photo = {
+          file: compressedFile,
+          preview: e.target.result,
+          caption: ''
+        };
+        selectedPhotos.push(photo);
+        updatePreview();
+      };
+      reader.readAsDataURL(compressedFile);
+    }
+  }
+
+  // Update preview grid
+  function updatePreview() {
+    const previewArea = document.getElementById('previewArea');
+    const previewGrid = document.getElementById('previewGrid');
+    const photoCount = document.getElementById('photoCount');
+    const uploadCount = document.getElementById('uploadCount');
+    const uploadBtn = document.getElementById('uploadBtn');
+
+    photoCount.textContent = selectedPhotos.length;
+    uploadCount.textContent = selectedPhotos.length;
+
+    if (selectedPhotos.length > 0) {
+      previewArea.style.display = 'block';
+      uploadBtn.disabled = false;
+
+      previewGrid.innerHTML = selectedPhotos.map((photo, index) => `
+        <div class="preview-item">
+          <img src="${photo.preview}" alt="Preview">
+          <button class="remove-btn" onclick="removePhoto(${index})" type="button">
+            <i class="fas fa-times"></i>
+          </button>
+          <input
+            type="text"
+            class="caption-input"
+            placeholder="Add caption (optional)"
+            value="${photo.caption}"
+            onchange="updateCaption(${index}, this.value)"
+          >
+        </div>
+      `).join('');
+    } else {
+      previewArea.style.display = 'none';
+      uploadBtn.disabled = true;
+    }
+  }
+
+  // Remove photo from selection
+  window.removePhoto = function(index) {
+    selectedPhotos.splice(index, 1);
+    updatePreview();
+  };
+
+  // Update caption
+  window.updateCaption = function(index, caption) {
+    selectedPhotos[index].caption = caption;
+  };
+
+  // File input handlers
+  document.getElementById('cameraInput').addEventListener('change', (e) => {
+    handleFiles(e.target.files);
+    e.target.value = ''; // Reset input
+  });
+
+  document.getElementById('fileInput').addEventListener('change', (e) => {
+    handleFiles(e.target.files);
+    e.target.value = ''; // Reset input
+  });
+
+  // Drag and drop
+  const dropZone = document.getElementById('dropZone');
+
+  dropZone.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    dropZone.classList.add('drag-over');
+  });
+
+  dropZone.addEventListener('dragleave', () => {
+    dropZone.classList.remove('drag-over');
+  });
+
+  dropZone.addEventListener('drop', (e) => {
+    e.preventDefault();
+    dropZone.classList.remove('drag-over');
+    handleFiles(e.dataTransfer.files);
+  });
+
+  // Upload photos
+  document.getElementById('uploadBtn').addEventListener('click', async () => {
+    const uploaderName = document.getElementById('uploaderName').value.trim();
+    const uploaderPhone = document.getElementById('uploaderPhone').value.trim();
+
+    if (!uploaderName || !uploaderPhone) {
+      alert('Please enter your name and phone number');
+      return;
+    }
+
+    if (selectedPhotos.length === 0) {
+      alert('Please select at least one photo');
+      return;
+    }
+
+    const uploadBtn = document.getElementById('uploadBtn');
+    const uploadProgress = document.getElementById('uploadProgress');
+    const progressBar = document.getElementById('progressBar');
+    const progressText = document.getElementById('progressText');
+
+    uploadBtn.disabled = true;
+    uploadProgress.style.display = 'block';
+
+    let uploaded = 0;
+    const total = selectedPhotos.length;
+
+    for (let photo of selectedPhotos) {
+      try {
+        const formData = new FormData();
+        formData.append('uploaded_by_name', uploaderName);
+        formData.append('phone', uploaderPhone);
+        formData.append('caption', photo.caption);
+        formData.append('photo', photo.file);
+
+        const response = await fetch('{% url "wedding:photo_upload" %}', {
+          method: 'POST',
+          headers: {
+            'X-CSRFToken': csrftoken
+          },
+          body: formData
+        });
+
+        if (response.ok) {
+          uploaded++;
+          const progress = (uploaded / total) * 100;
+          progressBar.style.width = progress + '%';
+          progressText.textContent = `Uploaded ${uploaded} of ${total} photos`;
+        } else {
+          console.error('Upload failed for photo');
+        }
+      } catch (error) {
+        console.error('Error uploading photo:', error);
+      }
+    }
+
+    // Success!
+    if (uploaded === total) {
+      progressText.textContent = `✓ Successfully uploaded ${uploaded} photos!`;
+      progressBar.classList.remove('progress-bar-animated');
+      progressBar.classList.add('bg-success');
+
+      setTimeout(() => {
+        window.location.href = '{% url "wedding:photo_gallery" %}';
+      }, 2000);
+    } else {
+      progressText.textContent = `Uploaded ${uploaded} of ${total} photos (some failed)`;
+      uploadBtn.disabled = false;
+    }
+  });
+</script>
 {% endblock %}
