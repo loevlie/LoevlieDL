@@ -160,7 +160,6 @@ class Guest(models.Model):
 # Wedding photo uploads from guests
 class PhotoUpload(models.Model):
     uploaded_by_name = models.CharField(max_length=200, help_text="Name of person uploading")
-    phone = models.CharField(max_length=20, help_text="Phone number (to match with RSVP)")
     photo_url = models.URLField(help_text="Cloudinary URL of uploaded photo")
     caption = models.TextField(blank=True)
     uploaded_at = models.DateTimeField(auto_now_add=True)

@@ -407,3 +407,23 @@ def photos_api(request):
         })
 
     return JsonResponse({'photos': photos_list}, safe=False)
+
+
+def rsvp_names_api(request):
+    """API endpoint to get all RSVP names for autocomplete"""
+    names = []
+
+    # Get primary contact names
+    rsvps = RSVP.objects.all()
+    for rsvp in rsvps:
+        names.append(f"{rsvp.first_name} {rsvp.last_name}")
+
+    # Get guest names
+    guests = Guest.objects.all()
+    for guest in guests:
+        names.append(f"{guest.first_name} {guest.last_name}")
+
+    # Remove duplicates and sort
+    names = sorted(list(set(names)))
+
+    return JsonResponse({'names': names}, safe=False)

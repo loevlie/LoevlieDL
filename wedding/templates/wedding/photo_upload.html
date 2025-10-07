@@ -24,23 +24,13 @@
         <!-- Your Information (shown first) -->
         <div class="form-section mb-4">
           <h5 class="mb-3">Your Information</h5>
-          <div class="row">
-            <div class="col-md-6">
-              <div class="form-group">
-                <label for="uploaderName">Your Name</label>
-                <input type="text" class="form-control" id="uploaderName" placeholder="Your Name" required>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="form-group">
-                <label for="uploaderPhone">Phone Number</label>
-                <input type="tel" class="form-control" id="uploaderPhone" placeholder="(123) 456-7890" required>
-              </div>
-            </div>
+          <div class="form-group">
+            <label for="uploaderName">Your Name</label>
+            <input type="text" class="form-control" id="uploaderName" placeholder="Start typing your name..." required list="rsvpNames">
+            <datalist id="rsvpNames">
+              <!-- Names will be populated via JavaScript -->
+            </datalist>
           </div>
-          <p class="text-muted small">
-            <i class="fas fa-info-circle"></i> We'll use your phone number to match with your RSVP.
-          </p>
         </div>
 
         <!-- Modern Upload Area -->
@@ -384,13 +374,25 @@
     handleFiles(e.dataTransfer.files);
   });
 
+  // Load RSVP names for autocomplete
+  fetch('{% url "wedding:rsvp_names_api" %}')
+    .then(response => response.json())
+    .then(data => {
+      const datalist = document.getElementById('rsvpNames');
+      data.names.forEach(name => {
+        const option = document.createElement('option');
+        option.value = name;
+        datalist.appendChild(option);
+      });
+    })
+    .catch(error => console.error('Error loading RSVP names:', error));
+
   // Upload photos
   document.getElementById('uploadBtn').addEventListener('click', async () => {
     const uploaderName = document.getElementById('uploaderName').value.trim();
-    const uploaderPhone = document.getElementById('uploaderPhone').value.trim();
 
-    if (!uploaderName || !uploaderPhone) {
-      alert('Please enter your name and phone number');
+    if (!uploaderName) {
+      alert('Please enter your name');
       return;
     }
 
@@ -414,7 +416,6 @@
       try {
         const formData = new FormData();
         formData.append('uploaded_by_name', uploaderName);
-        formData.append('phone', uploaderPhone);
         formData.append('caption', photo.caption);
         formData.append('photo', photo.file);
 

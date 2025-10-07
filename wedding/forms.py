@@ -80,15 +80,11 @@ class PhotoUploadForm(forms.ModelForm):
 
     class Meta:
         model = PhotoUpload
-        fields = ['uploaded_by_name', 'phone', 'caption']
+        fields = ['uploaded_by_name', 'caption']
         widgets = {
             'uploaded_by_name': forms.TextInput(attrs={
                 'class': 'form-control',
                 'placeholder': 'Your Name'
-            }),
-            'phone': forms.TextInput(attrs={
-                'class': 'form-control',
-                'placeholder': '(123) 456-7890'
             }),
             'caption': forms.Textarea(attrs={
                 'class': 'form-control',
@@ -98,6 +94,5 @@ class PhotoUploadForm(forms.ModelForm):
         }
         labels = {
             'uploaded_by_name': 'Your Name',
-            'phone': 'Phone Number',
             'caption': 'Caption (Optional)',
         }
