@@ -344,6 +344,7 @@ def registry(request):
 def photo_upload(request):
     """Photo upload page for guests"""
     from .forms import PhotoUploadForm
+    from django.conf import settings
     import cloudinary.uploader
 
     if request.method == 'POST':
@@ -381,6 +382,7 @@ def photo_upload(request):
 
     context = {
         'form': form,
+        'compress_photos': getattr(settings, 'COMPRESS_WEDDING_PHOTOS', True),
     }
     return render(request, 'wedding/photo_upload.html', context)
 

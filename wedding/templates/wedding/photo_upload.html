@@ -73,7 +73,7 @@
           <div id="dropZone" class="drop-zone">
             <i class="fas fa-cloud-upload-alt fa-3x mb-3 text-muted"></i>
             <p class="mb-0">Or drag and drop photos here</p>
-            <small class="text-muted">Photos will be automatically compressed</small>
+            <small class="text-muted">{% if compress_photos %}Photos will be automatically compressed{% else %}Full resolution photos will be uploaded{% endif %}</small>
           </div>
 
           <!-- Preview Area -->
@@ -285,24 +285,26 @@
 
   // Handle file selection (from camera or gallery)
   async function handleFiles(files) {
+    const shouldCompress = {{ compress_photos|lower }};
+
     for (let file of files) {
       if (!file.type.startsWith('image/')) continue;
 
-      // Compress the image
-      const compressedFile = await compressImage(file);
+      // Compress the image if setting is enabled
+      const processedFile = shouldCompress ? await compressImage(file) : file;
 
       // Create preview
       const reader = new FileReader();
       reader.onload = (e) => {
         const photo = {
-          file: compressedFile,
+          file: processedFile,
           preview: e.target.result,
           caption: ''
         };
         selectedPhotos.push(photo);
         updatePreview();
       };
-      reader.readAsDataURL(compressedFile);
+      reader.readAsDataURL(processedFile);
     }
   }
 

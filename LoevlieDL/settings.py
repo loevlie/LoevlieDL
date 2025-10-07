@@ -182,6 +182,9 @@ cloudinary.config(
     secure = True
 )
 
+# Wedding Photo Upload Settings
+COMPRESS_WEDDING_PHOTOS = True  # Set to False when upgrading Cloudinary plan during wedding week
+
 # Import local settings if they exist (for local development)
 try:
     from .local_settings import *
