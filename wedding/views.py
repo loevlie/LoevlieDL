@@ -167,7 +167,7 @@ def event_details(request):
     """Wedding event details page"""
     context = {
         'date': 'September 5th, 2026',
-        'venue_name': 'The Aviary',
+        'venue_name': 'The National Aviary',
         'venue_address': 'Pittsburgh, PA',
         'ceremony_time': 'TBD',
         'reception_time': 'TBD',
