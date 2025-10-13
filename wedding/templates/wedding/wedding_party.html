@@ -9,8 +9,8 @@
     <h1 class="display-4">Our Wedding Party</h1>
     <p class="lead mb-4">The special people celebrating with us</p>
 
-    <!-- Name Carousel in Header -->
-    <div class="name-carousel-container mt-4">
+    <!-- Name Carousel in Header - COMMENTED OUT FOR NOW -->
+    <!-- <div class="name-carousel-container mt-4">
       <div id="nameCarousel" class="carousel slide" data-ride="carousel" data-interval="2500">
         <div class="carousel-inner">
           <div class="carousel-item active">
@@ -125,7 +125,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
   </div>
 </div>
 
@@ -156,7 +156,8 @@
 
   // Combined DOMContentLoaded event
   document.addEventListener('DOMContentLoaded', function() {
-    // Shuffle the name carousel
+    // Shuffle the name carousel - COMMENTED OUT FOR NOW
+    /*
     const carouselInner = document.querySelector('#nameCarousel .carousel-inner');
     const items = Array.from(carouselInner.querySelectorAll('.carousel-item'));
 
@@ -174,6 +175,7 @@
       }
       carouselInner.appendChild(item);
     });
+    */
 
     // Load all party photos and create masonry collage with thumbnails
     const collage = document.getElementById('partyCollage');
