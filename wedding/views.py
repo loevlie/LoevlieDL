@@ -21,7 +21,7 @@ def our_story(request):
     story_text = """We met in undergrad as classmates in the same major, stayed friends,
     and finally started dating senior year. After graduation, we moved to Pittsburgh and
     began building a life we love—exploring neighborhoods, taking weekend trips, and finding
-    'our' spots around the city. At home, we cook together and unwind with romantic comedies.
+    our spots around the city. At home, we cook together and unwind with romantic comedies.
     From lecture halls to city streets, we're still choosing each other—and can't wait to
     celebrate with you."""
 
