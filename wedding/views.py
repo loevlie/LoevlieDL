@@ -439,3 +439,8 @@ def rsvp_names_api(request):
     names = sorted(list(set(names)))
 
     return JsonResponse({'names': names}, safe=False)
+
+
+def bachelor_party(request):
+    """Bachelor party planning page for NOLA 2026"""
+    return render(request, 'wedding/bachelor_party.html')

@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎺 NOLA 2026 - Bachelor Party 🎭</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: system-ui, -apple-system, sans-serif; }
+        .modal { display: none; }
+        .modal.active { display: flex; }
+        .day-content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
+        .day-content.open { max-height: 2000px; }
+        .emoji-icon { font-size: 1.25rem; }
+        .emoji-lg { font-size: 2rem; }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900 min-h-screen text-white p-4 md:p-8">
+    <div class="max-w-2xl mx-auto">
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <h1 class="text-4xl md:text-5xl font-bold mb-2">🎺 NOLA 2026 🎭</h1>
+            <p class="text-purple-300 text-lg">Bachelor Party</p>
+            <p class="text-gray-400 mt-1">Feb 6-13 • New Orleans</p>
+            <div class="mt-3 flex items-center justify-center gap-2 text-sm text-gray-400">
+                <span>📍</span>
+                <span>HI New Orleans Hostel • 1028 Canal St</span>
+            </div>
+        </div>
+
+        <!-- Crew Toggle -->
+        <button onclick="toggleCrew()" class="w-full mb-6 bg-white/10 hover:bg-white/15 transition-colors rounded-xl p-4 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <span class="emoji-icon">👥</span>
+                <span class="font-medium">The Crew (10 people)</span>
+            </div>
+            <span id="crew-chevron">▼</span>
+        </button>
+        <div id="crew-list" class="hidden mb-6 bg-white/5 rounded-xl p-4 grid grid-cols-2 gap-3 text-sm">
+            <div>✈️ <span class="font-medium">Denny</span> <span class="text-gray-500">• Boston</span></div>
+            <div>✈️ <span class="font-medium">Nick</span> <span class="text-gray-500">• Pittsburgh</span></div>
+            <div>✈️ <span class="font-medium">Brock</span> <span class="text-gray-500">• Pittsburgh</span></div>
+            <div>✈️ <span class="font-medium">Emery</span> <span class="text-gray-500">• Pittsburgh</span></div>
+            <div>✈️ <span class="font-medium">Noah</span> <span class="text-gray-500">• Boston</span></div>
+            <div>✈️ <span class="font-medium">Michael</span> <span class="text-gray-500">• Denver</span></div>
+            <div>✈️ <span class="font-medium">Anthony</span> <span class="text-gray-500">• Pittsburgh</span></div>
+            <div>✈️ <span class="font-medium">Richard</span> <span class="text-gray-500">• Pittsburgh</span> <span class="text-amber-400 text-xs">(→Feb 10)</span></div>
+            <div>✈️ <span class="font-medium">Zane</span> <span class="text-gray-500">• Pittsburgh</span> <span class="text-amber-400 text-xs">(→Feb 9)</span></div>
+            <div>✈️ <span class="font-medium">Sungil</span> <span class="text-gray-500">• Chicago</span> <span class="text-amber-400 text-xs">(→Feb 9)</span></div>
+        </div>
+
+        <!-- Legend -->
+        <div class="mb-6 flex flex-wrap gap-3 justify-center text-xs">
+            <span class="flex items-center gap-1 text-amber-400">🎫 Needs booking</span>
+            <span class="flex items-center gap-1 text-purple-400">🔗 Tap venues for info</span>
+        </div>
+
+        <!-- Schedule -->
+        <div id="schedule" class="space-y-4"></div>
+
+        <!-- Footer -->
+        <div class="mt-8 text-center text-gray-500 text-sm">
+            <p>⚜️ Laissez les bons temps rouler! ⚜️</p>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="modal" class="modal fixed inset-0 bg-black/80 items-center justify-center z-50 p-4" onclick="closeModal()">
+        <div class="bg-gray-900 rounded-2xl max-w-md w-full overflow-hidden shadow-2xl" onclick="event.stopPropagation()">
+            <div id="modal-header" class="h-24 flex items-center justify-center">
+                <span id="modal-icon" class="text-5xl"></span>
+            </div>
+            <div class="p-5">
+                <h3 id="modal-title" class="text-xl font-bold mb-2"></h3>
+                <p id="modal-desc" class="text-gray-400 mb-4"></p>
+                <div class="flex gap-2">
+                    <button id="modal-link" onclick="openWebsite()" class="flex-1 flex items-center justify-center gap-2 bg-purple-600 hover:bg-purple-700 px-4 py-3 rounded-xl transition-colors font-medium">
+                        🌐 Website
+                    </button>
+                    <button id="modal-maps" onclick="openMaps()" class="flex items-center justify-center bg-gray-700 hover:bg-gray-600 px-4 py-3 rounded-xl transition-colors">📍</button>
+                </div>
+                <button onclick="closeModal()" class="w-full mt-3 text-gray-500 hover:text-gray-400 text-sm">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const venues = {
+            "French Market": { icon: "🏪", color: "from-green-500 to-emerald-600", url: "https://www.frenchmarket.org/", description: "Historic open-air market with food, shopping & live music since 1791" },
+            "Bar Tonique": { icon: "🍸", color: "from-purple-500 to-indigo-600", url: "https://www.bartonique.com/", description: "Award-winning cocktail bar - try the Ramos Gin Fizz!" },
+            "High Grace Nola": { icon: "🍺", color: "from-amber-500 to-orange-600", url: "https://highgracenola.com/", description: "$5 draft beer Wednesdays, Saturday pitcher specials" },
+            "Old Absinthe House": { icon: "🥃", color: "from-emerald-600 to-teal-700", url: "https://www.ruebourbon.com/old-absinthe-house", description: "Historic bar on Bourbon St since 1807" },
+            "The Carousel Bar": { icon: "🎠", color: "from-pink-500 to-rose-600", url: "https://hotelmonteleone.com/entertainment/carousel-bar/", description: "Famous rotating bar at Hotel Monteleone - only revolving bar in NOLA!" },
+            "Erin Rose": { icon: "☘️", color: "from-green-600 to-emerald-700", url: "https://www.erinrosebar.com/", description: "$4 Irish coffee & $3 mimosas! Great frozen Irish coffee" },
+            "French 75 Bar": { icon: "🍾", color: "from-amber-600 to-yellow-700", url: "https://www.arnaudsrestaurant.com/bars/french-75", description: "Classic cocktails at Arnaud's Restaurant" },
+            "Zesty Creole": { icon: "🍽️", color: "from-red-500 to-orange-600", url: "https://zestycreole.com/", description: "Traditional Creole cuisine at great prices" },
+            "Ecology Bar": { icon: "🌿", color: "from-green-500 to-teal-600", url: "https://www.ecologybeer.com/", description: "Craft brewery with indoor/outdoor seating - reserved for 10!" },
+            "Care Forgot Beercraft": { icon: "🍕", color: "from-orange-500 to-red-600", url: "https://www.careforgotbeer.com/", description: "Great pizza & beer selection" },
+            "Hot Tin Rooftop Bar": { icon: "🌃", color: "from-blue-500 to-indigo-600", url: "https://hottinbar.com/", description: "270° views from atop the Pontchartrain Hotel" },
+            "Parleaux Beer Lab": { icon: "🧪", color: "from-cyan-500 to-blue-600", url: "https://www.parleauxbeerlab.com/", description: "Cool outdoor space near the ferry" },
+            "Nola Backyard Party Bar": { icon: "🌳", color: "from-lime-500 to-green-600", url: "https://www.parleauxbeerlab.com/", description: "Food trucks + next to Parleaux Beer Lab" },
+            "Sazerac House": { icon: "🏛️", color: "from-amber-500 to-yellow-600", url: "https://www.sazerachouse.com/", description: "FREE tour & tastings - right next to hostel!" },
+            "Fulton Alley": { icon: "🎳", color: "from-violet-500 to-purple-600", url: "https://www.fultonalley.com/", description: "Bowling, pool, shuffleboard & games" },
+            "Vue Orleans": { icon: "🔭", color: "from-sky-500 to-blue-600", url: "https://vueorleans.com/", description: "360° views from 33 floors up at Four Seasons" },
+            "Loretta's": { icon: "🥐", color: "from-yellow-500 to-amber-600", url: "https://lorettaspralines.com/", description: "Best beignets in NOLA - praline & crab filled!" },
+            "Preservation Hall": { icon: "🎷", color: "from-amber-600 to-orange-700", url: "https://www.preservationhall.com/", description: "Legendary traditional jazz venue since 1961" },
+            "Brieux Carré Brewing": { icon: "🍻", color: "from-yellow-600 to-amber-700", url: "https://www.brieuxcarre.com/", description: "German-style beer + Jenga!" },
+            "Fives Bar": { icon: "🦪", color: "from-blue-500 to-cyan-600", url: "https://www.fives.bar/", description: "Oyster bar - smoke friendly" },
+            "Krewe of Muses": { icon: "👠", color: "from-pink-500 to-purple-600", url: "https://kreweofmuses.org/", description: "All-female super krewe - catch a decorated shoe!" },
+            "Krewe of Druids": { icon: "🧙", color: "from-emerald-600 to-green-700", url: "https://www.mardigrasneworleans.com/parades/krewe-of-druids", description: "Mystic krewe with elaborate floats" },
+            "Willa Jean": { icon: "🍞", color: "from-orange-500 to-amber-600", url: "https://willajean.com/", description: "Southern comfort food - no reservations needed" },
+            "NOLA Motorsports": { icon: "🏎️", color: "from-red-600 to-rose-700", url: "https://nolamotor.com/karting/", description: "Go karts hit 45mph! Half-price Thursdays - still a maybe depending on group interest" },
+            "Garden District Tour": { icon: "🏰", color: "from-green-600 to-emerald-700", url: "https://www.viator.com/tours/New-Orleans/New-Orleans-Historic-Garden-District-Walking-Tour/d675-23790P2", description: "Beautiful architecture & celebrity homes" },
+            "Swamp Tour": { icon: "🐊", color: "from-lime-600 to-green-700", url: "https://www.cajunprideswamptours.com/", description: "See gators in the Louisiana bayou!" },
+            "Cocktail History Tour": { icon: "🗺️", color: "from-purple-500 to-violet-600", url: "https://drinkandlearn.com/", description: "Walk & drink through cocktail history" },
+            "Barkus Parade": { icon: "🐕", color: "from-amber-500 to-orange-600", url: "https://www.barkus.org/", description: "Dog parade in the French Quarter!" }
+        };
+
+        const schedule = [
+            {
+                day: "Friday", date: "Feb 6", color: "from-purple-500 to-indigo-600", emoji: "📅",
+                events: [
+                    { time: "Evening", title: "French Market", subtitle: "for Dinner", details: "25 min walk from hostel through french quarter", icon: "🍽️", book: false },
+                    { time: "Night", title: "Bar Tonique", details: "Got to try the Ramos Gin Fizz here! $6 cocktails", icon: "🍸", book: false },
+                    { time: "Late", title: "Bourbon Street Bars", details: "", icon: "🍺", book: false, venues: ["High Grace Nola", "Old Absinthe House", "The Carousel Bar", "Erin Rose", "French 75 Bar"] }
+                ]
+            },
+            {
+                day: "Saturday", date: "Feb 7", color: "from-green-500 to-teal-600", emoji: "📅",
+                events: [
+                    { time: "10:30 AM", title: "Swamp Tour", details: "Bus pickup - see some gators!", icon: "🐊", book: true },
+                    { time: "Dinner", title: "Zesty Creole", details: "Traditional Creole restaurant. Reserved section for all 10!", icon: "🍽️", book: false },
+                    { time: "Evening", title: "Ecology Bar", subtitle: "/ Brewery", details: "Reserved for all 10!", icon: "🍺", book: false, venues: ["Ecology Bar", "Care Forgot Beercraft"] },
+                    { time: "Late", title: "Hot Tin Rooftop Bar", details: "If we have time! 270° views of downtown", icon: "🌃", book: false }
+                ]
+            },
+            {
+                day: "Sunday", date: "Feb 8", color: "from-orange-500 to-red-500", emoji: "📅",
+                events: [
+                    { time: "12:00 PM", title: "Cocktail History Tour", subtitle: "Drink and Learn", details: "Wear comfortable shoes - lots of cocktails!", icon: "🍸", book: true },
+                    { time: "2:00 PM", title: "Barkus Parade", subtitle: "🐕 Dog Parade!", details: "In the French Quarter!", icon: "🐕", book: false },
+                    { time: "After", title: "Nola Backyard Party Bar", details: "Maybe take the ferry! Food trucks nearby", icon: "🍺", book: false, venues: ["Nola Backyard Party Bar", "Parleaux Beer Lab"] }
+                ]
+            },
+            {
+                day: "Monday", date: "Feb 9", color: "from-blue-500 to-cyan-600", emoji: "📅",
+                events: [
+                    { time: "11:00 AM", title: "Sazerac House", subtitle: "Tour (FREE!)", details: "Right next to our hostel!", icon: "🍸", book: false },
+                    { time: "Afternoon", title: "Fulton Alley", details: "Bowling, pool tables, shuffleboard & games", icon: "🎳", book: false },
+                    { time: "Afternoon", title: "Vue Orleans", details: "360° views from 33 floors up", icon: "🏙️", book: true },
+                    { time: "Evening", title: "Cook at Hostel", details: "Something we can heat up - jambalaya?", icon: "👨‍🍳", book: false, noVenue: true }
+                ]
+            },
+            {
+                day: "Tuesday", date: "Feb 10", color: "from-pink-500 to-rose-600", emoji: "📅",
+                events: [
+                    { time: "Breakfast", title: "Loretta's", subtitle: "Beignets!", details: "Best beignets in NOLA - praline & crab filled!", icon: "🥐", book: false },
+                    { time: "Evening", title: "Preservation Hall", subtitle: "Live Jazz", details: "Or Le Bon / Bayou Bar - TBD", icon: "🎷", book: true },
+                    { time: "Night", title: "Brieux Carré Brewing", subtitle: "German Beer + Jenga", details: "", icon: "🍻", book: false },
+                    { time: "Late", title: "Fives Bar", details: "Oyster bar", icon: "🦪", book: false }
+                ]
+            },
+            {
+                day: "Wednesday", date: "Feb 11", color: "from-amber-500 to-yellow-500", emoji: "📅",
+                events: [
+                    { time: "10:00 AM", title: "Garden District Tour", subtitle: "Walking Tour", details: "Beautiful architecture & history", icon: "🚶", book: true },
+                    { time: "6:15 PM", title: "Krewe of Druids", subtitle: "Parade", details: "Uptown - first parade of the trip!", icon: "🧙", book: false },
+                    { time: "After", title: "Hot Tin Rooftop Bar", subtitle: "or explore Uptown", details: "Get rest for the big final day!", icon: "🌃", book: false }
+                ]
+            },
+            {
+                day: "Thursday", date: "Feb 12", subtitle: "🎭 BIG PARADE DAY! 🎭", color: "from-violet-600 to-purple-700", emoji: "📅",
+                events: [
+                    { time: "Morning", title: "NOLA Motorsports", details: "Still a maybe depending on interest from the group", icon: "🏎️", book: false },
+                    { time: "Lunch", title: "Willa Jean", details: "Southern comfort food - no reservations needed", icon: "🍽️", book: false },
+                    { time: "~3:30 PM", title: "Head to St. Charles Ave", details: "Take streetcar, stake out parade spot early!", icon: "🚃", book: false, noVenue: true },
+                    { time: "4:30 PM", title: "Knights of Chaos", subtitle: "Parade", details: "Satirical floats kick things off", icon: "🎭", book: false, noVenue: true },
+                    { time: "5:30 PM", title: "Knights of Babylon", subtitle: "Parade", details: "One of the oldest krewes (1939), flambeaux carriers", icon: "🔥", book: false, noVenue: true },
+                    { time: "6:00 PM", title: "Krewe of Muses", subtitle: "⭐ Most Popular ⭐", details: "All-female super krewe - catch a decorated shoe!", icon: "👠", book: false, highlight: true }
+                ]
+            }
+        ];
+
+        let currentWebsiteUrl = '';
+        let currentMapsUrl = '';
+
+        function openWebsite() {
+            if (currentWebsiteUrl) {
+                window.open(currentWebsiteUrl, '_blank');
+            }
+        }
+
+        function openMaps() {
+            if (currentMapsUrl) {
+                window.open(currentMapsUrl, '_blank');
+            }
+        }
+
+        function toggleCrew() {
+            const list = document.getElementById('crew-list');
+            const chevron = document.getElementById('crew-chevron');
+            list.classList.toggle('hidden');
+            chevron.textContent = chevron.textContent === '▼' ? '▲' : '▼';
+        }
+
+        function toggleDay(idx) {
+            const content = document.getElementById(`day-${idx}`);
+            const chevron = document.getElementById(`chevron-${idx}`);
+            content.classList.toggle('open');
+            chevron.textContent = chevron.textContent === '▼' ? '▲' : '▼';
+        }
+
+        function openModal(venueName) {
+            const venue = venues[venueName];
+            if (!venue) return;
+
+            document.getElementById('modal-header').className = `h-24 flex items-center justify-center bg-gradient-to-r ${venue.color}`;
+            document.getElementById('modal-icon').textContent = venue.icon;
+            document.getElementById('modal-title').textContent = venueName;
+            document.getElementById('modal-desc').textContent = venue.description;
+            currentWebsiteUrl = venue.url;
+            currentMapsUrl = `https://www.google.com/maps/search/${encodeURIComponent(venueName + ' New Orleans')}`;
+            document.getElementById('modal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('modal').classList.remove('active');
+        }
+
+        function renderSchedule() {
+            const container = document.getElementById('schedule');
+            container.innerHTML = schedule.map((day, idx) => `
+                <div class="rounded-2xl overflow-hidden bg-white/5 backdrop-blur">
+                    <button onclick="toggleDay(${idx})" class="w-full p-4 bg-gradient-to-r ${day.color} flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <span class="emoji-icon">${day.emoji}</span>
+                            <div class="text-left">
+                                <div class="font-bold text-lg">${day.day}</div>
+                                <div class="text-white/70 text-sm">${day.date}</div>
+                            </div>
+                            ${day.subtitle ? `<span class="ml-2 text-white/90 text-sm font-medium">${day.subtitle}</span>` : ''}
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="text-white/70 text-sm">${day.events.length} events</span>
+                            <span id="chevron-${idx}">▼</span>
+                        </div>
+                    </button>
+                    <div id="day-${idx}" class="day-content">
+                        <div class="p-4 space-y-3">
+                            ${day.events.map(event => {
+                                const hasVenue = venues[event.title] && !event.noVenue;
+                                return `
+                                <div class="p-3 rounded-xl ${event.highlight ? 'bg-gradient-to-r from-amber-500/20 to-yellow-500/20 border border-amber-500/30' : 'bg-white/5'}">
+                                    <div class="flex items-start gap-3">
+                                        <div class="p-2 rounded-lg flex-shrink-0 ${event.highlight ? 'bg-amber-500/30' : 'bg-white/10'}">
+                                            <span class="emoji-icon">${event.icon}</span>
+                                        </div>
+                                        <div class="flex-1 min-w-0">
+                                            <div class="flex items-center gap-2 flex-wrap">
+                                                <span class="text-gray-400 text-xs font-mono">${event.time}</span>
+                                                ${event.book ? '<span class="flex items-center gap-1 text-amber-400 text-xs bg-amber-500/20 px-2 py-0.5 rounded-full">🎫 Book</span>' : ''}
+                                            </div>
+                                            <h3 class="font-semibold mt-1 ${event.highlight ? 'text-amber-300 text-lg' : ''}">
+                                                ${hasVenue ? `<button onclick="openModal('${event.title}')" class="hover:text-purple-300 transition-colors text-left inline-flex items-center gap-1">${event.title} 🔗</button>` : event.title}
+                                                ${event.subtitle ? `<span class="text-gray-400 font-normal ml-1">${event.subtitle}</span>` : ''}
+                                            </h3>
+                                            <p class="text-gray-400 text-sm mt-1">
+                                                ${event.venues ? event.venues.map((v, i) => `<button onclick="openModal('${v}')" class="text-purple-400 hover:text-purple-300 underline decoration-dotted">${v}</button>${i < event.venues.length - 1 ? ', ' : ''}`).join('') : event.details}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                `;
+                            }).join('')}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+        renderSchedule();
+    </script>
+</body>
+</html>

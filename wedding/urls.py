@@ -17,4 +17,5 @@ urlpatterns = [
     path('api/party-photos/', views.party_photos_api, name='party_photos_api'),
     path('api/photos/', views.photos_api, name='photos_api'),
     path('api/rsvp-names/', views.rsvp_names_api, name='rsvp_names_api'),
+    path('bachelor-party/', views.bachelor_party, name='bachelor_party'),
 ]
