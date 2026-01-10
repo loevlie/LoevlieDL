@@ -3,23 +3,164 @@
 {% load static %}
 
 {% block main %}
-<br>
-<br>
-<div class="container">
-    <div class="jumbotron text-center">
-        <h2>Get in Touch</h2>
-        <br>
-        <div class="contact-info">
-            <p style="font-size: 1.2rem;">
-                <i class="fas fa-envelope" style="color: #007bff; margin-right: 10px;"></i>
-                <a href="mailto:dloevl01@tufts.edu">dloevl01@tufts.edu</a>
-            </p>
-            <p style="font-size: 1.2rem;">
-                <i class="fas fa-phone" style="color: #28a745; margin-right: 10px;"></i>
-                <a href="tel:+17248418769">+1 (724) 841-8769</a>
-            </p>
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous" type="text/css">
+
+<style>
+.contact-section {
+    padding: 80px 0;
+    min-height: calc(100vh - 200px);
+    display: flex;
+    align-items: center;
+}
+
+.contact-header {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.contact-header h2 {
+    color: #36454F;
+    font-size: 2.5rem;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.contact-header p {
+    color: #6c757d;
+    font-size: 1.1rem;
+}
+
+.contact-header hr {
+    width: 80px;
+    border: 2px solid #E83951;
+    margin: 20px auto;
+}
+
+.contact-card {
+    background: #fff;
+    border-radius: 15px;
+    padding: 40px 30px;
+    text-align: center;
+    box-shadow: 0 10px 40px rgba(54, 69, 79, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    height: 100%;
+}
+
+.contact-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 50px rgba(54, 69, 79, 0.15);
+}
+
+.contact-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 25px;
+    font-size: 2rem;
+}
+
+.contact-icon.email {
+    background: linear-gradient(135deg, #E83951 0%, #ff6b7a 100%);
+    color: #fff;
+}
+
+.contact-icon.phone {
+    background: linear-gradient(135deg, #36454F 0%, #5a6d7a 100%);
+    color: #fff;
+}
+
+.contact-icon.linkedin {
+    background: linear-gradient(135deg, #0077b5 0%, #00a0dc 100%);
+    color: #fff;
+}
+
+.contact-icon.github {
+    background: linear-gradient(135deg, #333 0%, #555 100%);
+    color: #fff;
+}
+
+.contact-card h4 {
+    color: #36454F;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.contact-card a {
+    color: #36454F;
+    text-decoration: none;
+    font-size: 1.1rem;
+    transition: color 0.3s ease;
+}
+
+.contact-card a:hover {
+    color: #E83951;
+    text-decoration: none;
+}
+
+.contact-card p.description {
+    color: #6c757d;
+    font-size: 0.9rem;
+    margin-top: 10px;
+}
+</style>
+
+<section class="contact-section">
+    <div class="container">
+        <div class="contact-header">
+            <h2>Get in Touch</h2>
+            <hr>
+            <p>Feel free to reach out - I'd love to hear from you!</p>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="contact-card">
+                    <div class="contact-icon email">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <h4>Email</h4>
+                    <a href="mailto:dloevl01@tufts.edu">dloevl01@tufts.edu</a>
+                    <p class="description">Best for professional inquiries</p>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="contact-card">
+                    <div class="contact-icon phone">
+                        <i class="fas fa-phone"></i>
+                    </div>
+                    <h4>Phone</h4>
+                    <a href="tel:+17248418769">+1 (724) 841-8769</a>
+                    <p class="description">Available during business hours</p>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="contact-card">
+                    <div class="contact-icon linkedin">
+                        <i class="fab fa-linkedin-in"></i>
+                    </div>
+                    <h4>LinkedIn</h4>
+                    <a href="https://www.linkedin.com/in/dennisloevlie/" target="_blank">Connect with me</a>
+                    <p class="description">Let's network!</p>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="contact-card">
+                    <div class="contact-icon github">
+                        <i class="fab fa-github"></i>
+                    </div>
+                    <h4>GitHub</h4>
+                    <a href="https://github.com/loevlie/" target="_blank">View my code</a>
+                    <p class="description">Check out my projects</p>
+                </div>
+            </div>
         </div>
     </div>
-</div>
+</section>
 
 {% endblock %}
