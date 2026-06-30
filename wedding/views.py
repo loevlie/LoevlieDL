@@ -169,7 +169,8 @@ def event_details(request):
         'date': 'September 5th, 2026',
         'venue_name': 'The National Aviary',
         'venue_address': 'Pittsburgh, PA',
-        'ceremony_time': 'TBD',
+        'guest_arrival_time': '5:00 PM',
+        'ceremony_time': '5:30 PM',
         'reception_time': 'TBD',
     }
     return render(request, 'wedding/event_details.html', context)
@@ -347,7 +348,7 @@ def registry(request):
     """Registry information page"""
     context = {
         'registry_links': [
-            # Add registry links here as needed
+            {'name': 'With Joy', 'url': 'https://withjoy.com/caitlin-m-and-dennis/registry'},
         ]
     }
     return render(request, 'wedding/registry.html', context)
