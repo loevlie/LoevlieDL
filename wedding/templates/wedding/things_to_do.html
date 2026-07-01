@@ -1,165 +1,128 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🍴 Things to Do in Pittsburgh 🌉</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        body { font-family: system-ui, -apple-system, sans-serif; }
-        .modal { display: none; }
-        .modal.active { display: flex; }
-        .card-pop { transition: transform 0.15s ease, background-color 0.15s ease; }
-        .card-pop:hover { transform: translateY(-3px); }
-    </style>
-</head>
-<body class="bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900 min-h-screen text-white p-4 md:p-8">
-    <div class="max-w-3xl mx-auto">
-        <!-- Back link -->
-        <a href="{% url 'wedding:home' %}" class="inline-flex items-center gap-1 text-gray-400 hover:text-white transition-colors text-sm mb-4">← Back to wedding site</a>
+{% extends 'wedding/base.html' %}
 
-        <!-- Header -->
-        <div class="text-center mb-8">
-            <h1 class="text-4xl md:text-5xl font-bold mb-2">🍴 Things to Do in Pittsburgh 🌉</h1>
-            <p class="text-purple-300 text-lg">Our favorite spots around the city</p>
-            <p class="text-gray-400 mt-1">A few places we love — go eat and drink well while you're here</p>
-            <div class="mt-3 flex items-center justify-center gap-2 text-xs text-gray-500">
-                <span>🔗 Tap any spot for details, its website & directions</span>
-            </div>
-        </div>
+{% block title %}Things to Do in Pittsburgh - Dennis & Cait{% endblock %}
 
-        <!-- Sections -->
-        <div id="sections" class="space-y-8"></div>
+{% block content %}
+<div class="page-header">
+  <div class="container">
+    <h1 class="display-4">Things to Do in Pittsburgh</h1>
+    <p class="lead">Our favorite spots to eat, drink, and explore</p>
+  </div>
+</div>
 
-        <!-- Footer -->
-        <div class="mt-10 text-center text-gray-500 text-sm">
-            <p>🖤&nbsp; Dennis &amp; Caitlin &nbsp;🖤</p>
-        </div>
-    </div>
+<!-- Sticky in-page section nav -->
+<nav class="ttd-navbar">
+  <ul class="ttd-nav-list">
+    {% for section in sections %}
+      <li>
+        <a class="ttd-nav-link" href="#{{ section.id }}">
+          <i class="{{ section.nav_icon }}"></i> {{ section.title }}
+        </a>
+      </li>
+    {% endfor %}
+  </ul>
+</nav>
 
-    <!-- Modal -->
-    <div id="modal" class="modal fixed inset-0 bg-black/80 items-center justify-center z-50 p-4" onclick="closeModal()">
-        <div class="bg-gray-900 rounded-2xl max-w-md w-full overflow-hidden shadow-2xl" onclick="event.stopPropagation()">
-            <div id="modal-header" class="h-24 flex items-center justify-center">
-                <span id="modal-icon" class="text-5xl"></span>
-            </div>
-            <div class="p-5">
-                <div class="flex items-center gap-2 flex-wrap mb-1">
-                    <h3 id="modal-title" class="text-xl font-bold"></h3>
-                    <span id="modal-hood" class="text-xs text-purple-300 bg-purple-500/20 px-2 py-0.5 rounded-full"></span>
-                </div>
-                <p id="modal-desc" class="text-gray-400 mb-4"></p>
-                <div class="flex gap-2">
-                    <button id="modal-link" onclick="openWebsite()" class="flex-1 flex items-center justify-center gap-2 bg-purple-600 hover:bg-purple-700 px-4 py-3 rounded-xl transition-colors font-medium">
-                        🌐 Website
-                    </button>
-                    <button id="modal-maps" onclick="openMaps()" class="flex-1 flex items-center justify-center gap-2 bg-gray-700 hover:bg-gray-600 px-4 py-3 rounded-xl transition-colors font-medium">📍 Get Directions</button>
-                </div>
-                <button onclick="closeModal()" class="w-full mt-3 text-gray-500 hover:text-gray-400 text-sm">Close</button>
-            </div>
-        </div>
-    </div>
+<div class="container my-5">
+  <p class="ttd-intro lead mb-5">
+    We've spent the last few years falling in love with this city — its neighborhoods, its
+    food, and its people. Here are the places we send everyone to. Tap through, wander a
+    little, and eat and drink well while you're here.
+  </p>
 
-    <script>
-        const sections = [
-            {
-                title: "Food", emoji: "🍽️",
-                places: [
-                    { name: "Dish Osteria & Bar", icon: "🍝", color: "from-red-500 to-orange-600", neighborhood: "South Side", description: "Intimate, family-owned Sicilian & Mediterranean spot in a historic 1885 bar. Small dining room — reservations recommended.", url: "https://dishosteria.com/" },
-                    { name: "Café Du Jour", icon: "🥖", color: "from-amber-500 to-yellow-600", neighborhood: "South Side", description: "Charming European bistro with a seasonal, ever-changing menu and a lovely brick courtyard. BYOB and cash only.", url: "https://www.cafedujourpgh.com/" },
-                    { name: "Fet-Fisk", icon: "🐟", color: "from-sky-500 to-blue-600", neighborhood: "Bloomfield", description: "Nordic seafood & oyster bar with Appalachian touches. A James Beard finalist and Bon Appétit best-new-restaurant pick.", url: "https://www.fetfisk.net/" },
-                    { name: "Apteka", icon: "🥟", color: "from-emerald-500 to-green-600", neighborhood: "Bloomfield", description: "Polish & Eastern-European cuisine, entirely vegan — pierogi, stuffed cabbage & fermentation done right. Reservations for parties of 4+.", url: "https://aptekapgh.com/" },
-                    { name: "Mola", icon: "🍣", color: "from-cyan-500 to-teal-600", neighborhood: "East Liberty", description: "Sushi-focused spot known for burrito-style hand rolls, bao & rice bowls made with super-fresh fish.", url: "https://themolafish.com/" }
-                ]
-            },
-            {
-                title: "Cocktails & Bars", emoji: "🍸",
-                places: [
-                    { name: "Acacia", icon: "🍸", color: "from-purple-500 to-indigo-600", neighborhood: "South Side", description: "Speakeasy-style craft cocktail bar — no sign, boarded-up windows, and some of the best drinks in Pittsburgh once you find it.", url: "https://acaciacocktails.com/" },
-                    { name: "Lorelei", icon: "🍺", color: "from-pink-500 to-rose-600", neighborhood: "East Liberty", description: "Half modern cocktail bar, half Alpine German beer hall with communal tables and mostly German- & Czech-style lagers on tap.", url: "https://www.loreleipgh.com/" },
-                    { name: "Grapperia", icon: "🥃", color: "from-violet-500 to-purple-600", neighborhood: "Lawrenceville", description: "Italian bar for grappa, amari, digestivi & cocktails. Right next to Eleventh Hour Brewing.", url: "http://www.grapperiapgh.com/" },
-                    { name: "Hidden Harbor", icon: "🍹", color: "from-teal-500 to-cyan-600", neighborhood: "Squirrel Hill", description: "Award-winning tiki bar with exotic tropical cocktails and a deep bench of 670+ rums.", url: "https://www.hiddenharborpgh.com/" }
-                ]
-            },
-            {
-                title: "Breweries", emoji: "🍻",
-                places: [
-                    { name: "Eleventh Hour Brewing Co.", icon: "🍺", color: "from-amber-500 to-orange-600", neighborhood: "Lawrenceville", description: "Laid-back taproom in a restored 19th-century building with rotating food trucks. Right next to Grapperia.", url: "https://www.11thhourbrews.com/" },
-                    { name: "Dancing Gnome", icon: "🍺", color: "from-lime-500 to-green-600", neighborhood: "Millvale", description: "Hop-forward brewery with a relaxed, friendly taproom — a Pittsburgh favorite for IPAs.", url: "https://dancinggnomebeer.com/" }
-                ]
-            },
-            {
-                title: "Coffee & Sweets", emoji: "☕",
-                places: [
-                    { name: "Delanie's Coffee", icon: "☕", color: "from-orange-500 to-amber-600", neighborhood: "South Side", description: "Cozy two-floor coffee shop with local art, specialty espresso and farm-to-table fare. Called the heart of the South Side.", url: "https://www.delaniescoffee.com/" },
-                    { name: "Page's Dairy Mart", icon: "🍦", color: "from-pink-500 to-fuchsia-600", neighborhood: "South Side", description: "Iconic 75-year-old ice cream stand — soft serve, South Side Shakes & sundaes. Seasonal: open Memorial Day to Labor Day.", url: "https://www.pagesdairymart.com/" }
-                ]
-            }
-        ];
+  {% for section in sections %}
+    <section id="{{ section.id }}" class="ttd-section mb-5 pb-3">
+      <div class="ttd-section-head">
+        <h2 class="display-5">{{ section.title }}</h2>
+        <div class="ttd-section-sub">{{ section.subtitle }}</div>
+        <div class="ttd-ornament"><i class="fas fa-heart"></i></div>
+      </div>
 
-        let currentWebsiteUrl = '';
-        let currentMapsUrl = '';
-
-        function openWebsite() {
-            if (currentWebsiteUrl) window.open(currentWebsiteUrl, '_blank');
-        }
-
-        function openMaps() {
-            if (currentMapsUrl) window.open(currentMapsUrl, '_blank');
-        }
-
-        function openModal(sectionIdx, placeIdx) {
-            const place = sections[sectionIdx].places[placeIdx];
-            if (!place) return;
-
-            document.getElementById('modal-header').className = `h-24 flex items-center justify-center bg-gradient-to-r ${place.color}`;
-            document.getElementById('modal-icon').textContent = place.icon;
-            document.getElementById('modal-title').textContent = place.name;
-            document.getElementById('modal-hood').textContent = place.neighborhood;
-            document.getElementById('modal-desc').textContent = place.description;
-
-            const websiteBtn = document.getElementById('modal-link');
-            if (place.url) {
-                currentWebsiteUrl = place.url;
-                websiteBtn.style.display = '';
-            } else {
-                currentWebsiteUrl = '';
-                websiteBtn.style.display = 'none';
-            }
-
-            currentMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(place.name + ' Pittsburgh PA')}`;
-            document.getElementById('modal').classList.add('active');
-        }
-
-        function closeModal() {
-            document.getElementById('modal').classList.remove('active');
-        }
-
-        function renderSections() {
-            const container = document.getElementById('sections');
-            container.innerHTML = sections.map((section, sIdx) => `
+      <div class="row">
+        {% for spot in section.spots %}
+          <div class="col-lg-6 mb-4">
+            <div class="spot-card">
+              <div class="spot-card-top">
+                <div class="spot-badge"><i class="{{ spot.fa }}"></i></div>
                 <div>
-                    <h2 class="text-2xl font-bold mb-4 flex items-center gap-2">
-                        <span>${section.emoji}</span> ${section.title}
-                    </h2>
-                    <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
-                        ${section.places.map((place, pIdx) => `
-                            <button onclick="openModal(${sIdx}, ${pIdx})" class="card-pop text-left bg-white/5 hover:bg-white/10 rounded-2xl p-4 flex flex-col gap-3 h-full">
-                                <div class="w-11 h-11 rounded-xl flex items-center justify-center bg-gradient-to-r ${place.color} text-2xl flex-shrink-0">${place.icon}</div>
-                                <div>
-                                    <div class="font-semibold leading-tight">${place.name}</div>
-                                    <div class="text-xs text-purple-300 mt-1">${place.neighborhood}</div>
-                                </div>
-                            </button>
-                        `).join('')}
-                    </div>
+                  <h3 class="spot-name">{{ spot.name }}</h3>
+                  <span class="spot-neighborhood">
+                    <i class="fas fa-map-marker-alt"></i> {{ spot.neighborhood }}
+                  </span>
                 </div>
-            `).join('');
-        }
+              </div>
 
-        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
-        renderSections();
-    </script>
-</body>
-</html>
+              <div class="spot-meta">
+                <span class="spot-tag">{{ spot.tag }}</span>
+                <span class="spot-price">{{ spot.price }}</span>
+                {% if spot.seasonal %}
+                  <span class="spot-seasonal"><i class="far fa-sun"></i> Seasonal</span>
+                {% endif %}
+              </div>
+
+              <p class="spot-desc">
+                {{ spot.desc }}
+                <br>
+                <span class="spot-signature"><i class="fas fa-star" style="font-size:0.8rem;"></i> Must-try:</span>
+                {{ spot.signature }}.
+                {% if spot.seasonal %}<br><em class="text-muted" style="font-size:0.95rem;">{{ spot.seasonal }}.</em>{% endif %}
+              </p>
+
+              <div class="spot-actions">
+                <a href="{{ spot.url }}" target="_blank" rel="noopener" class="spot-btn spot-btn-ghost">
+                  <i class="fas fa-globe"></i> Website
+                </a>
+                <a href="https://www.google.com/maps/search/?api=1&query={{ spot.maps|urlencode }}"
+                   target="_blank" rel="noopener" class="spot-btn spot-btn-primary">
+                  <i class="fas fa-directions"></i> Directions
+                </a>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </section>
+  {% endfor %}
+
+  <div class="ttd-closing mt-5 pt-4">
+    <div class="mb-3"><i class="fas fa-heart fa-2x"></i></div>
+    <p class="lead">Can't wait to celebrate with you in our favorite city.</p>
+    <div class="mt-4">
+      <a href="{% url 'wedding:event_details' %}" class="btn wedding-btn-outline btn-lg mr-2 mb-2">
+        <i class="fas fa-calendar-day"></i> Event Details
+      </a>
+      <a href="{% url 'wedding:rsvp' %}" class="btn btn-primary wedding-btn-primary btn-lg mb-2">
+        <i class="fas fa-envelope"></i> RSVP
+      </a>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  // Smooth-scroll for the in-page section nav
+  document.querySelectorAll('.ttd-nav-link').forEach(link => {
+    link.addEventListener('click', function (e) {
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+
+  // Scroll-spy: highlight the active section pill
+  const navLinks = document.querySelectorAll('.ttd-nav-link');
+  const sections = document.querySelectorAll('.ttd-section');
+  const spy = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.getAttribute('id');
+        navLinks.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + id));
+      }
+    });
+  }, { rootMargin: '-45% 0px -50% 0px' });
+  sections.forEach(s => spy.observe(s));
+</script>
+{% endblock %}

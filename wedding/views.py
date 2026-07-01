@@ -448,4 +448,143 @@ def bachelor_party(request):
 
 def things_to_do(request):
     """Curated Pittsburgh food & drink guide for wedding guests"""
-    return render(request, 'wedding/things_to_do.html')
+    sections = [
+        {
+            'id': 'food',
+            'title': 'Food',
+            'subtitle': 'Where we love to eat',
+            'nav_icon': 'fas fa-utensils',
+            'spots': [
+                {
+                    'name': 'Dish Osteria & Bar', 'fa': 'fas fa-pizza-slice',
+                    'neighborhood': 'South Side', 'tag': 'Sicilian', 'price': '$$$',
+                    'desc': "An intimate, family-run South Side institution since 2000, serving old-world Sicilian cooking with warm candlelit charm and a seafood-driven heart.",
+                    'signature': 'Rigatoni alla scamorza affumicata, or the grilled octopus',
+                    'url': 'https://dishosteria.com/',
+                    'maps': 'Dish Osteria 128 S 17th St Pittsburgh PA',
+                },
+                {
+                    'name': 'Café Du Jour', 'fa': 'fas fa-cheese',
+                    'neighborhood': 'South Side', 'tag': 'European Bistro', 'price': '$$',
+                    'desc': "A candlelit, BYOB hideaway with an ever-changing seasonal menu and a romantic ivy-draped brick courtyard tucked off East Carson.",
+                    'signature': "The chef's seasonal specials — cash only & BYOB",
+                    'url': 'https://www.cafedujourpgh.com/',
+                    'maps': 'Cafe Du Jour 1107 E Carson St Pittsburgh PA',
+                },
+                {
+                    'name': 'Fet-Fisk', 'fa': 'fas fa-fish',
+                    'neighborhood': 'Bloomfield', 'tag': 'Nordic Seafood', 'price': '$$$',
+                    'desc': "Approachable Nordic dining and an oyster bar in a converted Bloomfield space, marrying Scandinavian seafood with Appalachian produce.",
+                    'signature': 'Ora King salmon gravlax, or the oysters with shallot mignonette',
+                    'url': 'https://www.fetfisk.net/',
+                    'maps': 'Fet-Fisk 4786 Liberty Ave Pittsburgh PA',
+                },
+                {
+                    'name': 'Apteka', 'fa': 'fas fa-seedling',
+                    'neighborhood': 'Bloomfield', 'tag': 'Polish Vegan', 'price': '$$',
+                    'desc': "A beloved all-vegan Eastern European kitchen turning Polish comfort food into something crave-worthy — with national acclaim to match.",
+                    'signature': 'The smażone (fried) pierogi, or the zakąski pickle plate',
+                    'url': 'https://aptekapgh.com/',
+                    'maps': 'Apteka 4606 Penn Ave Pittsburgh PA',
+                },
+                {
+                    'name': 'Mola', 'fa': 'fas fa-utensils',
+                    'neighborhood': 'East Liberty', 'tag': 'Sushi', 'price': '$$$',
+                    'desc': "A sleek East Liberty sushi bar prized for pristine, thoughtfully sourced fish alongside inventive hand rolls, bao, and rice bowls.",
+                    'signature': 'The blue crab hand roll, or uni & toro',
+                    'url': 'https://themolafish.com/',
+                    'maps': 'Mola 6018 Penn Ave Pittsburgh PA',
+                },
+            ],
+        },
+        {
+            'id': 'drinks',
+            'title': 'Cocktails & Bars',
+            'subtitle': 'Our favorite spots for a drink',
+            'nav_icon': 'fas fa-glass-cheers',
+            'spots': [
+                {
+                    'name': 'Acacia', 'fa': 'fas fa-glass-martini-alt',
+                    'neighborhood': 'South Side', 'tag': 'Speakeasy', 'price': '$$$',
+                    'desc': "A dimly lit, upscale speakeasy above East Carson where bartenders craft custom cocktails to your taste with genuine mixology expertise.",
+                    'signature': "A bartender's-choice cocktail — just tell them your flavors",
+                    'url': 'https://acaciacocktails.com/',
+                    'maps': 'Acacia 2108 E Carson St Pittsburgh PA',
+                },
+                {
+                    'name': 'Lorelei', 'fa': 'fas fa-beer',
+                    'neighborhood': 'East Liberty', 'tag': 'Beer Hall & Cocktails', 'price': '$$',
+                    'desc': "A lively two-in-one pairing an Alpine-style beer hall of European lagers with an elegant Old World cocktail bar.",
+                    'signature': 'The Friesling (frozen Riesling), or a crisp pilsner',
+                    'url': 'https://www.loreleipgh.com/',
+                    'maps': 'Lorelei 124 S Highland Ave Pittsburgh PA',
+                },
+                {
+                    'name': 'Grapperia', 'fa': 'fas fa-wine-glass-alt',
+                    'neighborhood': 'Lawrenceville', 'tag': 'Grappa & Amaro Bar', 'price': '$$',
+                    'desc': "A cozy, tucked-away Italian bar with an impressive lineup of grappa, amari, and after-dinner digestivi — right next to Eleventh Hour.",
+                    'signature': 'A pour of grappa or an amaro digestivo',
+                    'url': 'http://www.grapperiapgh.com/',
+                    'maps': 'Grapperia 3801 Butler St Pittsburgh PA',
+                },
+                {
+                    'name': 'Hidden Harbor', 'fa': 'fas fa-cocktail',
+                    'neighborhood': 'Squirrel Hill', 'tag': 'Tiki Bar', 'price': '$$$',
+                    'desc': "A transportive, tropical tiki hideaway pouring elaborate rum cocktails from a collection of 600+ rums.",
+                    'signature': 'The Frozen Painkiller (a seven-rum blend)',
+                    'url': 'https://www.hiddenharborpgh.com/',
+                    'maps': 'Hidden Harbor Squirrel Hill Pittsburgh PA',
+                },
+            ],
+        },
+        {
+            'id': 'breweries',
+            'title': 'Breweries',
+            'subtitle': 'For the beer lovers',
+            'nav_icon': 'fas fa-beer',
+            'spots': [
+                {
+                    'name': 'Eleventh Hour Brewing Co.', 'fa': 'fas fa-beer',
+                    'neighborhood': 'Lawrenceville', 'tag': 'Brewery', 'price': '$$',
+                    'desc': "A welcoming, community-minded Lawrenceville taproom brewing everything from hazy IPAs and fruited sours to crisp lagers and barrel-aged stouts.",
+                    'signature': 'A hazy IPA — try the Cruel Remedy double IPA',
+                    'url': 'https://www.11thhourbrews.com/',
+                    'maps': 'Eleventh Hour Brewing 3711 Charlotte St Pittsburgh PA',
+                },
+                {
+                    'name': 'Dancing Gnome', 'fa': 'fas fa-beer',
+                    'neighborhood': 'Millvale', 'tag': 'Brewery', 'price': '$$',
+                    'desc': "A hop-lover's destination just across the river in Millvale, celebrated for its juicy, aromatic hazy IPAs and pale ales.",
+                    'signature': 'Lustra, the flagship Citra-and-Amarillo pale ale',
+                    'url': 'https://dancinggnomebeer.com/',
+                    'maps': 'Dancing Gnome Brewery Millvale PA',
+                },
+            ],
+        },
+        {
+            'id': 'sweets',
+            'title': 'Coffee & Sweets',
+            'subtitle': 'A little something extra',
+            'nav_icon': 'fas fa-mug-hot',
+            'spots': [
+                {
+                    'name': "Delanie's Coffee", 'fa': 'fas fa-mug-hot',
+                    'neighborhood': 'South Side', 'tag': 'Coffee', 'price': '$',
+                    'desc': "A cozy two-floor café in an ornate 1873 Victorian building, pairing serious specialty-roaster coffee with bookstore-meets-jazz-café warmth.",
+                    'signature': 'A latte pulled with Onyx or Partners beans',
+                    'url': 'https://www.delaniescoffee.com/',
+                    'maps': "Delanie's Coffee 1737 E Carson St Pittsburgh PA",
+                },
+                {
+                    'name': "Page's Dairy Mart", 'fa': 'fas fa-ice-cream',
+                    'neighborhood': 'South Side', 'tag': 'Ice Cream', 'price': '$',
+                    'desc': "A cherished soft-serve stand that's been making Pittsburgh sweeter for 75+ years, drawing happy summer lines along East Carson.",
+                    'signature': 'The Cinnamon Bun Sundae, or a classic dipped twist',
+                    'url': 'https://www.pagesdairymart.com/',
+                    'maps': "Page's Dairy Mart 4112 E Carson St Pittsburgh PA",
+                    'seasonal': 'Open seasonally, roughly Memorial Day–Labor Day',
+                },
+            ],
+        },
+    ]
+    return render(request, 'wedding/things_to_do.html', {'sections': sections})

@@ -631,6 +631,311 @@
 }
 
 /* ============================================
+   THINGS TO DO (Pittsburgh guide)
+   ============================================ */
+
+.ttd-intro {
+  max-width: 760px;
+  margin: 0 auto;
+  text-align: center;
+  color: #666;
+  font-weight: 300;
+}
+
+/* Sticky in-page section navigation */
+.ttd-navbar {
+  position: sticky;
+  top: 0;
+  z-index: 1020;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border-bottom: 1px solid rgba(201, 155, 138, 0.2);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+}
+
+.ttd-nav-list {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 0.5rem;
+  justify-content: center;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  margin: 0;
+  list-style: none;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.ttd-nav-list::-webkit-scrollbar { display: none; }
+
+.ttd-nav-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  white-space: nowrap;
+  padding: 0.4rem 1.1rem;
+  border-radius: 999px;
+  color: var(--wedding-secondary);
+  font-size: 0.95rem;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  text-decoration: none;
+  border: 1px solid transparent;
+  transition: all 0.25s ease;
+}
+
+.ttd-nav-link i { color: var(--wedding-primary); transition: color 0.25s ease; }
+
+.ttd-nav-link:hover {
+  color: var(--wedding-primary-dark);
+  background: var(--wedding-soft-pink);
+  text-decoration: none;
+}
+
+.ttd-nav-link.active {
+  background: var(--wedding-primary);
+  border-color: var(--wedding-primary);
+  color: #fff;
+}
+
+.ttd-nav-link.active i { color: #fff; }
+
+/* Section headings with ornamental divider */
+.ttd-section { scroll-margin-top: 90px; }
+
+.ttd-section-head {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.ttd-section-head h2 {
+  color: var(--wedding-secondary);
+  font-weight: 300;
+  letter-spacing: 3px;
+  margin-bottom: 0.35rem;
+}
+
+.ttd-section-head .ttd-section-sub {
+  color: #999;
+  font-weight: 300;
+  font-style: italic;
+  letter-spacing: 0.5px;
+}
+
+.ttd-ornament {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin: 1rem auto 0;
+  max-width: 260px;
+  color: var(--wedding-primary);
+}
+
+.ttd-ornament::before,
+.ttd-ornament::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(201, 155, 138, 0.5), transparent);
+}
+
+/* Spot cards */
+.spot-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: #fff;
+  border: 1px solid rgba(201, 155, 138, 0.14);
+  border-radius: 12px;
+  padding: 1.9rem 1.75rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.spot-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(201, 155, 138, 0.18);
+  border-color: rgba(201, 155, 138, 0.35);
+}
+
+.spot-card-top {
+  display: flex;
+  align-items: center;
+  gap: 1.1rem;
+  margin-bottom: 1.1rem;
+}
+
+.spot-badge {
+  flex-shrink: 0;
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+  color: #fff;
+  background: linear-gradient(135deg, var(--wedding-primary) 0%, var(--wedding-primary-dark) 100%);
+  box-shadow: 0 4px 12px rgba(201, 155, 138, 0.35);
+}
+
+.spot-name {
+  color: var(--wedding-secondary);
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  font-size: 1.5rem;
+  margin: 0 0 0.2rem;
+  line-height: 1.2;
+}
+
+.spot-neighborhood {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: var(--wedding-primary-dark);
+  font-size: 0.9rem;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+.spot-neighborhood i { font-size: 0.8rem; }
+
+.spot-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.9rem;
+}
+
+.spot-tag {
+  display: inline-block;
+  padding: 0.22rem 0.75rem;
+  border-radius: 999px;
+  background: var(--wedding-soft-pink);
+  color: var(--wedding-primary-dark);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+}
+
+.spot-price {
+  color: var(--wedding-accent);
+  font-weight: 600;
+  letter-spacing: 1px;
+  font-size: 0.95rem;
+}
+
+.spot-seasonal {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: var(--wedding-sage);
+  font-size: 0.82rem;
+  font-style: italic;
+}
+
+.spot-desc {
+  color: #666;
+  font-size: 1.05rem;
+  line-height: 1.65;
+  margin-bottom: 1.25rem;
+  flex-grow: 1;
+}
+
+.spot-signature {
+  color: var(--wedding-secondary);
+  font-weight: 500;
+}
+
+.spot-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-top: auto;
+}
+
+.spot-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.55rem 1.1rem;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  letter-spacing: 0.4px;
+  text-decoration: none;
+  transition: all 0.25s ease;
+  border: 1px solid var(--wedding-primary);
+}
+
+.spot-btn-primary {
+  background: var(--wedding-primary);
+  color: #fff;
+}
+
+.spot-btn-primary:hover {
+  background: var(--wedding-primary-dark);
+  border-color: var(--wedding-primary-dark);
+  color: #fff;
+  text-decoration: none;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(201, 155, 138, 0.3);
+}
+
+.spot-btn-ghost {
+  background: transparent;
+  color: var(--wedding-primary-dark);
+}
+
+.spot-btn-ghost:hover {
+  background: var(--wedding-soft-pink);
+  color: var(--wedding-primary-dark);
+  text-decoration: none;
+  transform: translateY(-1px);
+}
+
+.ttd-closing {
+  text-align: center;
+  max-width: 620px;
+  margin: 0 auto;
+}
+
+.ttd-closing .fa-heart { color: var(--wedding-primary); }
+
+/* Rose-tinted outline button (companion to .wedding-btn-primary) */
+.wedding-btn-outline {
+  color: var(--wedding-primary-dark);
+  border: 1px solid var(--wedding-primary);
+  background: transparent;
+  padding: 0.875rem 2.5rem;
+  font-weight: 500;
+  letter-spacing: 1px;
+  border-radius: 2px;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  font-size: 0.875rem;
+}
+
+.wedding-btn-outline:hover {
+  background: var(--wedding-primary);
+  border-color: var(--wedding-primary);
+  color: #fff;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(201, 155, 138, 0.3);
+}
+
+@media (max-width: 576px) {
+  .spot-card { padding: 1.6rem 1.35rem; }
+  .spot-name { font-size: 1.35rem; }
+  .ttd-nav-list { justify-content: flex-start; }
+}
+
+/* ============================================
    FOOTER
    ============================================ */
 
