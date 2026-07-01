@@ -444,3 +444,8 @@ def rsvp_names_api(request):
 def bachelor_party(request):
     """Bachelor party planning page for NOLA 2026"""
     return render(request, 'wedding/bachelor_party.html')
+
+
+def things_to_do(request):
+    """Curated Pittsburgh food & drink guide for wedding guests"""
+    return render(request, 'wedding/things_to_do.html')

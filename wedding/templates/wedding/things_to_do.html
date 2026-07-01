@@ -1,0 +1,165 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🍴 Things to Do in Pittsburgh 🌉</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: system-ui, -apple-system, sans-serif; }
+        .modal { display: none; }
+        .modal.active { display: flex; }
+        .card-pop { transition: transform 0.15s ease, background-color 0.15s ease; }
+        .card-pop:hover { transform: translateY(-3px); }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900 min-h-screen text-white p-4 md:p-8">
+    <div class="max-w-3xl mx-auto">
+        <!-- Back link -->
+        <a href="{% url 'wedding:home' %}" class="inline-flex items-center gap-1 text-gray-400 hover:text-white transition-colors text-sm mb-4">← Back to wedding site</a>
+
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <h1 class="text-4xl md:text-5xl font-bold mb-2">🍴 Things to Do in Pittsburgh 🌉</h1>
+            <p class="text-purple-300 text-lg">Our favorite spots around the city</p>
+            <p class="text-gray-400 mt-1">A few places we love — go eat and drink well while you're here</p>
+            <div class="mt-3 flex items-center justify-center gap-2 text-xs text-gray-500">
+                <span>🔗 Tap any spot for details, its website & directions</span>
+            </div>
+        </div>
+
+        <!-- Sections -->
+        <div id="sections" class="space-y-8"></div>
+
+        <!-- Footer -->
+        <div class="mt-10 text-center text-gray-500 text-sm">
+            <p>🖤&nbsp; Dennis &amp; Caitlin &nbsp;🖤</p>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="modal" class="modal fixed inset-0 bg-black/80 items-center justify-center z-50 p-4" onclick="closeModal()">
+        <div class="bg-gray-900 rounded-2xl max-w-md w-full overflow-hidden shadow-2xl" onclick="event.stopPropagation()">
+            <div id="modal-header" class="h-24 flex items-center justify-center">
+                <span id="modal-icon" class="text-5xl"></span>
+            </div>
+            <div class="p-5">
+                <div class="flex items-center gap-2 flex-wrap mb-1">
+                    <h3 id="modal-title" class="text-xl font-bold"></h3>
+                    <span id="modal-hood" class="text-xs text-purple-300 bg-purple-500/20 px-2 py-0.5 rounded-full"></span>
+                </div>
+                <p id="modal-desc" class="text-gray-400 mb-4"></p>
+                <div class="flex gap-2">
+                    <button id="modal-link" onclick="openWebsite()" class="flex-1 flex items-center justify-center gap-2 bg-purple-600 hover:bg-purple-700 px-4 py-3 rounded-xl transition-colors font-medium">
+                        🌐 Website
+                    </button>
+                    <button id="modal-maps" onclick="openMaps()" class="flex-1 flex items-center justify-center gap-2 bg-gray-700 hover:bg-gray-600 px-4 py-3 rounded-xl transition-colors font-medium">📍 Get Directions</button>
+                </div>
+                <button onclick="closeModal()" class="w-full mt-3 text-gray-500 hover:text-gray-400 text-sm">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const sections = [
+            {
+                title: "Food", emoji: "🍽️",
+                places: [
+                    { name: "Dish Osteria & Bar", icon: "🍝", color: "from-red-500 to-orange-600", neighborhood: "South Side", description: "Intimate, family-owned Sicilian & Mediterranean spot in a historic 1885 bar. Small dining room — reservations recommended.", url: "https://dishosteria.com/" },
+                    { name: "Café Du Jour", icon: "🥖", color: "from-amber-500 to-yellow-600", neighborhood: "South Side", description: "Charming European bistro with a seasonal, ever-changing menu and a lovely brick courtyard. BYOB and cash only.", url: "https://www.cafedujourpgh.com/" },
+                    { name: "Fet-Fisk", icon: "🐟", color: "from-sky-500 to-blue-600", neighborhood: "Bloomfield", description: "Nordic seafood & oyster bar with Appalachian touches. A James Beard finalist and Bon Appétit best-new-restaurant pick.", url: "https://www.fetfisk.net/" },
+                    { name: "Apteka", icon: "🥟", color: "from-emerald-500 to-green-600", neighborhood: "Bloomfield", description: "Polish & Eastern-European cuisine, entirely vegan — pierogi, stuffed cabbage & fermentation done right. Reservations for parties of 4+.", url: "https://aptekapgh.com/" },
+                    { name: "Mola", icon: "🍣", color: "from-cyan-500 to-teal-600", neighborhood: "East Liberty", description: "Sushi-focused spot known for burrito-style hand rolls, bao & rice bowls made with super-fresh fish.", url: "https://themolafish.com/" }
+                ]
+            },
+            {
+                title: "Cocktails & Bars", emoji: "🍸",
+                places: [
+                    { name: "Acacia", icon: "🍸", color: "from-purple-500 to-indigo-600", neighborhood: "South Side", description: "Speakeasy-style craft cocktail bar — no sign, boarded-up windows, and some of the best drinks in Pittsburgh once you find it.", url: "https://acaciacocktails.com/" },
+                    { name: "Lorelei", icon: "🍺", color: "from-pink-500 to-rose-600", neighborhood: "East Liberty", description: "Half modern cocktail bar, half Alpine German beer hall with communal tables and mostly German- & Czech-style lagers on tap.", url: "https://www.loreleipgh.com/" },
+                    { name: "Grapperia", icon: "🥃", color: "from-violet-500 to-purple-600", neighborhood: "Lawrenceville", description: "Italian bar for grappa, amari, digestivi & cocktails. Right next to Eleventh Hour Brewing.", url: "http://www.grapperiapgh.com/" },
+                    { name: "Hidden Harbor", icon: "🍹", color: "from-teal-500 to-cyan-600", neighborhood: "Squirrel Hill", description: "Award-winning tiki bar with exotic tropical cocktails and a deep bench of 670+ rums.", url: "https://www.hiddenharborpgh.com/" }
+                ]
+            },
+            {
+                title: "Breweries", emoji: "🍻",
+                places: [
+                    { name: "Eleventh Hour Brewing Co.", icon: "🍺", color: "from-amber-500 to-orange-600", neighborhood: "Lawrenceville", description: "Laid-back taproom in a restored 19th-century building with rotating food trucks. Right next to Grapperia.", url: "https://www.11thhourbrews.com/" },
+                    { name: "Dancing Gnome", icon: "🍺", color: "from-lime-500 to-green-600", neighborhood: "Millvale", description: "Hop-forward brewery with a relaxed, friendly taproom — a Pittsburgh favorite for IPAs.", url: "https://dancinggnomebeer.com/" }
+                ]
+            },
+            {
+                title: "Coffee & Sweets", emoji: "☕",
+                places: [
+                    { name: "Delanie's Coffee", icon: "☕", color: "from-orange-500 to-amber-600", neighborhood: "South Side", description: "Cozy two-floor coffee shop with local art, specialty espresso and farm-to-table fare. Called the heart of the South Side.", url: "https://www.delaniescoffee.com/" },
+                    { name: "Page's Dairy Mart", icon: "🍦", color: "from-pink-500 to-fuchsia-600", neighborhood: "South Side", description: "Iconic 75-year-old ice cream stand — soft serve, South Side Shakes & sundaes. Seasonal: open Memorial Day to Labor Day.", url: "https://www.pagesdairymart.com/" }
+                ]
+            }
+        ];
+
+        let currentWebsiteUrl = '';
+        let currentMapsUrl = '';
+
+        function openWebsite() {
+            if (currentWebsiteUrl) window.open(currentWebsiteUrl, '_blank');
+        }
+
+        function openMaps() {
+            if (currentMapsUrl) window.open(currentMapsUrl, '_blank');
+        }
+
+        function openModal(sectionIdx, placeIdx) {
+            const place = sections[sectionIdx].places[placeIdx];
+            if (!place) return;
+
+            document.getElementById('modal-header').className = `h-24 flex items-center justify-center bg-gradient-to-r ${place.color}`;
+            document.getElementById('modal-icon').textContent = place.icon;
+            document.getElementById('modal-title').textContent = place.name;
+            document.getElementById('modal-hood').textContent = place.neighborhood;
+            document.getElementById('modal-desc').textContent = place.description;
+
+            const websiteBtn = document.getElementById('modal-link');
+            if (place.url) {
+                currentWebsiteUrl = place.url;
+                websiteBtn.style.display = '';
+            } else {
+                currentWebsiteUrl = '';
+                websiteBtn.style.display = 'none';
+            }
+
+            currentMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(place.name + ' Pittsburgh PA')}`;
+            document.getElementById('modal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('modal').classList.remove('active');
+        }
+
+        function renderSections() {
+            const container = document.getElementById('sections');
+            container.innerHTML = sections.map((section, sIdx) => `
+                <div>
+                    <h2 class="text-2xl font-bold mb-4 flex items-center gap-2">
+                        <span>${section.emoji}</span> ${section.title}
+                    </h2>
+                    <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+                        ${section.places.map((place, pIdx) => `
+                            <button onclick="openModal(${sIdx}, ${pIdx})" class="card-pop text-left bg-white/5 hover:bg-white/10 rounded-2xl p-4 flex flex-col gap-3 h-full">
+                                <div class="w-11 h-11 rounded-xl flex items-center justify-center bg-gradient-to-r ${place.color} text-2xl flex-shrink-0">${place.icon}</div>
+                                <div>
+                                    <div class="font-semibold leading-tight">${place.name}</div>
+                                    <div class="text-xs text-purple-300 mt-1">${place.neighborhood}</div>
+                                </div>
+                            </button>
+                        `).join('')}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+        renderSections();
+    </script>
+</body>
+</html>
