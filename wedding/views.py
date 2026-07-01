@@ -171,7 +171,6 @@ def event_details(request):
         'venue_address': 'Pittsburgh, PA',
         'guest_arrival_time': '5:00 PM',
         'ceremony_time': '5:30 PM',
-        'reception_time': 'TBD',
     }
     return render(request, 'wedding/event_details.html', context)
 
