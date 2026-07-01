@@ -451,9 +451,13 @@ def things_to_do(request):
     sections = [
         {
             'id': 'food',
-            'title': 'Food',
-            'subtitle': 'Where we love to eat',
+            'index': 'I',
+            'title': 'Where to Eat',
+            'nav_title': 'Food',
+            'subtitle': 'Our favorite tables in the city',
             'nav_icon': 'fas fa-utensils',
+            'accent': '#c99b8a', 'tint': '#efdcd4',   # dusty rose
+            'image': 'https://images.unsplash.com/photo-1750943082452-c714763f73b2?w=1600&h=1000&fit=crop&q=80&fm=jpg',
             'spots': [
                 {
                     'name': 'Dish Osteria & Bar', 'fa': 'fas fa-pizza-slice',
@@ -499,9 +503,13 @@ def things_to_do(request):
         },
         {
             'id': 'drinks',
-            'title': 'Cocktails & Bars',
-            'subtitle': 'Our favorite spots for a drink',
+            'index': 'II',
+            'title': 'Where to Drink',
+            'nav_title': 'Drinks',
+            'subtitle': 'Cocktails, beer halls & hidden bars',
             'nav_icon': 'fas fa-glass-cheers',
+            'accent': '#2c3e50', 'tint': '#cfd6dd',   # slate
+            'image': 'https://images.unsplash.com/photo-1752141930096-ac8292d6a15a?w=1600&h=1000&fit=crop&q=80&fm=jpg',
             'spots': [
                 {
                     'name': 'Acacia', 'fa': 'fas fa-glass-martini-alt',
@@ -539,9 +547,13 @@ def things_to_do(request):
         },
         {
             'id': 'breweries',
-            'title': 'Breweries',
+            'index': 'III',
+            'title': 'Local Breweries',
+            'nav_title': 'Breweries',
             'subtitle': 'For the beer lovers',
             'nav_icon': 'fas fa-beer',
+            'accent': '#c9a227', 'tint': '#eaddb0',   # gold (slightly deepened for contrast)
+            'image': 'https://images.unsplash.com/photo-1663060435381-7a3d91a59836?w=1600&h=1000&fit=crop&q=80&fm=jpg',
             'spots': [
                 {
                     'name': 'Eleventh Hour Brewing Co.', 'fa': 'fas fa-beer',
@@ -563,9 +575,13 @@ def things_to_do(request):
         },
         {
             'id': 'sweets',
-            'title': 'Coffee & Sweets',
+            'index': 'IV',
+            'title': 'Coffee & Something Sweet',
+            'nav_title': 'Sweets',
             'subtitle': 'A little something extra',
             'nav_icon': 'fas fa-mug-hot',
+            'accent': '#8ba17f', 'tint': '#d3ddcb',   # sage (deepened for contrast)
+            'image': 'https://images.unsplash.com/photo-1553962311-62f2471b159d?w=1600&h=1000&fit=crop&q=80&fm=jpg',
             'spots': [
                 {
                     'name': "Delanie's Coffee", 'fa': 'fas fa-mug-hot',
@@ -587,4 +603,12 @@ def things_to_do(request):
             ],
         },
     ]
+
+    # Continuous editorial numbering (01, 02, ... 13) across all sections
+    counter = 1
+    for section in sections:
+        for spot in section['spots']:
+            spot['num'] = '{:02d}'.format(counter)
+            counter += 1
+
     return render(request, 'wedding/things_to_do.html', {'sections': sections})

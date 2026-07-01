@@ -3,12 +3,18 @@
 {% block title %}Things to Do in Pittsburgh - Dennis & Cait{% endblock %}
 
 {% block content %}
-<div class="page-header">
-  <div class="container">
-    <h1 class="display-4">Things to Do in Pittsburgh</h1>
-    <p class="lead">Our favorite spots to eat, drink, and explore</p>
+<!-- Cinematic hero -->
+<header class="ttd-hero" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Downtown_Pittsburgh_from_Duquesne_Incline_in_the_morning.jpg/1920px-Downtown_Pittsburgh_from_Duquesne_Incline_in_the_morning.jpg');">
+  <div class="ttd-hero-inner">
+    <div class="ttd-eyebrow">A Locals' Guide</div>
+    <div class="ttd-hero-rule"></div>
+    <h1>Things to Do<br>in Pittsburgh</h1>
+    <p class="ttd-hero-sub">Thirteen places we love — to eat, drink, and wander</p>
   </div>
-</div>
+  <div class="ttd-hero-credit">
+    Photo: <a href="https://commons.wikimedia.org/wiki/File:Downtown_Pittsburgh_from_Duquesne_Incline_in_the_morning.jpg" target="_blank" rel="noopener">Dllu</a>, CC BY-SA 4.0
+  </div>
+</header>
 
 <!-- Sticky in-page section nav -->
 <nav class="ttd-navbar">
@@ -16,84 +22,89 @@
     {% for section in sections %}
       <li>
         <a class="ttd-nav-link" href="#{{ section.id }}">
-          <i class="{{ section.nav_icon }}"></i> {{ section.title }}
+          <i class="{{ section.nav_icon }}"></i> {{ section.nav_title }}
         </a>
       </li>
     {% endfor %}
   </ul>
 </nav>
 
-<div class="container my-5">
-  <p class="ttd-intro lead mb-5">
-    We've spent the last few years falling in love with this city — its neighborhoods, its
-    food, and its people. Here are the places we send everyone to. Tap through, wander a
-    little, and eat and drink well while you're here.
-  </p>
+<div class="container-fluid px-0">
+  <div class="container">
+    <p class="ttd-intro my-5">
+      We've spent the last few years falling for this city — its neighborhoods, its food,
+      and its people. These are the places we send everyone. <i class="fas fa-heart" style="font-size:0.85rem;"></i>
+    </p>
+  </div>
 
   {% for section in sections %}
-    <section id="{{ section.id }}" class="ttd-section mb-5 pb-3">
-      <div class="ttd-section-head">
-        <h2 class="display-5">{{ section.title }}</h2>
-        <div class="ttd-section-sub">{{ section.subtitle }}</div>
-        <div class="ttd-ornament"><i class="fas fa-heart"></i></div>
+    <section id="{{ section.id }}" class="ttd-chapter">
+      <!-- Chapter photo banner -->
+      <div class="ttd-banner" style="background-image: url('{{ section.image }}');">
+        <div class="ttd-banner-inner">
+          <div class="ttd-chapter-index">Chapter {{ section.index }}</div>
+          <h2>{{ section.title }}</h2>
+          <p class="ttd-banner-sub">{{ section.subtitle }}</p>
+        </div>
       </div>
 
-      <div class="row">
-        {% for spot in section.spots %}
-          <div class="col-lg-6 mb-4">
-            <div class="spot-card">
-              <div class="spot-card-top">
-                <div class="spot-badge"><i class="{{ spot.fa }}"></i></div>
-                <div>
-                  <h3 class="spot-name">{{ spot.name }}</h3>
-                  <span class="spot-neighborhood">
-                    <i class="fas fa-map-marker-alt"></i> {{ spot.neighborhood }}
-                  </span>
+      <div class="container">
+        <div class="ttd-list">
+          <div class="row">
+            {% for spot in section.spots %}
+              <div class="col-lg-6 mb-4">
+                <div class="spot" style="--spot-accent: {{ section.accent }}; --spot-tint: {{ section.tint }};">
+                  <div class="spot-num">{{ spot.num }}</div>
+                  <div class="spot-body">
+                    <h3 class="spot-name">{{ spot.name }}</h3>
+                    <div class="spot-meta">
+                      <span class="spot-neighborhood"><i class="fas fa-map-marker-alt"></i> {{ spot.neighborhood }}</span>
+                      <span class="spot-dot">&bull;</span>
+                      <span class="spot-tag">{{ spot.tag }}</span>
+                      <span class="spot-dot">&bull;</span>
+                      <span class="spot-price">{{ spot.price }}</span>
+                    </div>
+
+                    <p class="spot-desc">{{ spot.desc }}</p>
+
+                    <div class="spot-mustry">
+                      <span class="spot-mustry-label"><i class="fas fa-star"></i> Don't leave without</span>
+                      <span class="spot-mustry-item">{{ spot.signature }}.</span>
+                      {% if spot.seasonal %}<span class="spot-seasonal-note">{{ spot.seasonal }}.</span>{% endif %}
+                    </div>
+
+                    <div class="spot-links">
+                      <a href="{{ spot.url }}" target="_blank" rel="noopener" class="spot-link">
+                        <i class="fas fa-globe"></i> Website
+                      </a>
+                      <span class="spot-link-sep">|</span>
+                      <a href="https://www.google.com/maps/search/?api=1&query={{ spot.maps|urlencode }}"
+                         target="_blank" rel="noopener" class="spot-link">
+                        Directions <i class="fas fa-arrow-right"></i>
+                      </a>
+                    </div>
+                  </div>
                 </div>
               </div>
-
-              <div class="spot-meta">
-                <span class="spot-tag">{{ spot.tag }}</span>
-                <span class="spot-price">{{ spot.price }}</span>
-                {% if spot.seasonal %}
-                  <span class="spot-seasonal"><i class="far fa-sun"></i> Seasonal</span>
-                {% endif %}
-              </div>
-
-              <p class="spot-desc">
-                {{ spot.desc }}
-                <br>
-                <span class="spot-signature"><i class="fas fa-star" style="font-size:0.8rem;"></i> Must-try:</span>
-                {{ spot.signature }}.
-                {% if spot.seasonal %}<br><em class="text-muted" style="font-size:0.95rem;">{{ spot.seasonal }}.</em>{% endif %}
-              </p>
-
-              <div class="spot-actions">
-                <a href="{{ spot.url }}" target="_blank" rel="noopener" class="spot-btn spot-btn-ghost">
-                  <i class="fas fa-globe"></i> Website
-                </a>
-                <a href="https://www.google.com/maps/search/?api=1&query={{ spot.maps|urlencode }}"
-                   target="_blank" rel="noopener" class="spot-btn spot-btn-primary">
-                  <i class="fas fa-directions"></i> Directions
-                </a>
-              </div>
-            </div>
+            {% endfor %}
           </div>
-        {% endfor %}
+        </div>
       </div>
     </section>
   {% endfor %}
 
-  <div class="ttd-closing mt-5 pt-4">
-    <div class="mb-3"><i class="fas fa-heart fa-2x"></i></div>
-    <p class="lead">Can't wait to celebrate with you in our favorite city.</p>
-    <div class="mt-4">
-      <a href="{% url 'wedding:event_details' %}" class="btn wedding-btn-outline btn-lg mr-2 mb-2">
-        <i class="fas fa-calendar-day"></i> Event Details
-      </a>
-      <a href="{% url 'wedding:rsvp' %}" class="btn btn-primary wedding-btn-primary btn-lg mb-2">
-        <i class="fas fa-envelope"></i> RSVP
-      </a>
+  <div class="container">
+    <div class="ttd-closing my-5 py-4">
+      <div class="mb-3"><i class="fas fa-heart fa-2x"></i></div>
+      <p class="lead">Can't wait to celebrate with you in our favorite city.</p>
+      <div class="mt-4">
+        <a href="{% url 'wedding:event_details' %}" class="btn wedding-btn-outline btn-lg mr-2 mb-2">
+          <i class="fas fa-calendar-day"></i> Event Details
+        </a>
+        <a href="{% url 'wedding:rsvp' %}" class="btn btn-primary wedding-btn-primary btn-lg mb-2">
+          <i class="fas fa-envelope"></i> RSVP
+        </a>
+      </div>
     </div>
   </div>
 </div>
@@ -114,7 +125,7 @@
 
   // Scroll-spy: highlight the active section pill
   const navLinks = document.querySelectorAll('.ttd-nav-link');
-  const sections = document.querySelectorAll('.ttd-section');
+  const chapters = document.querySelectorAll('.ttd-chapter');
   const spy = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
@@ -123,6 +134,6 @@
       }
     });
   }, { rootMargin: '-45% 0px -50% 0px' });
-  sections.forEach(s => spy.observe(s));
+  chapters.forEach(c => spy.observe(c));
 </script>
 {% endblock %}
