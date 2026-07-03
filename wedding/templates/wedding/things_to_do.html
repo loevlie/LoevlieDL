@@ -9,7 +9,7 @@
     <div class="ttd-eyebrow">A Locals' Guide</div>
     <div class="ttd-hero-rule"></div>
     <h1>Things to Do<br>in Pittsburgh</h1>
-    <p class="ttd-hero-sub">Thirteen places we love — to eat, drink, and wander</p>
+    <p class="ttd-hero-sub">Our favorite corners of the city — where to eat, drink, and explore</p>
   </div>
   <div class="ttd-hero-credit">
     Photo: <a href="https://commons.wikimedia.org/wiki/File:Downtown_Pittsburgh_from_Duquesne_Incline_in_the_morning.jpg" target="_blank" rel="noopener">Dllu</a>, CC BY-SA 4.0
@@ -61,14 +61,16 @@
                       <span class="spot-neighborhood"><i class="fas fa-map-marker-alt"></i> {{ spot.neighborhood }}</span>
                       <span class="spot-dot">&bull;</span>
                       <span class="spot-tag">{{ spot.tag }}</span>
-                      <span class="spot-dot">&bull;</span>
-                      <span class="spot-price">{{ spot.price }}</span>
+                      {% if spot.price %}
+                        <span class="spot-dot">&bull;</span>
+                        <span class="spot-price">{{ spot.price }}</span>
+                      {% endif %}
                     </div>
 
                     <p class="spot-desc">{{ spot.desc }}</p>
 
                     <div class="spot-mustry">
-                      <span class="spot-mustry-label"><i class="fas fa-star"></i> Don't leave without</span>
+                      <span class="spot-mustry-label"><i class="fas fa-star"></i> {{ section.mustry_label|default:"Don't leave without" }}</span>
                       <span class="spot-mustry-item">{{ spot.signature }}.</span>
                       {% if spot.seasonal %}<span class="spot-seasonal-note">{{ spot.seasonal }}.</span>{% endif %}
                     </div>

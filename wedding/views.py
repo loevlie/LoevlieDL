@@ -602,9 +602,69 @@ def things_to_do(request):
                 },
             ],
         },
+        {
+            'id': 'explore',
+            'index': 'V',
+            'title': 'What to See & Do',
+            'nav_title': 'Explore',
+            'subtitle': 'Iconic views, gardens, museums & neighborhoods',
+            'nav_icon': 'fas fa-camera-retro',
+            'accent': '#a9714e', 'tint': '#e4cdb8',   # terracotta (the incline's red brick)
+            'image': 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Strip_District_at_Dusk%2C_October_2019.jpg/1920px-Strip_District_at_Dusk%2C_October_2019.jpg',
+            'mustry_label': "Don't miss",
+            'spots': [
+                {
+                    'name': 'Duquesne Incline', 'fa': 'fas fa-mountain',
+                    'neighborhood': 'Mount Washington', 'tag': 'Historic Funicular',
+                    'desc': "A cherished 1877 cable car that climbs Mount Washington to the city's most famous overlook, where the three rivers meet the downtown skyline.",
+                    'signature': 'A ride up near sunset, with the skyline glowing over the Point',
+                    'url': 'https://www.duquesneincline.org/',
+                    'maps': 'Duquesne Incline 1197 W Carson St Pittsburgh PA',
+                },
+                {
+                    'name': 'The Strip District', 'fa': 'fas fa-store',
+                    'neighborhood': 'Strip District', 'tag': 'Market Neighborhood',
+                    'desc': "A historic wholesale-market strip packed with ethnic groceries, coffee roasters, street vendors, and Pittsburgh souvenirs — best on a bustling weekend morning.",
+                    'signature': 'A Primanti Bros. sandwich and a wander through the market stalls',
+                    'maps': 'Strip District Penn Ave Pittsburgh PA',
+                },
+                {
+                    'name': 'Pittsburgh Zoo & Aquarium', 'fa': 'fas fa-paw',
+                    'neighborhood': 'Highland Park', 'tag': 'Zoo & Aquarium',
+                    'desc': "A sprawling Highland Park zoo and aquarium under one ticket — from the big cats and elephants to a two-story underwater aquarium.",
+                    'signature': 'The shark tunnel in the aquarium and the PPG Aquarium reef',
+                    'url': 'https://www.pittsburghzoo.org/',
+                    'maps': 'Pittsburgh Zoo and Aquarium 7370 Baker St Pittsburgh PA',
+                },
+                {
+                    'name': 'Soldiers & Sailors Memorial Hall & Museum', 'fa': 'fas fa-monument',
+                    'neighborhood': 'Oakland', 'tag': 'Historic Landmark & Museum',
+                    'desc': "The nation's largest memorial dedicated to all who served — a heroic Beaux-Arts landmark from 1910, filled with military history in the heart of Oakland.",
+                    'signature': 'The grand Hall of Valor beneath the soaring dome',
+                    'url': 'https://www.soldiersandsailorshall.org/',
+                    'maps': 'Soldiers and Sailors Memorial Hall 4141 Fifth Ave Pittsburgh PA',
+                },
+                {
+                    'name': 'Phipps Conservatory and Botanical Gardens', 'fa': 'fas fa-spa',
+                    'neighborhood': 'Oakland', 'tag': 'Gardens & Conservatory',
+                    'desc': "A glittering Victorian glasshouse in Schenley Park with fourteen rooms of gardens and lavish seasonal flower shows under glass.",
+                    'signature': 'The Sunken Garden and whatever seasonal show is in bloom',
+                    'url': 'https://www.phipps.conservatory.org/',
+                    'maps': 'Phipps Conservatory One Schenley Dr Pittsburgh PA',
+                },
+                {
+                    'name': 'The Andy Warhol Museum', 'fa': 'fas fa-palette',
+                    'neighborhood': 'North Shore', 'tag': 'Modern Art Museum',
+                    'desc': "Seven floors devoted to Pittsburgh's own Andy Warhol — the most comprehensive single-artist museum in the country, just across the river on the North Shore.",
+                    'signature': "The floating Silver Clouds room and the Pop-art galleries",
+                    'url': 'https://www.warhol.org/',
+                    'maps': 'The Andy Warhol Museum 117 Sandusky St Pittsburgh PA',
+                },
+            ],
+        },
     ]
 
-    # Continuous editorial numbering (01, 02, ... 13) across all sections
+    # Continuous editorial numbering (01, 02, ...) across all sections
     counter = 1
     for section in sections:
         for spot in section['spots']:
