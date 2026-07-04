@@ -16,7 +16,11 @@ import os
 BASE_DIR = str(Path(__file__).resolve().parent.parent)
 TEMPLATES_DIRS = os.path.join(BASE_DIR,'templates')
 STATIC_DIR = os.path.join(BASE_DIR,'static')
-STATIC_ROOT = os.path.join(STATIC_DIR,'Portfolio')
+# STATIC_ROOT must NOT be a subfolder of a STATICFILES_DIRS entry, or `collectstatic`
+# copies static/ into itself on every run (static/Portfolio/Portfolio/...) and fills the
+# disk. The PythonAnywhere "/static/" mapping points at this same STATIC_DIR, so we collect
+# straight into it. (STATICFILES_DIRS is emptied below to remove the self-reference.)
+STATIC_ROOT = STATIC_DIR
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
@@ -166,7 +170,10 @@ MEDIA_URL = '/media/'
 MEDIA_DIR = os.path.join(BASE_DIR,'media')
 MEDIA_ROOT = os.path.join(BASE_DIR,'images')
 
-STATICFILES_DIRS = [STATIC_DIR,]
+# Empty on purpose: STATIC_DIR is now STATIC_ROOT (the collect target), so it must not
+# also be listed as a source — that pairing is what caused the recursive self-copy.
+# App static (wedding/, Portfolio/, admin, ckeditor) is still found via AppDirectoriesFinder.
+STATICFILES_DIRS = []
 
 LOGIN_URL = '/Portfolio/user_login'
 
