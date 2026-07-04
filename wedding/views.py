@@ -467,12 +467,6 @@ def things_to_do(request):
                     'maps': 'Dish Osteria 128 S 17th St Pittsburgh PA',
                 },
                 {
-                    'name': 'Café Du Jour', 'fa': 'fas fa-cheese',
-                    'neighborhood': 'South Side', 'tag': 'European Bistro', 'price': '$$',
-                    'url': 'https://www.cafedujourpgh.com/',
-                    'maps': 'Cafe Du Jour 1107 E Carson St Pittsburgh PA',
-                },
-                {
                     'name': 'Fet-Fisk', 'fa': 'fas fa-fish',
                     'neighborhood': 'Bloomfield', 'tag': 'Nordic Seafood', 'price': '$$$',
                     'signature': 'The Ora King salmon gravlax, or the oysters',
@@ -482,14 +476,13 @@ def things_to_do(request):
                 {
                     'name': 'Apteka', 'fa': 'fas fa-seedling',
                     'neighborhood': 'Bloomfield', 'tag': 'Polish Vegan', 'price': '$$',
-                    'signature': 'The smażone (fried) pierogi, or the zakąski pickle plate',
+                    'signature': 'The smażone (fried) pierogi',
                     'url': 'https://aptekapgh.com/',
                     'maps': 'Apteka 4606 Penn Ave Pittsburgh PA',
                 },
                 {
                     'name': 'Mola', 'fa': 'fas fa-utensils',
-                    'neighborhood': 'East Liberty', 'tag': 'Sushi', 'price': '$$$',
-                    'signature': 'The blue crab hand roll',
+                    'neighborhood': 'East Liberty', 'tag': 'Sushi & Bowls', 'price': '$$$',
                     'url': 'https://themolafish.com/',
                     'maps': 'Mola 6018 Penn Ave Pittsburgh PA',
                 },
@@ -528,7 +521,7 @@ def things_to_do(request):
                 {
                     'name': 'Hidden Harbor', 'fa': 'fas fa-cocktail',
                     'neighborhood': 'Squirrel Hill', 'tag': 'Tiki Bar', 'price': '$$$',
-                    'signature': 'The Rum Bucket',
+                    'signature': 'The Rum Barrel',
                     'url': 'https://www.hiddenharborpgh.com/',
                     'maps': 'Hidden Harbor Squirrel Hill Pittsburgh PA',
                 },
