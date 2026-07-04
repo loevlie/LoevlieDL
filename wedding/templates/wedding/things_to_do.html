@@ -31,9 +31,12 @@
 
 <div class="container-fluid px-0">
   <div class="container">
-    <p class="ttd-intro my-5">
-      We've spent the last few years falling for this city — its neighborhoods, its food,
+    <p class="ttd-intro mt-5 mb-2">
+      We spent a few years falling for this city — its neighborhoods, its food,
       and its people. These are the places we send everyone. <i class="fas fa-heart" style="font-size:0.85rem;"></i>
+    </p>
+    <p class="ttd-legend mb-5">
+      <i class="fas fa-star"></i> marks our all-time favorites
     </p>
   </div>
 
@@ -56,7 +59,7 @@
                 <div class="spot" style="--spot-accent: {{ section.accent }}; --spot-tint: {{ section.tint }};">
                   <div class="spot-num">{{ spot.num }}</div>
                   <div class="spot-body">
-                    <h3 class="spot-name">{{ spot.name }}</h3>
+                    <h3 class="spot-name">{{ spot.name }}{% if spot.fav %}<span class="spot-fav" title="One of our all-time favorites"><i class="fas fa-star"></i></span>{% endif %}</h3>
                     <div class="spot-meta">
                       <span class="spot-neighborhood"><i class="fas fa-map-marker-alt"></i> {{ spot.neighborhood }}</span>
                       <span class="spot-dot">&bull;</span>
@@ -76,10 +79,12 @@
                     </div>
 
                     <div class="spot-links">
-                      <a href="{{ spot.url }}" target="_blank" rel="noopener" class="spot-link">
-                        <i class="fas fa-globe"></i> Website
-                      </a>
-                      <span class="spot-link-sep">|</span>
+                      {% if spot.url %}
+                        <a href="{{ spot.url }}" target="_blank" rel="noopener" class="spot-link">
+                          <i class="fas fa-globe"></i> Website
+                        </a>
+                        <span class="spot-link-sep">|</span>
+                      {% endif %}
                       <a href="https://www.google.com/maps/search/?api=1&query={{ spot.maps|urlencode }}"
                          target="_blank" rel="noopener" class="spot-link">
                         Directions <i class="fas fa-arrow-right"></i>

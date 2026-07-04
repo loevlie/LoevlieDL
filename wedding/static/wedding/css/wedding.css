@@ -712,6 +712,23 @@
   line-height: 1.7;
 }
 .ttd-intro .fa-heart { color: var(--wedding-primary); }
+.ttd-legend {
+  text-align: center;
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1.05rem;
+  letter-spacing: 0.5px;
+  color: #8a8178;
+}
+.ttd-legend .fa-star { color: var(--wedding-accent); font-size: 0.85rem; }
+
+/* All-time favorite star (next to spot name) */
+.spot-fav {
+  margin-left: 0.45rem;
+  font-size: 1.05rem;
+  color: var(--wedding-accent);
+  vertical-align: 4px;
+}
 
 /* Sticky in-page section nav */
 .ttd-navbar {

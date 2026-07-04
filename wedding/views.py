@@ -460,7 +460,7 @@ def things_to_do(request):
             'image': 'https://images.unsplash.com/photo-1750943082452-c714763f73b2?w=1600&h=1000&fit=crop&q=80&fm=jpg',
             'spots': [
                 {
-                    'name': 'Dish Osteria & Bar', 'fa': 'fas fa-pizza-slice',
+                    'name': 'Dish Osteria & Bar', 'fav': True, 'fa': 'fas fa-pizza-slice',
                     'neighborhood': 'South Side', 'tag': 'Sicilian', 'price': '$$$',
                     'desc': "An intimate, family-run South Side institution since 2000, serving old-world Sicilian cooking with warm candlelit charm and a seafood-driven heart.",
                     'signature': 'Rigatoni alla scamorza affumicata, or the grilled octopus',
@@ -512,7 +512,7 @@ def things_to_do(request):
             'image': 'https://images.unsplash.com/photo-1752141930096-ac8292d6a15a?w=1600&h=1000&fit=crop&q=80&fm=jpg',
             'spots': [
                 {
-                    'name': 'Acacia', 'fa': 'fas fa-glass-martini-alt',
+                    'name': 'Acacia', 'fav': True, 'fa': 'fas fa-glass-martini-alt',
                     'neighborhood': 'South Side', 'tag': 'Speakeasy', 'price': '$$$',
                     'desc': "A dimly lit, upscale speakeasy above East Carson where bartenders craft custom cocktails to your taste with genuine mixology expertise.",
                     'signature': "A bartender's-choice cocktail — just tell them your flavors",
@@ -528,7 +528,7 @@ def things_to_do(request):
                     'maps': 'Lorelei 124 S Highland Ave Pittsburgh PA',
                 },
                 {
-                    'name': 'Grapperia', 'fa': 'fas fa-wine-glass-alt',
+                    'name': 'Grapperia', 'fav': True, 'fa': 'fas fa-wine-glass-alt',
                     'neighborhood': 'Lawrenceville', 'tag': 'Grappa & Amaro Bar', 'price': '$$',
                     'desc': "A cozy, tucked-away Italian bar with an impressive lineup of grappa, amari, and after-dinner digestivi — right next to Eleventh Hour.",
                     'signature': 'A pour of grappa or an amaro digestivo',
@@ -592,7 +592,7 @@ def things_to_do(request):
                     'maps': "Delanie's Coffee 1737 E Carson St Pittsburgh PA",
                 },
                 {
-                    'name': "Page's Dairy Mart", 'fa': 'fas fa-ice-cream',
+                    'name': "Page's Dairy Mart", 'fav': True, 'fa': 'fas fa-ice-cream',
                     'neighborhood': 'South Side', 'tag': 'Ice Cream', 'price': '$',
                     'desc': "A cherished soft-serve stand that's been making Pittsburgh sweeter for 75+ years, drawing happy summer lines along East Carson.",
                     'signature': 'The Cinnamon Bun Sundae, or a classic dipped twist',
@@ -622,7 +622,7 @@ def things_to_do(request):
                     'maps': 'Duquesne Incline 1197 W Carson St Pittsburgh PA',
                 },
                 {
-                    'name': 'The Strip District', 'fa': 'fas fa-store',
+                    'name': 'The Strip District', 'fav': True, 'fa': 'fas fa-store',
                     'neighborhood': 'Strip District', 'tag': 'Market Neighborhood',
                     'desc': "A historic wholesale-market strip packed with ethnic groceries, coffee roasters, street vendors, and Pittsburgh souvenirs — best on a bustling weekend morning.",
                     'signature': 'A Primanti Bros. sandwich and a wander through the market stalls',
