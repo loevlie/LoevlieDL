@@ -70,13 +70,15 @@
                       {% endif %}
                     </div>
 
-                    <p class="spot-desc">{{ spot.desc }}</p>
+                    {% if spot.desc %}<p class="spot-desc">{{ spot.desc }}</p>{% endif %}
 
-                    <div class="spot-mustry">
-                      <span class="spot-mustry-label"><i class="fas fa-star"></i> {{ section.mustry_label|default:"Don't leave without" }}</span>
-                      <span class="spot-mustry-item">{{ spot.signature }}.</span>
-                      {% if spot.seasonal %}<span class="spot-seasonal-note">{{ spot.seasonal }}.</span>{% endif %}
-                    </div>
+                    {% if spot.signature %}
+                      <div class="spot-mustry">
+                        <span class="spot-mustry-label"><i class="fas fa-star"></i> {{ section.mustry_label|default:"Don't leave without" }}</span>
+                        <span class="spot-mustry-item">{{ spot.signature }}.</span>
+                        {% if spot.seasonal %}<span class="spot-seasonal-note">{{ spot.seasonal }}.</span>{% endif %}
+                      </div>
+                    {% endif %}
 
                     <div class="spot-links">
                       {% if spot.url %}
